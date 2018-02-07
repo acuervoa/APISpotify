@@ -13,5 +13,5 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/auth', 'SessionSpotifyController@authSpotifySession');
-Route::get('/callback', 'SessionSpotifyController@callback');
+Route::get('/auth', 'SpotifySessionController@authSpotifySession');
+Route::get('/callback', 'SpotifySessionController@callback');

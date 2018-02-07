@@ -10,7 +10,8 @@
         "guzzlehttp/guzzle": "^6.3",
         "jwilsson/spotify-web-api-php": "^2.1",
         "laravel/framework": "5.5.*",
-        "laravel/tinker": "~1.0"
+        "laravel/tinker": "~1.0",
+        "ramsey/uuid": "^3.7"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

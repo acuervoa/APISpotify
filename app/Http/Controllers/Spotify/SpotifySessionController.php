@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\SpotifyProfile;
 use SpotifyWebAPI\Session;
 use SpotifyWebAPI\SpotifyWebAPI;
+use Ramsey\Uuid\Uuid;
 
-class SessionSpotifyController extends Controller
+class SpotifySessionController extends Controller
 {
     public $sessionSpotify;
     public $spotifyAccessToken;
@@ -41,7 +43,9 @@ class SessionSpotifyController extends Controller
         $this->spotifyAccessToken = $this->sessionSpotify->getAccessToken();
         $this->spotifyRefreshToken = $this->sessionSpotify->getRefreshToken();
 
-        $this->loadSpotifyAPI($this->spotifyAccessToken);
+        $this->saveSpotifyProfile();
+
+        return redirect('/');
     }
 
     public function loadSpotifyAPI($accessToken) {
@@ -49,7 +53,31 @@ class SessionSpotifyController extends Controller
         $this->spotifyWebAPI = new SpotifyWebAPI();
         $this->spotifyWebAPI->setAccessToken($accessToken);
 
-        dd($this->spotifyWebAPI->getMyTop('tracks'));
+        return $this->spotifyWebAPI;
+    }
+
+    public function saveSpotifyProfile() {
+        $this->spotifyWebAPI = new SpotifyWebAPI();
+        $this->spotifyWebAPI->setAccessToken($this->spotifyAccessToken);
+
+        $request = $this->spotifyWebAPI->me();
+
+        $fields = [
+            'id' => Uuid::uuid1()->toString(),
+            'nick' => $request->id,
+            'email' => $request->email,
+            'display_name' => $request->display_name,
+            'country' => $request->country,
+            'href' => $request->href,
+            'image_url' => $request->images[0]->url,
+            'accessToken' => $this->spotifyAccessToken,
+            'refreshToken' => $this->spotifyRefreshToken,
+        ];
+
+        SpotifyProfile::updateOrCreate([ 'email' => $request->email ], $fields);
+
+
+
     }
 
 
