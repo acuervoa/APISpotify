@@ -23,6 +23,7 @@ class CreateSpotifyProfilesTable extends Migration
             $table->string('image_url');
             $table->string('accessToken');
             $table->string('refreshToken');
+            $table->string('expirationToken');
 
             $table->timestamps();
             $table->softDeletes();

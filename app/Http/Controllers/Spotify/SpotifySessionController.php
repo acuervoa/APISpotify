@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\SpotifyProfile;
+use Carbon\Carbon;
 use SpotifyWebAPI\Session;
 use SpotifyWebAPI\SpotifyWebAPI;
 use Ramsey\Uuid\Uuid;
@@ -12,6 +13,7 @@ class SpotifySessionController extends Controller
     public $sessionSpotify;
     public $spotifyAccessToken;
     public $spotifyRefreshToken;
+    public $spotifyTokenExpirationTime;
 
     public $spotifyWebAPI;
 
@@ -42,22 +44,27 @@ class SpotifySessionController extends Controller
         $this->sessionSpotify->requestAccessToken($_GET['code']);
         $this->spotifyAccessToken = $this->sessionSpotify->getAccessToken();
         $this->spotifyRefreshToken = $this->sessionSpotify->getRefreshToken();
+        $this->spotifyTokenExpirationTime = $this->sessionSpotify->getTokenExpiration();
 
+        $this->loadSpotifyAPI();
         $this->saveSpotifyProfile();
 
         return redirect('/');
     }
 
-    public function loadSpotifyAPI($accessToken) {
+    public function loadSpotifyAPI() {
 
         $this->spotifyWebAPI = new SpotifyWebAPI();
-        $this->spotifyWebAPI->setAccessToken($accessToken);
+        $spotifyProfile = SpotifyProfile::where('accessToken', '=', $this->spotifyAccessToken)->get()->first();
 
-        return $this->spotifyWebAPI;
+        if(NULL !== $spotifyProfile && ($spotifyProfile->expirationToken >= Carbon::now()->timestamp)) {
+            $this->refreshToken();
+        }
+
     }
 
     public function saveSpotifyProfile() {
-        $this->spotifyWebAPI = new SpotifyWebAPI();
+
         $this->spotifyWebAPI->setAccessToken($this->spotifyAccessToken);
 
         $request = $this->spotifyWebAPI->me();
@@ -72,11 +79,22 @@ class SpotifySessionController extends Controller
             'image_url' => $request->images[0]->url,
             'accessToken' => $this->spotifyAccessToken,
             'refreshToken' => $this->spotifyRefreshToken,
+            'expirationToken' => $this->spotifyTokenExpirationTime,
         ];
 
         SpotifyProfile::updateOrCreate([ 'email' => $request->email ], $fields);
 
+    }
 
+    public function refreshToken() {
+
+        if($this->sessionSpotify->refreshAccessToken($this->spotifyRefreshToken)){
+            $this->spotifyAccessToken = $this->sessionSpotify->getAccessToken();
+            $this->spotifyRefreshToken = $this->sessionSpotify->getRefreshToken();
+            $this->spotifyTokenExpirationTime = $this->sessionSpotify->getTokenExpiration();
+
+            $this->saveSpotifyProfile();
+        }
 
     }
 

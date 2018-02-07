@@ -22,12 +22,14 @@ class SpotifyProfile extends Model
         'image_url',
         'accessToken',
         'refreshToken',
+        'expirationToken'
     ];
 
     protected $hidden = [
         'email',
         'accessToken',
-        'refreshToken'
+        'refreshToken',
+        'expirationToken'
     ];
 
 }
