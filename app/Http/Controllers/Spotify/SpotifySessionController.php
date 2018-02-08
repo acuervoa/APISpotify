@@ -59,7 +59,7 @@ class SpotifySessionController extends Controller
         $spotifyProfile = SpotifyProfile::where('accessToken', '=', $this->spotifyAccessToken)->get()->first();
 
         if(NULL !== $spotifyProfile && ($spotifyProfile->expirationToken >= Carbon::now()->timestamp)) {
-            $this->refreshToken();
+            $this->refreshToken($this->spotifyRefreshToken);
         }
 
     }
@@ -87,9 +87,9 @@ class SpotifySessionController extends Controller
 
     }
 
-    public function refreshToken() {
+    public function refreshToken($refreshToken) {
 
-        if($this->sessionSpotify->refreshAccessToken($this->spotifyRefreshToken)){
+        if($this->sessionSpotify->refreshAccessToken($refreshToken)){
             $this->spotifyAccessToken = $this->sessionSpotify->getAccessToken();
             $this->spotifyRefreshToken = $this->sessionSpotify->getRefreshToken();
             $this->spotifyTokenExpirationTime = $this->sessionSpotify->getTokenExpiration();
@@ -97,6 +97,17 @@ class SpotifySessionController extends Controller
             $this->saveSpotifyProfile();
         }
 
+    }
+
+    public static function clientCredentials(){
+        $session = new Session(
+            env('SPOTIFY_CLIENT_ID'),
+            env('SPOTIFY_CLIENT_SECRET')
+        );
+
+        $session->requestCredentialsToken();
+
+        return $session->getAccessToken();
     }
 
 }

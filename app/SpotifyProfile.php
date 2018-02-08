@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Http\Controllers\Spotify\SpotifySessionController;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use SpotifyWebAPI\SpotifyWebAPI;
@@ -36,6 +38,12 @@ class SpotifyProfile extends Model
 
     public function getAccessProfile(){
         $spotifyWebAPI = new SpotifyWebAPI();
+
+        if($this->expirationToken >= Carbon::now()->timestamp){
+            $spotifySession = new SpotifySessionController();
+            $spotifySession->authSpotifySession();
+        }
+
         $spotifyWebAPI->setAccessToken($this->accessToken);
 
         return $spotifyWebAPI;

@@ -12,3 +12,4 @@
 */
 
 Route::get('/', 'Track\TrackController@recentTracks');
+Route::get('/rankingTracks', 'Track\TrackController@rankingTracks');
