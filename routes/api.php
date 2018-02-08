@@ -13,6 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/auth', 'SpotifySessionController@authSpotifySession');
-Route::get('/callback', 'SpotifySessionController@callback');
-Route::get('/refresh', 'SpotifySessionController@refreshToken');
+Route::get('/auth', 'Spotify\SpotifySessionController@authSpotifySession');
+Route::get('/callback', 'Spotify\SpotifySessionController@callback');
+Route::get('/refresh', 'Spotify\SpotifySessionController@refreshToken');

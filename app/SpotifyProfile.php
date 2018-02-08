@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use SpotifyWebAPI\SpotifyWebAPI;
 
 class SpotifyProfile extends Model
 {
@@ -31,5 +32,13 @@ class SpotifyProfile extends Model
         'refreshToken',
         'expirationToken'
     ];
+
+
+    public function getAccessProfile(){
+        $spotifyWebAPI = new SpotifyWebAPI();
+        $spotifyWebAPI->setAccessToken($this->accessToken);
+
+        return $spotifyWebAPI;
+    }
 
 }

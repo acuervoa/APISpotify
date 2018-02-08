@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Spotify;
 
+use App\Http\Controllers\Controller;
 use App\SpotifyProfile;
 use Carbon\Carbon;
 use SpotifyWebAPI\Session;
@@ -97,6 +98,5 @@ class SpotifySessionController extends Controller
         }
 
     }
-
 
 }
