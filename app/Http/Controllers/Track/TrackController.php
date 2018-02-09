@@ -13,6 +13,7 @@ class TrackController extends Controller {
     public function recentTracks() {
 
         $spotifyProfiles = SpotifyProfile::all();
+
         foreach ($spotifyProfiles as $a_spotifyProfiles) {
             $spotifyWebAPI = $a_spotifyProfiles->getAccessProfile();
             $array = $spotifyWebAPI->getMyRecentTracks();
