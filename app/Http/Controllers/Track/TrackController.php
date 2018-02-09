@@ -16,7 +16,7 @@ class TrackController extends Controller {
 
         foreach ($spotifyProfiles as $a_spotifyProfiles) {
             $spotifyWebAPI = $a_spotifyProfiles->getAccessProfile();
-            $array = $spotifyWebAPI->getMyRecentTracks();
+            $array = $spotifyWebAPI->getMyRecentTracks(['after' => Carbon::now()->subHour()->timestamp]);
             $this->saveRecentTracks($array);
         }
 
@@ -50,14 +50,16 @@ class TrackController extends Controller {
                     ->take(20)
                     ->get();
 
-
         $tracks_id = [];
         foreach ($tracks as $a_track) {
             $tracks_id[] = $a_track->track_id;
         }
 
-
         return Track::getTracksInfo($tracks_id);
 
+    }
+
+    public static function scheduleRecoveryTracks(){
+        $this->recentTracks();
     }
 }
