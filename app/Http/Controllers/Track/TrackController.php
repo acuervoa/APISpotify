@@ -60,6 +60,6 @@ class TrackController extends Controller {
     }
 
     public static function scheduleRecoveryTracks(){
-        
+
     }
 }
