@@ -34,7 +34,7 @@ class TrackController extends Controller {
                 'track_id' => $element->track->id,
                 'name' => $element->track->name,
                 'popularity' => $element->track->popularity,
-                'by' => $spotifyProfile->nick
+                'tracked_by' => $spotifyProfile->nick
             ];
             Track::firstOrCreate([
                 'played_at' => $played_at,
