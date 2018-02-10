@@ -47,6 +47,7 @@ class SpotifySessionController extends Controller
         $this->spotifyRefreshToken = $this->sessionSpotify->getRefreshToken();
         $this->spotifyTokenExpirationTime = $this->sessionSpotify->getTokenExpiration();
 
+
         $this->saveSpotifyProfile();
 
         return redirect('/');
@@ -54,7 +55,7 @@ class SpotifySessionController extends Controller
 
     public function loadSpotifyAPI() {
 
-        $this->spotifyWebAPI = new SpotifyWebAPI();
+
         $spotifyProfile = SpotifyProfile::where('accessToken', '=', $this->spotifyAccessToken)->get()->first();
 
         if(NULL !== $spotifyProfile && ((int)$spotifyProfile->expirationToken <= Carbon::now()->timestamp)) {
@@ -65,7 +66,8 @@ class SpotifySessionController extends Controller
 
     public function saveSpotifyProfile() {
 
-        $this->loadSpotifyAPI();
+        $this->spotifyWebAPI = new SpotifyWebAPI();
+
         $this->spotifyWebAPI->setAccessToken($this->spotifyAccessToken);
 
         $request = $this->spotifyWebAPI->me();
@@ -79,9 +81,10 @@ class SpotifySessionController extends Controller
             'href' => $request->href,
             'image_url' => empty($request->images)?:$request->images[0]->url,
             'accessToken' => $this->spotifyAccessToken,
-            'refreshToken' => $this->spotifyRefreshToken,
-            'expirationToken' => $this->spotifyTokenExpirationTime,
         ];
+
+        if(!empty($this->spotifyRefreshToken)) $fields['refreshToken'] = $this->spotifyRefreshToken;
+        if(!empty($this->spotifyRefreshToken)) $fields['expirationToken'] = $this->spotifyTokenExpirationTime;
 
         SpotifyProfile::updateOrCreate([ 'email' => $request->email ], $fields);
 
@@ -91,7 +94,6 @@ class SpotifySessionController extends Controller
 
         if($this->sessionSpotify->refreshAccessToken($refreshToken)){
             $this->spotifyAccessToken = $this->sessionSpotify->getAccessToken();
-            $this->spotifyRefreshToken = $this->sessionSpotify->getRefreshToken();
             $this->spotifyTokenExpirationTime = $this->sessionSpotify->getTokenExpiration();
 
             $this->saveSpotifyProfile();
@@ -108,6 +110,30 @@ class SpotifySessionController extends Controller
         $session->requestCredentialsToken();
 
         return $session->getAccessToken();
+    }
+
+    public function showRecentTracks(){
+        $spotifyWebAPI = new SpotifyWebAPI();
+        $spotifyProfiles = SpotifyProfile::all();
+
+        foreach($spotifyProfiles as $a_spotifyProfile) {
+           $spotifyWebAPI->setAccessToken($a_spotifyProfile->accessToken);
+
+           $list[$a_spotifyProfile->nick] = $spotifyWebAPI->getMyRecentTracks();
+        }
+
+        return view('tracks.users', compact ('list'));
+
+    }
+
+    public function refreshTokens() {
+        $spotifyProfiles = SpotifyProfile::all();
+
+        foreach($spotifyProfiles as $a_profile){
+                echo $a_profile->nick . ' -> tokenRefreshed';
+                $this->refreshToken($a_profile->refreshToken);
+        }
+
     }
 
 }
