@@ -17,13 +17,15 @@ class TrackController extends Controller {
         foreach ($spotifyProfiles as $a_spotifyProfiles) {
             $spotifyWebAPI = $a_spotifyProfiles->getAccessProfile();
             $array = $spotifyWebAPI->getMyRecentTracks(['after' => Carbon::now()->subHour()->timestamp]);
-            $this->saveRecentTracks($array);
+            $this->saveRecentTracks($array, $a_spotifyProfiles);
         }
 
         return redirect('/rankingTracks');
     }
 
-    public function saveRecentTracks($array) {
+    public function saveRecentTracks($array, $spotifyProfile) {
+
+       // dd($spotifyProfile);
 
         foreach ($array->items as $element) {
             $played_at = (new Carbon($element->played_at))->toDateTimeString();
@@ -32,6 +34,7 @@ class TrackController extends Controller {
                 'track_id' => $element->track->id,
                 'name' => $element->track->name,
                 'popularity' => $element->track->popularity,
+                'by' => $spotifyProfile->nick
             ];
             Track::firstOrCreate([
                 'played_at' => $played_at,

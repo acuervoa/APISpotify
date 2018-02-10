@@ -44,6 +44,8 @@ class SpotifyProfile extends Model
             $spotifySession = new SpotifySessionController();
             $spotifySession->refreshToken($this->refreshToken);
             $this->accessToken = $spotifySession->spotifyAccessToken;
+            $this->refreshToken = $spotifySession->spotifyRefreshToken;
+            $this->save();
         }
 
         $spotifyWebAPI->setAccessToken($this->accessToken);
