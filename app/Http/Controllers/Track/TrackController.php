@@ -14,7 +14,6 @@ class TrackController extends Controller
 
     public function recentTracks()
     {
-
         $list = $this->getRecentTracks();
         return redirect('/rankingTracks');
     }
