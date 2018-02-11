@@ -23,7 +23,21 @@
                 <td>{{ $a_trackInfo->name }}</td>
                 <td>{{ $a_trackInfo->album->name }}</td>
                 <td>{{ $a_trackInfo->artists[0]->name }}</td>
-                <td>{{ $a_trackInfo->reproductions }}</td>
+                <td>
+                    <div>{{ $a_trackInfo->reproductions }}</div>
+                    <div>
+                        @foreach($a_trackInfo->profiles as $profile)
+                            <div>{{ $profile->tracked_by }} play this {{ $profile->times }} times</div>
+                            <ul>
+                            @foreach($profile->played_at as $played_at)
+                                <li>{{ $played_at->played_at }}</li>
+                            @endforeach
+                            </ul>
+                        @endforeach
+                    </div>
+
+                </td>
+
             </tr>
         @endforeach
 

@@ -112,19 +112,7 @@ class SpotifySessionController extends Controller
         return $session->getAccessToken();
     }
 
-    public function showRecentTracks(){
-        $spotifyWebAPI = new SpotifyWebAPI();
-        $spotifyProfiles = SpotifyProfile::all();
 
-        foreach($spotifyProfiles as $a_spotifyProfile) {
-           $spotifyWebAPI->setAccessToken($a_spotifyProfile->accessToken);
-
-           $list[$a_spotifyProfile->nick] = $spotifyWebAPI->getMyRecentTracks();
-        }
-
-        return view('tracks.users', compact ('list'));
-
-    }
 
     public function refreshTokens() {
         $spotifyProfiles = SpotifyProfile::all();
