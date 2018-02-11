@@ -23,10 +23,17 @@ The code is under GNU GPLv3 License ()
 **TO-DO LIST**:
 
 [ ] Screen with the more listen - Artist / Album / Song / Genre
+
 [ ] Filter ranking with no same profile listen the same song
+
 [ ] Album / Artist Image
+
 [x] Cron with auto get Tracks
+
 [ ] Filter with office hours
+
 [ ] Generate recommended list with more listen
+
 [ ] Example sound
+
 [ ] Improve when the accessToken is expired
