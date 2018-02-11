@@ -16,7 +16,7 @@ class TrackController extends Controller {
 
         foreach ($spotifyProfiles as $a_spotifyProfiles) {
             $spotifyWebAPI = $a_spotifyProfiles->getAccessProfile();
-            $array = $spotifyWebAPI->getMyRecentTracks(['after' => Carbon::now()->subHour()->timestamp]);
+            $array = $spotifyWebAPI->getMyRecentTracks();
             $this->saveRecentTracks($array, $a_spotifyProfiles);
         }
 

@@ -42,10 +42,11 @@ class SpotifyProfile extends Model
 
         if((int)$this->expirationToken <= Carbon::now()->timestamp){
             $spotifySession = new SpotifySessionController();
-            $spotifySession->refreshToken($this->refreshToken);
-            $this->accessToken = $spotifySession->spotifyAccessToken;
-            $this->refreshToken = $spotifySession->spotifyRefreshToken;
-            $this->save();
+            if($spotifySession->refreshToken($this->refreshToken)) {
+                $this->accessToken = $spotifySession->spotifyAccessToken;
+                $this->expirationToken = $spotifySession->spotifyTokenExpirationTime;
+                $this->save();
+            }
         }
 
         $spotifyWebAPI->setAccessToken($this->accessToken);
