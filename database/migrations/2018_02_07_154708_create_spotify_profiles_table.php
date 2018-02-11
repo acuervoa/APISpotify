@@ -14,13 +14,13 @@ class CreateSpotifyProfilesTable extends Migration
     public function up()
     {
         Schema::create('spotify_profiles', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->unique();
             $table->string('nick');
             $table->string('email');
-            $table->string('display_name');
-            $table->string('country');
-            $table->string('href');
-            $table->string('image_url');
+            $table->string('display_name')->nullable();
+            $table->string('country')->nullable();
+            $table->string('href')->nullable();
+            $table->string('image_url')->nullable();
             $table->string('accessToken');
             $table->string('refreshToken');
             $table->string('expirationToken');
