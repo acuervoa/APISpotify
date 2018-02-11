@@ -19,6 +19,7 @@ class CreateTracksTable extends Migration
             $table->string('name');
             $table->integer('popularity');
             $table->dateTimeTz('played_at');
+            $table->string('tracked_by');
             $table->timestamps();
         });
     }
