@@ -1,1 +1,0 @@
-{"virtualbox":{"/home/vagrant/apispotify":{"type":null,"mount_options":["uid=1000","gid=1000"],"guestpath":"/home/vagrant/apispotify","hostpath":"/Users/andres.cuervo.adame/workplace/APISpotify","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/Users/andres.cuervo.adame/workplace/APISpotify","disabled":false,"__vagrantfile":true}}}
