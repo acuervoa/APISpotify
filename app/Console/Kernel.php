@@ -2,9 +2,11 @@
 
 namespace App\Console;
 
+use App\Http\Controllers\Spotify\SpotifySessionController;
 use App\Http\Controllers\Track\TrackController;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -28,7 +30,17 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         $schedule->call(function () {
-            TrackController::scheduleRecoveryTracks();
+
+            $spotifyController = new SpotifySessionController();
+            $spotifyController->refreshTokens();
+
+            Log::info('Tokens refreshed');
+
+            // Now add some handlers
+            $trackController = new TrackController();
+            $trackController->recentTracks();
+
+            Log::info('New tracks adquisition');
         })->everyThirtyMinutes();
     }
 
