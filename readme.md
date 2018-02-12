@@ -37,3 +37,5 @@ The code is under GNU GPLv3 License ()
 [ ] Example sound
 
 [ ] Improve when the accessToken is expired
+
+[ ] When a user revoke access, the application refresh crashed!

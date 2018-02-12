@@ -12,6 +12,7 @@
             <th scope="col">Album Name</th>
             <th scope="col">Artists</th>
             <th scope="col">Reproductions</th>
+            <th scope="col">Preview</th>
         </tr>
         </thead>
         <tbody>
@@ -36,6 +37,9 @@
                         @endforeach
                     </div>
 
+                </td>
+                <td>
+                    <audio src="{{ $a_trackInfo->preview_url }}"/>
                 </td>
 
             </tr>
