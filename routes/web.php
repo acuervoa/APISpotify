@@ -11,7 +11,8 @@
 |
 */
 
-Route::get('/', 'Track\TrackController@recentTracks');
+Route::get('/', 'Ranking\RankingController@showStatistics');
 Route::get('/rankingTracks', 'Track\TrackController@rankingTracks');
 Route::get('/recentTracks', 'Track\TrackController@showRecentTracks');
+
 Route::get('/refreshTokens', 'Spotify\SpotifySessionController@refreshTokens');
