@@ -54,4 +54,6 @@ class SpotifyProfile extends Model
         return $spotifyWebAPI;
     }
 
+
+
 }
