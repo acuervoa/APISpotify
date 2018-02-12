@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Spotify;
 use App\Http\Controllers\Controller;
 use App\SpotifyProfile;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use SpotifyWebAPI\Session;
 use SpotifyWebAPI\SpotifyWebAPI;
 use Ramsey\Uuid\Uuid;
@@ -92,11 +93,15 @@ class SpotifySessionController extends Controller
 
     public function refreshToken($refreshToken) {
 
-        if($this->sessionSpotify->refreshAccessToken($refreshToken)){
-            $this->spotifyAccessToken = $this->sessionSpotify->getAccessToken();
-            $this->spotifyTokenExpirationTime = $this->sessionSpotify->getTokenExpiration();
+        try {
 
-            $this->saveSpotifyProfile();
+            if ($this->sessionSpotify->refreshAccessToken($refreshToken)) {
+                $this->spotifyAccessToken = $this->sessionSpotify->getAccessToken();
+                $this->spotifyTokenExpirationTime = $this->sessionSpotify->getTokenExpiration();
+                $this->saveSpotifyProfile();
+            }
+        }catch(\Exception $e){
+            Log::info('The token - ' . $refreshToken . ' is revoked');
         }
 
     }
@@ -118,8 +123,7 @@ class SpotifySessionController extends Controller
         $spotifyProfiles = SpotifyProfile::all();
 
         foreach($spotifyProfiles as $a_profile){
-                echo $a_profile->nick . ' -> tokenRefreshed';
-                $this->refreshToken($a_profile->refreshToken);
+            $this->refreshToken($a_profile->refreshToken);
         }
 
     }
