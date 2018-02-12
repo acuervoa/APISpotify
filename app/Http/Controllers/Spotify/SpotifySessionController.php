@@ -93,8 +93,8 @@ class SpotifySessionController extends Controller
 
     public function refreshToken($refreshToken) {
 
+        $allOk = true;
         try {
-
             if ($this->sessionSpotify->refreshAccessToken($refreshToken)) {
                 $this->spotifyAccessToken = $this->sessionSpotify->getAccessToken();
                 $this->spotifyTokenExpirationTime = $this->sessionSpotify->getTokenExpiration();
@@ -102,8 +102,10 @@ class SpotifySessionController extends Controller
             }
         }catch(\Exception $e){
             Log::info('The token - ' . $refreshToken . ' is revoked');
+            $allOk = false;
         }
 
+        return $allOk;
     }
 
     public static function clientCredentials(){
@@ -117,15 +119,16 @@ class SpotifySessionController extends Controller
         return $session->getAccessToken();
     }
 
-
-
     public function refreshTokens() {
         $spotifyProfiles = SpotifyProfile::all();
 
         foreach($spotifyProfiles as $a_profile){
-            $this->refreshToken($a_profile->refreshToken);
+            if(!$this->refreshToken($a_profile->refreshToken)){
+                $a_profile->delete();
+            }
         }
 
+        return redirect('/recentTracks');
     }
 
 }
