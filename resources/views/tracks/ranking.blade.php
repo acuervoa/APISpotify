@@ -39,7 +39,10 @@
 
                 </td>
                 <td>
-                    <audio src="{{ $a_trackInfo->preview_url }}"/>
+                    <audio controls>
+                        <source src="{{ $a_trackInfo->preview_url }}">
+                        Tu navegador no soporta audio
+                    </audio>
                 </td>
 
             </tr>

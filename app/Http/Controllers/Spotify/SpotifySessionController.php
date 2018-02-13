@@ -124,7 +124,7 @@ class SpotifySessionController extends Controller
 
         foreach($spotifyProfiles as $a_profile){
             if(!$this->refreshToken($a_profile->refreshToken)){
-                $a_profile->delete();
+               // $a_profile->delete();
             }
         }
 
