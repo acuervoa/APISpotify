@@ -7,47 +7,46 @@ use App\SpotifyProfile;
 use App\Track;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use SpotifyWebAPI\SpotifyWebAPI;
 
-class TrackController extends Controller
-{
+class TrackController extends Controller {
 
-    public function recentTracks()
-    {
+    public function recentTracks() {
         $list = $this->getRecentTracks();
+
         return redirect('/rankingTracks');
     }
 
-    public function showRecentTracks()
-    {
+    public function showRecentTracks() {
 
         $list = $this->getRecentTracks();
+
         return view('tracks.users', compact('list'));
 
     }
 
-
-    public function getRecentTracks()
-    {
+    public function getRecentTracks() {
         $spotifyWebAPI = new SpotifyWebAPI();
         $spotifyProfiles = SpotifyProfile::all();
         $list = [];
-
-        foreach ($spotifyProfiles as $a_spotifyProfile) {
-            $spotifyWebAPI->setAccessToken($a_spotifyProfile->accessToken);
-            $recentTracks = $spotifyWebAPI->getMyRecentTracks();
-            $list[$a_spotifyProfile->nick] = $recentTracks;
-            $this->saveRecentTracks($recentTracks, $a_spotifyProfile);
+        try {
+            foreach ($spotifyProfiles as $a_spotifyProfile) {
+                $spotifyWebAPI->setAccessToken($a_spotifyProfile->accessToken);
+                $recentTracks = $spotifyWebAPI->getMyRecentTracks();
+                $list[$a_spotifyProfile->nick] = $recentTracks;
+                $this->saveRecentTracks($recentTracks, $a_spotifyProfile);
+            }
+        } catch (\Exception $e) {
+            Log::info('I can\'t recovery data from ' . $a_spotifyProfile->nick . ' -- ' . $e->getMessage());
         }
 
         return $list;
     }
 
-    public function saveRecentTracks($array, $spotifyProfile)
-    {
+    public function saveRecentTracks($array, $spotifyProfile) {
 
         // dd($spotifyProfile);
-
         foreach ($array->items as $element) {
             $played_at = (new Carbon($element->played_at))->toDateTimeString();
             $response = [
@@ -55,7 +54,7 @@ class TrackController extends Controller
                 'track_id' => $element->track->id,
                 'name' => $element->track->name,
                 'popularity' => $element->track->popularity,
-                'tracked_by' => $spotifyProfile->nick
+                'tracked_by' => $spotifyProfile->nick,
             ];
             Track::firstOrCreate([
                 'played_at' => $played_at,
@@ -65,16 +64,14 @@ class TrackController extends Controller
 
     }
 
-    public function rankingTracks()
-    {
+    public function rankingTracks() {
 
         $tracks = DB::table('tracks')
-            ->select('track_id', DB::raw('count(*) as total'))
-            ->groupBy('track_id')
-            ->orderBy('total', 'desc')
-            ->take(20)
-            ->get();
-
+                    ->select('track_id', DB::raw('count(*) as total'))
+                    ->groupBy('track_id')
+                    ->orderBy('total', 'desc')
+                    ->take(20)
+                    ->get();
         $tracks_id = [];
         foreach ($tracks as $a_track) {
             $tracks_id[] = $a_track->track_id;
@@ -84,10 +81,7 @@ class TrackController extends Controller
 
     }
 
-
-
-    public static function scheduleRecoveryTracks()
-    {
+    public static function scheduleRecoveryTracks() {
 
     }
 
