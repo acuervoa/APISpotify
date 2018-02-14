@@ -2,12 +2,13 @@
 
 @section('body')
 
-
+    <span class="topgroup">Top 20</span>
     <table class="table">
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Id</th>
+            {{--<th scope="col">Id</th>--}}
+            <th scope="col">Album Image</th>
             <th scope="col">Song</th>
             <th scope="col">Album Name</th>
             <th scope="col">Artists</th>
@@ -18,22 +19,31 @@
         <tbody>
 
         @foreach($tracksInfo->tracks as $indexKey => $a_trackInfo)
+            {{--{{ dd($a_trackInfo  ) }}--}}
             <tr>
-                <th scope="row">{{ $indexKey }}</th>
-                <td>{{ $a_trackInfo->id }}</td>
-                <td>{{ $a_trackInfo->name }}</td>
+                <td scope="row">{{ $indexKey }}</td>
+
+                {{--<td>{{ $a_trackInfo->id }}</td>--}}
+                <td>
+                    @if(($indexKey === 0 ) && $a_trackInfo->album->images[1])
+                        <img src="{{ $a_trackInfo->album->images[1]->url }}" class="rounded media-middle" alt="{{ $a_trackInfo->album->name }}">
+                    @elseif($a_trackInfo->album->images[2] && $indexKey !== 0)
+                        <img src="{{ $a_trackInfo->album->images[2]->url }}" class="rounded media-middle" alt="{{ $a_trackInfo->album->name }}">
+                    @endif
+                </td>
+                <td ><span>{{ $a_trackInfo->name }}</span></td>
                 <td>{{ $a_trackInfo->album->name }}</td>
                 <td>{{ $a_trackInfo->artists[0]->name }}</td>
                 <td>
-                    <div>{{ $a_trackInfo->reproductions }}</div>
+                    <div class="">{{ $a_trackInfo->reproductions }}</div>
                     <div>
                         @foreach($a_trackInfo->profiles as $profile)
                             <div>{{ $profile->tracked_by }} play this {{ $profile->times }} times</div>
-                            <ul>
-                            @foreach($profile->played_at as $played_at)
-                                <li>{{ $played_at->played_at }}</li>
-                            @endforeach
-                            </ul>
+                            {{--<ul>--}}
+                            {{--@foreach($profile->played_at as $played_at)--}}
+                                {{--<li>{{ $played_at->played_at }}</li>--}}
+                            {{--@endforeach--}}
+                            {{--</ul>--}}
                         @endforeach
                     </div>
 

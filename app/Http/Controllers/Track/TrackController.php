@@ -44,6 +44,7 @@ class TrackController extends Controller {
         return $list;
     }
 
+
     public function saveRecentTracks($array, $spotifyProfile) {
 
         // dd($spotifyProfile);
@@ -66,6 +67,11 @@ class TrackController extends Controller {
 
     public function rankingTracks() {
 
+        return Track::getTracksInfo(self::getTracksRanking());
+
+    }
+
+    public static function getTracksRanking(){
         $tracks = DB::table('tracks')
                     ->select('track_id', DB::raw('count(*) as total'))
                     ->groupBy('track_id')
@@ -77,8 +83,7 @@ class TrackController extends Controller {
             $tracks_id[] = $a_track->track_id;
         }
 
-        return Track::getTracksInfo($tracks_id);
-
+        return $tracks_id;
     }
 
     public static function scheduleRecoveryTracks() {

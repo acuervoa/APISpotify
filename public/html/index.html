@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SpotifyApp</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<div class="fullview playerview">
+    <div class="topgroup">
+        <div class="titlebox">
+            <a href="#">SpotiPitoiPto</a>
+        </div>
+        <div class="userbox">
+            Signed in as <b><a href="#">Username</a></b>
+            <a href="#">Log out</a>
+        </div>
+    </div>
+    <div class="midgroup">
+
+        <div class="mainview">
+            <div>
+                <header>
+                    <div class="cover">
+                        <img src="http://fakeimg.pl/320x320"
+                             class="img-fluid rounded"
+                             alt="">
+                    </div>
+
+
+                    <h4>Album</h4>
+                    <h1>Name</h1>
+
+                    <div class="buttons">
+                        <a href="#" class="button green">PLAY ALL</a>
+                    </div>
+                </header>
+
+                <hr/>
+                <p>
+                    By <a href="#/artists/">data.artists[0].name</a>
+                    &middot;
+                    release_year
+                    &middot;
+                    data.tracks.total Songs
+                    &middot;
+                    Total total_duration | displaytime
+                </p>
+                <hr/>
+                <br/>
+
+                <div class="discs">
+                    <div>
+                        <p>
+                            CD d.disc_number
+                        </p>
+                        <table class="tracks">
+                            <thead>
+                            <th>#</th>
+                            <th></th>
+                            <th>TRACK</th>
+                            <th>TIME</th>
+                            <th>POPULARITY</th>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>t.track_number</td>
+                                <td>
+                                    <button> t.inYourMusic ? '-' : '+'</button>
+                                </td>
+                                <td>
+                                    <a href="#">t.name</a>
+                                </td>
+                                <td>t.duration_ms | displaytime</td>
+                                <td>
+                                    <div class="pop-meter">
+                                        <div class="pop-meter-background"></div>
+                                        <div class="pop-meter-overlay" style="width:50%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br/>
+
+                <hr/>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <!--<div class="fullview loginview">-->
+        <!--<div>-->
+            <!--<div class="centered">-->
+                <!--<div class="inner">-->
+                    <!--<h1>SpotyPitoPito</h1>-->
+                    <!--<p>-->
+                        <!--This demo explores the possibilities with the Web API. To view this demo you need to sign in-->
+                        <!--with-->
+                        <!--your spotify account.-->
+                    <!--</p>-->
+                    <!--<a href="#" class="button big green">login</a>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+        integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
+</body>
+</html>

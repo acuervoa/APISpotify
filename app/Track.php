@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Http\Controllers\Spotify\SpotifySessionController;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use SpotifyWebAPI\SpotifyWebAPI;
@@ -19,6 +20,12 @@ class Track extends Model
 
     public static function getTracksInfo($track_ids) {
 
+        $tracksInfo = self::getTracksCompleteData($track_ids);
+        return view('tracks.ranking', compact('tracksInfo'));
+
+    }
+
+    public static function getTracksCompleteData($track_ids){
         $clientToken = SpotifySessionController::clientCredentials();
 
         $spotifyWebAPI = new SpotifyWebAPI();
@@ -32,11 +39,9 @@ class Track extends Model
 
             $profiles = self::getProfileReproductions($reproductions);
             $a_track->profiles = $profiles;
-
-
         }
-        return view('tracks.ranking', compact('tracksInfo'));
 
+        return $tracksInfo;
     }
 
     /**
@@ -88,5 +93,7 @@ class Track extends Model
         return $played_at;
     }
 
-
+    public function getPlayedAt(){
+        return Carbon::createFromFormat('m/d/Y', $this->played_at);
+    }
 }

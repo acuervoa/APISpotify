@@ -19,15 +19,20 @@
         <tbody>
 
         @foreach($recentTracks->items as $indexKey => $recentTrack)
-{{--            {{ dd($recentTrack) }}--}}
+{{--{{dd($recentTrack)}}--}}
             <tr>
                 <th scope="row">{{ $indexKey }}</th>
                 <td>{{ $recentTrack->track->id }}</td>
                 <td>{{ $recentTrack->track->name }}</td>
                 <td>{{ $recentTrack->track->album->name }}</td>
                 <td>{{ $recentTrack->track->artists[0]->name }}</td>
-                <td>{{ $recentTrack->played_at }}</td>
+                <td>{{ \Carbon\Carbon::parse($recentTrack->played_at)->format('d F Y') }}</td>
                 <td>
+                    @if($recentTrack->track->album->images[2])
+                        <img src="{{ $recentTrack->track->album->images[2]->url }}"
+                             class="rounded-right"
+                             alt="{{ $recentTrack->track->album->name }}">
+                    @endif
                     <audio controls>
                         <source src="{{ $recentTrack->track->preview_url }}">
                         Tu navegador no soporta audio
