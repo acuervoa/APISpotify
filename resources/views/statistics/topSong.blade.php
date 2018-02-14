@@ -6,6 +6,7 @@
     </div>
 
     <div class="midgroup">
+
         <div class="mainview">
             <header>
                 <div class="cover">
@@ -24,19 +25,26 @@
                             Duration {{ gmdate('i:s', $tracks[0]->duration_ms / 1000) }}
                     </div>
 
-                        <audio id="music" preload="true">
+                        <audio controls>
                                 <source src="{{ $tracks[0]->preview_url }}">
                         </audio>
-                        <div id="audioplayer">
-                            <button id="pButton" class="play"></button>
-                            <div id="timeline">
-                                <div id="playhead"></div>
-                            </div>
-                        </div>
+
 
 
                 </div>
 
+                <table class="tracks">
+
+                    <thead>
+                    <th>#</th>
+                    <th>Song</th>
+                    <th>Artist</th>
+                    <th>Album</th>
+                    <th>Times</th>
+                    <th>Preview</th>
+
+                    </thead>
+                </table>
 
             </header>
 

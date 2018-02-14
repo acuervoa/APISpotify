@@ -19,7 +19,7 @@
         <tbody>
 
         @foreach($recentTracks->items as $indexKey => $recentTrack)
-{{--{{dd($recentTrack)}}--}}
+{{--{{dd($recentTrack)}}v--}}
             <tr>
                 <th scope="row">{{ $indexKey }}</th>
                 <td>{{ $recentTrack->track->id }}</td>

@@ -192,8 +192,6 @@ header {
 
 header div.cover {
   float:left;
-  left: 0px;
-  top: 0px;
   width: 200px;
   height: 200px;
   background-color: #222326;
@@ -202,8 +200,9 @@ header div.cover {
 }
 header div.coverInfo {
   float:left;
-  margin:20px 20px 20px 20px;
+  margin:5px 20px 20px 20px;
   height: 180px;
+  max-width:500px;
 }
 header .playlist-cover {
   position: relative;
@@ -226,13 +225,14 @@ header div.byAuthor {
 }
 
 header h1 {
-  margin-top: -5px;
+  margin-top: 5px;
 }
 
 header h1.song {
   color: #ffffff;
 }
 table.tracks {
+  float:left;
   width: 100%;
   margin: 0 0px;
   border-collapse: collapse;
@@ -327,43 +327,3 @@ responsive-cover {
 }
 
 
-
-
-#audioplayer{
-  width: 480px;
-  height: 60px;
-  margin: 50px auto auto auto;
-  border: solid;
-}
-
-#pButton{
-  height:60px;
-  width: 60px;
-  border: none;
-  background-size: 50% 50%;
-  background-repeat: no-repeat;
-  background-position: center;
-  float:left;
-  outline:none;
-}
-
-.play{background: url(/img/play.png) ;}
-.pause{background: url(/img/pause.png) ;}
-
-#timeline{
-  width: 400px;
-  height: 20px;
-  margin-top: 20px;
-  float: left;
-  border-radius: 15px;
-  background: rgba(0,0,0,.3);
-
-}
-#playhead{
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  margin-top: 1px;
-  background: rgba(0, 0, 0,1);
-
-}
