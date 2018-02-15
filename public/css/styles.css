@@ -7,7 +7,7 @@ body {
   font-family: 'Open Sans', sans-serif;
   font-size: 8pt;
   font-weight: 300;
-  overflow: hidden;
+ /* overflow: hidden;*/
 }
 
 div.fullview {
@@ -68,6 +68,13 @@ hr {
   background-color: transparent;
   margin: 0 0 10px 0;
   clear: both;
+}
+
+h1.top1 {
+  float:left;
+  font-weight: 700;
+  font-size: 25pt;
+  color: greenyellow;
 }
 
 .topgroup {

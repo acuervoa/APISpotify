@@ -2,6 +2,8 @@
 
 @section('body')
     <div class="fullview">
-       @yield('container')
+        @include('statistics.topSong')
+        <hr/>
+        @include('statistics.topAlbum')
     </div>
 @endsection

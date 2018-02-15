@@ -15,7 +15,6 @@ class RankingController extends Controller
 
         $tracksInfo = Track::getTracksCompleteData($track_id);
 
-
-        return view('statistics.topSong', ['tracks' => $tracksInfo->tracks]);
+        return view('statistics.layout', ['tracks' => $tracksInfo->tracks]);
     }
 }

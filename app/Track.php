@@ -13,6 +13,7 @@ class Track extends Model
     protected $fillable=[
         'played_at',
         'track_id',
+        'album_id',
         'name',
         'popularity',
         'tracked_by',

@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'Track\TrackController@recentTracks');
+Route::get('/saveAlbums', 'Track\TrackController@saveAlbums');
 Route::get('/rankingTracks', 'Track\TrackController@rankingTracks');
 Route::get('/recentTracks', 'Track\TrackController@showRecentTracks');
 

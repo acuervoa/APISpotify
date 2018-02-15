@@ -1,54 +1,68 @@
-@extends('statistics.layout')
+<div class="topgroup">
+    <h2><span class="titlebox">SpotyTop</span></h2>
+</div>
 
-@section('container')
-    <div class="topgroup">
-        <h2><span class="titlebox">SpotyTop</span></h2>
-    </div>
+<div class="midgroup">
 
-    <div class="midgroup">
+    <div class="mainview">
+        <header>
+            <h1 class="top1">#1</h1>
+            <div class="cover">
+                <img src="{{ $tracks[0]->album->images[1]->url }}"
+                     class="img-fluid rounded"
+                     alt="{{ $tracks[0]->album->name }}">
+            </div>
 
-        <div class="mainview">
-            <header>
-                <div class="cover">
-                    <img src="{{ $tracks[0]->album->images[1]->url }}"
-                         class="img-fluid rounded"
-                         alt="{{ $tracks[0]->album->name }}">
+            <div class="coverInfo">
+                <h4>{{ $tracks[0]->album->name }}</h4>
+                <h1 class="song">{{ $tracks[0]->name }}</h1>
+                <h2>{{ $tracks[0]->reproductions }} times reproduced</h2>
+                <div class="byAuthor">
+                    By <a href="#">{{ $tracks[0]->artists[0]->name }}</a>
+                    &middot;
+                    Duration {{ gmdate('i:s', $tracks[0]->duration_ms / 1000) }}
                 </div>
 
-                <div class="coverInfo">
-                    <h4>{{ $tracks[0]->album->name }}</h4>
-                    <h1 class="song">{{ $tracks[0]->name }}</h1>
-                    <h2>{{ $tracks[0]->reproductions }} times reproduced</h2>
-                    <div class="byAuthor">
-                            By <a href="#">{{ $tracks[0]->artists[0]->name }}</a>
-                            &middot;
-                            Duration {{ gmdate('i:s', $tracks[0]->duration_ms / 1000) }}
-                    </div>
-
-                        <audio controls>
-                                <source src="{{ $tracks[0]->preview_url }}">
-                        </audio>
+                <audio controls>
+                    <source src="{{ $tracks[0]->preview_url }}">
+                </audio>
 
 
+            </div>
 
-                </div>
+            <table class="tracks">
 
-                <table class="tracks">
+                <thead>
+                <th>#</th>
+                <th>SONG</th>
+                <th>ARTIST</th>
+                <th>REPRODUCTIONS</th>
+                <th></th>
 
-                    <thead>
-                    <th>#</th>
-                    <th>Song</th>
-                    <th>Artist</th>
-                    <th>Album</th>
-                    <th>Times</th>
-                    <th>Preview</th>
+                </thead>
 
-                    </thead>
-                </table>
+                <tbody>
+                @foreach($tracks as $indexKey => $a_track)
+                    @if($indexKey > 0 && $indexKey < 5)
+                        <tr>
+                            <td>{{ $indexKey + 1 }}</td>
+                            <td> {{ $a_track->name }}</td>
+                            <td>{{ $a_track->artists[0]->name  }}</td>
+                            <td>{{ $a_track->reproductions }} Times</td>
+                            <td>
+                                <audio controls>
+                                    <source src="{{ $a_track->preview_url }}">
+                                </audio>
+                            </td>
+                        </tr>
+                    @endif
 
-            </header>
+                @endforeach
+                </tbody>
+            </table>
+
+        </header>
 
 
-        </div>
     </div>
-@endsection
+</div>
