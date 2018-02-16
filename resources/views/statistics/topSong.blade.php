@@ -44,12 +44,15 @@
 
                 <tbody>
                 @foreach($tracks as $indexKey => $a_track)
-                    @if($indexKey > 0 && $indexKey < 5)
+                    @if($indexKey > 0 && $indexKey < 50)
                         <tr>
                             <td>{{ $indexKey + 1 }}</td>
-                            <td> {{ $a_track->name }}</td>
+                            <td>
+                                <img class="rounded" src="{{ $a_track->album->images[2]->url }}">
+                                {{ $a_track->name }}
+                            </td>
                             <td>{{ $a_track->artists[0]->name  }}</td>
-                            <td>{{$a_track->ponderatedReproductions }} ponderated reproductions &middot; Reproduced {{ $a_track->reproductions }} Times</td>
+                            <td>{{ $a_track->ponderatedReproductions }} ponderated reproductions &middot; Reproduced {{ $a_track->reproductions }} Times</td>
                             <td>
                                 <audio controls>
                                     <source src="{{ $a_track->preview_url }}">

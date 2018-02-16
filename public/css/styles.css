@@ -74,7 +74,8 @@ h1.top1 {
   float:left;
   font-weight: 700;
   font-size: 25pt;
-  color: greenyellow;
+  margin-right: 25px;
+  color: white;
 }
 
 .topgroup {
@@ -86,7 +87,7 @@ h1.top1 {
   background-color: #222326;
   border-bottom: 1px solid #393b40;
   box-sizing: border-box;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
 .topgroup .titlebox {
@@ -104,7 +105,7 @@ h1.top1 {
   top: 40px;
   bottom: 40px;
   width: 100%;
-  overflow: hidden;
+ /* overflow: hidden; */
 }
 
 .bottomgroup {
@@ -116,7 +117,7 @@ h1.top1 {
   bottom: 0px;
   background-color: #222326;
   border-top: 1px solid #393b40;
-  overflow: hidden;
+ /* overflow: hidden;*/
 }
 
 div.centered {
@@ -207,7 +208,7 @@ header div.cover {
 }
 header div.coverInfo {
   float:left;
-  margin:5px 20px 20px 20px;
+  margin:5px 20px 60px 20px;
   height: 180px;
   max-width:77%;
 }
