@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Ranking;
 use App\Artist;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Track\TrackController;
+use App\Ranking;
 use App\Track;
 
 class RankingController extends Controller {
 
     public function showStatistics() {
 
-        $track_id = TrackController::getTracksRanking();
+        $track_id = TrackController::getTracksRanking(Ranking::SHORT);
         $tracksInfo = Track::getTracksCompleteData($track_id);
 
         return view('statistics.layout', [

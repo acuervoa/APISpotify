@@ -7,12 +7,6 @@ body {
   font-family: 'Open Sans', sans-serif;
   font-size: 8pt;
   font-weight: 300;
- /* overflow: hidden;*/
-}
-
-div.fullview {
-  width: 100%;
-  height: 100%;
 }
 
 h1 {
@@ -43,7 +37,7 @@ h4 {
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
   padding: 0;
-  margin: 0 0 0 0;
+  margin: 0 0 10px 0;
 }
 
 p {
@@ -70,63 +64,16 @@ hr {
   clear: both;
 }
 
-h1.top1 {
-  float:left;
-  font-weight: 700;
-  font-size: 25pt;
-  margin-right: 25px;
-  color: white;
-}
-
-.topgroup {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  height: 60px;
-  width: 100%;
-  background-color: #222326;
-  border-bottom: 1px solid #393b40;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-.topgroup .titlebox {
-  position: absolute;
-  left: 150px;
-  right: 150px;
-  top: 0px;
-  text-align: center;
-  padding: 5px;
-}
-
-.midgroup {
-  position: absolute;
-  left: 0px;
-  top: 60px;
-  bottom: 40px;
-  width: 100%;
- /* overflow: hidden; */
-}
-
-.bottomgroup {
-  position: absolute;
-  box-sizing: border-box;
-  left: 0px;
-  width: 100%;
-  height: 40px;
-  bottom: 0px;
-  background-color: #222326;
-  border-top: 1px solid #393b40;
- /* overflow: hidden;*/
+.titlebox {
+    background-color: #222326;
+    border-bottom: 1px solid #393b40;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 5px;
 }
 
 div.centered {
   width: 100%;
-}
-
-div.centered div.inner {
-  margin: 100px auto;
-  width: 400px;
 }
 
 a.button {
@@ -193,145 +140,154 @@ a.button.button-add {
   box-shadow: 4px 0 0 0 #88898c,8px 0 0 0 #88898c,12px 0 0 0 #88898c,16px 0 0 0 #88898c,20px 0 0 0 #88898c,24px 0 0 0 #88898c,28px 0 0 0 #88898c,32px 0 0 0 #88898c;
 }
 
+h1.top1 {
+    float:left;
+    font-weight: 700;
+    font-size: 25pt;
+    color: white;
+    margin-left:10px;
+}
+
 header {
   margin: 20px 20px 20px 20px;
   height: 220px;
 }
 
-header div.cover {
-  float:left;
-  width: 200px;
-  height: 200px;
-  background-color: #222326;
-  background-size: cover;
-  overflow: hidden;
-}
-header div.coverInfo {
-  float:left;
-  margin:5px 20px 60px 20px;
-  height: 180px;
-  max-width:77%;
-}
-header .playlist-cover {
-  position: relative;
-}
+/*header div.cover {*/
+  /*float:left;*/
+  /*width: 200px;*/
+  /*height: 200px;*/
+  /*background-color: #222326;*/
+  /*background-size: cover;*/
+  /*overflow: hidden;*/
+/*}*/
 
-header div.buttons {
-  float:left;
-  bottom: 20px;
-}
+/*header div.coverInfo {*/
+  /*float:left;*/
+  /*margin:5px 20px 60px 20px;*/
+  /*height: 180px;*/
+  /*width:100%;*/
+/*}*/
+/*header .playlist-cover {*/
+  /*position: relative;*/
+/*}*/
 
-header div.byAuthor {
+/*header div.buttons {*/
+  /*float:left;*/
+  /*bottom: 20px;*/
+/*}*/
 
-  float:left;
-  height:30px;
-  width:100%;
-  padding-top:6px;
-  border-top: 1px solid #222326;
-  border-bottom: 1px solid #222326;
-  background-color: transparent;
-}
+/*header div.byAuthor {*/
 
-header h1 {
-  margin-top: 5px;
-}
+  /*float:left;*/
+  /*height:30px;*/
+  /*width:100%;*/
+  /*padding-top:6px;*/
+  /*border-top: 1px solid #222326;*/
+  /*border-bottom: 1px solid #222326;*/
+  /*background-color: transparent;*/
+/*}*/
 
-header h1.song {
-  color: #ffffff;
-}
-table.tracks {
-  float:left;
-  width: 100%;
-  margin: 0 0px;
-  border-collapse: collapse;
-}
+/*header h1 {*/
+  /*margin-top: 5px;*/
+/*}*/
 
-table tr {
-}
+/*header h1.song {*/
+  /*color: #ffffff;*/
+/*}*/
+/*table.tracks {*/
+  /*float:left;*/
+  /*width: 100%;*/
+  /*margin: 0 0px;*/
+  /*border-collapse: collapse;*/
+/*}*/
 
-table tr:hover {
-  background-color: #222326;
-}
+/*table tr {*/
+/*}*/
 
-table tr td {
-  font-size: 9pt;
-  border-top: 1px solid #393b40;
-  padding: 4px 10px 4px 0;
-}
+/*table tr:hover {*/
+  /*background-color: #222326;*/
+/*}*/
 
-table tr td i {
-  font-style: normal;
-  color: #aaa;
-}
+/*table tr td {*/
+  /*font-size: 9pt;*/
+  /*border-top: 1px solid #393b40;*/
+  /*padding: 4px 10px 4px 0;*/
+/*}*/
 
-table.tracks tr td i > a {
-  color: inherit;
-}
+/*table tr td i {*/
+  /*font-style: normal;*/
+  /*color: #aaa;*/
+/*}*/
 
-table tr td.nowrap {
-  white-space: nowrap;
-}
+/*table.tracks tr td i > a {*/
+  /*color: inherit;*/
+/*}*/
 
-table tr th {
-  text-align: left;
-  font-weight: 300;
-  font-size: 9pt;
-  color: #fff;
-  padding: 4px 10px 4px 0;
-}
+/*table tr td.nowrap {*/
+  /*white-space: nowrap;*/
+/*}*/
 
-ul.albums, ul.playlists, ul.genres {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  clear: both;
-}
+/*table tr th {*/
+  /*text-align: left;*/
+  /*font-weight: 300;*/
+  /*font-size: 9pt;*/
+  /*color: #fff;*/
+  /*padding: 4px 10px 4px 0;*/
+/*}*/
 
-ul.albums li, ul.playlists li, ul.genres li {
-  float: left;
-  position: relative;
-  width: 160px;
-  height: 220px;
-  margin: 0 10px 10px 0;
-  background-color: #393b40;
-}
+/*ul.albums, ul.playlists, ul.genres {*/
+  /*margin: 0;*/
+  /*padding: 0;*/
+  /*border: 0;*/
+  /*clear: both;*/
+/*}*/
 
-ul.albums li responsive-cover,  ul.playlists li responsive-cover, ul.genres li img {
-  width: 160px;
-  height: 160px;
-}
+/*ul.albums li, ul.playlists li, ul.genres li {*/
+  /*float: left;*/
+  /*position: relative;*/
+  /*width: 160px;*/
+  /*height: 220px;*/
+  /*margin: 0 10px 10px 0;*/
+  /*background-color: #393b40;*/
+/*}*/
 
-ul.albums li p, ul.playlists li p, ul.genres li p {
-  padding: 10px;
-}
+/*ul.albums li responsive-cover,  ul.playlists li responsive-cover, ul.genres li img {*/
+  /*width: 160px;*/
+  /*height: 160px;*/
+/*}*/
 
-responsive-cover {
-  display:block;
-  height:100%;
-  width:100%;
-  background-size: cover;
-}
-.position-fixed {
-  position: fixed;
-}
+/*ul.albums li p, ul.playlists li p, ul.genres li p {*/
+  /*padding: 10px;*/
+/*}*/
 
-::-webkit-scrollbar-track {
-  background-color: #1c1c1f;
-}
-::-webkit-scrollbar {
-  width: 10px;
-  background-color: #1c1c1f;
-}
-::-webkit-scrollbar:horizontal {
-  height: 10px;
-}
-::-webkit-scrollbar-thumb {
-  border: 1px solid #1c1c1f;
-  border-radius: 10px;
-  background-color: #323438;
-}
-::-webkit-scrollbar-corner {
-  background-color: #1c1c1f;
-}
+/*responsive-cover {*/
+  /*display:block;*/
+  /*height:100%;*/
+  /*width:100%;*/
+  /*background-size: cover;*/
+/*}*/
+/*.position-fixed {*/
+  /*position: fixed;*/
+/*}*/
+
+/*::-webkit-scrollbar-track {*/
+  /*background-color: #1c1c1f;*/
+/*}*/
+/*::-webkit-scrollbar {*/
+  /*width: 10px;*/
+  /*background-color: #1c1c1f;*/
+/*}*/
+/*::-webkit-scrollbar:horizontal {*/
+  /*height: 10px;*/
+/*}*/
+/*::-webkit-scrollbar-thumb {*/
+  /*border: 1px solid #1c1c1f;*/
+  /*border-radius: 10px;*/
+  /*background-color: #323438;*/
+/*}*/
+/*::-webkit-scrollbar-corner {*/
+  /*background-color: #1c1c1f;*/
+/*}*/
 
 

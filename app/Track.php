@@ -51,7 +51,7 @@ class Track extends Model
 
         usort($tracksInfo->tracks, function($a, $b){
             if($a->ponderatedReproductions === $b->ponderatedReproductions) {
-                return ($a->reproductions >= $b->reproductions) ? -1 : 1;
+                return ($a->reproductions <= $b->reproductions) ? -1 : 1;
             }
             return ($a->ponderatedReproductions > $b->ponderatedReproductions) ? -1 : 1;
         });

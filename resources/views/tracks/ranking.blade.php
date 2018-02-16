@@ -2,7 +2,9 @@
 
 @section('body')
 
-    <span class="topgroup">Top 20</span>
+    <div class="topgroup">
+     <h1 class="titlebox">Top 20</h1>
+    </div>
     <table class="table">
         <thead>
         <tr>
@@ -35,7 +37,7 @@
                 <td>{{ $a_trackInfo->album->name }}</td>
                 <td>{{ $a_trackInfo->artists[0]->name }}</td>
                 <td>
-                    <div>{{$a_trackInfo->ponderatedReproductions }} ponderated reproductions (log(n) + 1)</div>
+                    <div>{{$a_trackInfo->ponderatedReproductions }} ponderated reproductions (sqrt n)</div>
                     <div class="">{{ $a_trackInfo->reproductions }} reproductions</div>
                     <div>
                         @foreach($a_trackInfo->profiles as $profile)

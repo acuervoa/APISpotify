@@ -6,6 +6,7 @@ use App\Artist;
 use App\Genre;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Spotify\SpotifySessionController;
+use App\Ranking;
 use App\SpotifyProfile;
 use App\Track;
 use Carbon\Carbon;
@@ -79,17 +80,17 @@ class TrackController extends Controller
     public function rankingTracks()
     {
 
-        return Track::getTracksInfo(self::getTracksRanking());
+        return Track::getTracksInfo(self::getTracksRanking(Ranking::LARGE));
 
     }
 
-    public static function getTracksRanking()
+    public static function getTracksRanking($limit)
     {
         $tracks = DB::table('tracks')
             ->select('track_id', DB::raw('count(*) as total'))
             ->groupBy('track_id')
             ->orderBy('total', 'desc')
-            ->take(50)
+            ->take($limit)
             ->get();
 
 
