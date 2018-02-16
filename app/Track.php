@@ -40,7 +40,19 @@ class Track extends Model
 
             $profiles = self::getProfileReproductions($reproductions);
             $a_track->profiles = $profiles;
+
+            $ponderatedReproductions = 1;
+            foreach ($profiles as $a_profile){
+                $ponderatedReproductions += $a_profile->ponderatedReproductions;
+            }
+
+            $a_track->ponderatedReproductions = (int)$ponderatedReproductions;
         }
+
+        usort($tracksInfo->tracks, function($a, $b){
+            if($a->ponderatedReproductions === $b->ponderatedReproductions) return 0;
+            return ($a->ponderatedReproductions > $b->ponderatedReproductions) ? -1 : 1;
+        });
 
         return $tracksInfo;
     }
@@ -72,12 +84,11 @@ class Track extends Model
             ->groupBy('tracked_by')
             ->get();
 
-
         foreach($profiles as $a_profile){
            $a_profile->played_at = self::getWhenPlayedAtTracked($reproductions->track_id, $a_profile->tracked_by);
+           $a_profile->realReproductions = $a_profile->times;
+           $a_profile->ponderatedReproductions = round(log($a_profile->times)+1);
         }
-
-
 
         return $profiles;
     }

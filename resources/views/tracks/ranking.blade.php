@@ -35,7 +35,8 @@
                 <td>{{ $a_trackInfo->album->name }}</td>
                 <td>{{ $a_trackInfo->artists[0]->name }}</td>
                 <td>
-                    <div class="">{{ $a_trackInfo->reproductions }}</div>
+                    <div>{{$a_trackInfo->ponderatedReproductions }} ponderated reproductions (log(n) + 1)</div>
+                    <div class="">{{ $a_trackInfo->reproductions }} reproductions</div>
                     <div>
                         @foreach($a_trackInfo->profiles as $profile)
                             <div>{{ $profile->tracked_by }} play this {{ $profile->times }} times</div>

@@ -16,7 +16,8 @@
             <div class="coverInfo">
                 <h4>{{ $tracks[0]->album->name }}</h4>
                 <h1 class="song">{{ $tracks[0]->name }}</h1>
-                <h2>{{ $tracks[0]->reproductions }} times reproduced</h2>
+                <h2>{{ $tracks[0]->ponderatedReproductions }} ponderated times reproduced</h2>
+                <p>{{ $tracks[0]->reproductions }} times reproduced</p>
                 <div class="byAuthor">
                     By <a href="#">{{ $tracks[0]->artists[0]->name }}</a>
                     &middot;
@@ -48,7 +49,7 @@
                             <td>{{ $indexKey + 1 }}</td>
                             <td> {{ $a_track->name }}</td>
                             <td>{{ $a_track->artists[0]->name  }}</td>
-                            <td>{{ $a_track->reproductions }} Times</td>
+                            <td>{{$a_track->ponderatedReproductions }} ponderated reproductions &middot; Reproduced {{ $a_track->reproductions }} Times</td>
                             <td>
                                 <audio controls>
                                     <source src="{{ $a_track->preview_url }}">
