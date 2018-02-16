@@ -1,5 +1,6 @@
 <div class="topgroup">
-    <h2><span class="titlebox">SpotyTop</span></h2>
+    <h1 class="titlebox">{{ $numberOfTracks }} reproductions &middot; {{ $numberOfAlbums }} albums &middot; {{ $numberOfArtists }} artists</h1>
+    {{--<h2><span class="titlebox">SpotyTop</span></h2>--}}
 </div>
 
 <div class="midgroup">

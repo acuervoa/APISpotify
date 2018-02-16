@@ -39,7 +39,11 @@
                     <div class="">{{ $a_trackInfo->reproductions }} reproductions</div>
                     <div>
                         @foreach($a_trackInfo->profiles as $profile)
-                            <div>{{ $profile->tracked_by }} play this {{ $profile->times }} times</div>
+                            <div>
+                                {{ $profile->tracked_by }} play this {{ $profile->times }} times
+                                &middot;
+                                {{ $profile->ponderatedReproductions }} ponderated times
+                            </div>
                             {{--<ul>--}}
                             {{--@foreach($profile->played_at as $played_at)--}}
                                 {{--<li>{{ $played_at->played_at }}</li>--}}
