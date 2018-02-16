@@ -1,8 +1,10 @@
+
 <div class="row">
     <div class="col-md-12">
         <h1 class="titlebox">{{ $numberOfTracks }} reproductions &middot; {{ $numberOfAlbums }} albums
             &middot; {{ $numberOfArtists }} artists</h1>
     </div>
+
 </div>
 
 

@@ -64,14 +64,6 @@ hr {
   clear: both;
 }
 
-.titlebox {
-    background-color: #222326;
-    border-bottom: 1px solid #393b40;
-    box-sizing: border-box;
-    text-align: center;
-    padding: 5px;
-}
-
 div.centered {
   width: 100%;
 }

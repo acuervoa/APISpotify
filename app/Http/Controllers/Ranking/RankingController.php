@@ -10,9 +10,11 @@ use App\Track;
 
 class RankingController extends Controller {
 
+
     public function showStatistics() {
 
         $track_id = TrackController::getTracksRanking(Ranking::SHORT);
+
         $tracksInfo = Track::getTracksCompleteData($track_id);
 
         return view('statistics.layout', [
