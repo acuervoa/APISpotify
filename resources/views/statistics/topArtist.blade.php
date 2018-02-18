@@ -37,7 +37,7 @@
                             <img class="img-fluid rounded imgArtist" src="{{ $a_artist->images[1]->url }}">
                             {{ $a_artist->name }}
                         </td>
-                        <td>Reproducrd {{ $a_artist->reproductions }} times</td>
+                        <td>Reproduced {{ $a_artist->reproductions }} times</td>
                     </tr>
                 @endif
 

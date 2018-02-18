@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Genre\GenreController;
 use App\Http\Controllers\Track\TrackController;
 use App\Ranking;
+use App\SpotifyProfile;
 use App\Track;
 
 class RankingController extends Controller {
@@ -27,11 +28,14 @@ class RankingController extends Controller {
 
         $genresInfo = GenreController::rankingGenres();
 
+
+
         return view('statistics.layout', [
             'tracks' => $tracksInfo->tracks,
             'albums' => $albumsInfo->albums,
             'artists' => $artistsInfo->artists,
             'genres' => $genresInfo,
+            'numberUsers' => $this->getNumberOfUsers(),
             'numberOfTracks' => $this->getDistinctNumberOfTracks(),
             'numberOfAlbums' => $this->getDistinctNumberOfAlbums(),
             'numberOfArtists' => $this->getDistinctNumberOfArtists()
@@ -48,5 +52,9 @@ class RankingController extends Controller {
 
     public function getDistinctNumberOfArtists() {
         return Artist::distinct()->get(['artist_id'])->count();
+    }
+
+    public function getNumberOfUsers() {
+        return SpotifyProfile::distinct()->get()->count();
     }
 }
