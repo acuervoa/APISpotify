@@ -79,9 +79,9 @@ class TrackController extends Controller
 
     public function rankingTracks()
     {
+        $tracksInfo = Track::getTracksInfo(self::getTracksRanking(Ranking::LARGE));
 
-        return Track::getTracksInfo(self::getTracksRanking(Ranking::LARGE));
-
+        return view('tracks.ranking', compact('tracksInfo'));
     }
 
     public static function getTracksRanking($limit)

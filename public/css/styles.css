@@ -132,6 +132,17 @@ a.button.button-add {
   box-shadow: 4px 0 0 0 #88898c,8px 0 0 0 #88898c,12px 0 0 0 #88898c,16px 0 0 0 #88898c,20px 0 0 0 #88898c,24px 0 0 0 #88898c,28px 0 0 0 #88898c,32px 0 0 0 #88898c;
 }
 
+.titlebox{
+  height: 80px;
+  width: 100%;
+  background-color: #222326;
+  border-bottom: 1px solid #393b40;
+  box-sizing: border-box;
+  text-align: center;
+  padding: 12px;
+  overflow: hidden;
+}
+
 h1.top1 {
     float:left;
     font-weight: 700;
@@ -145,6 +156,10 @@ header {
   height: 220px;
 }
 
+.imgArtist {
+  width:65px;
+  height: 65px;
+}
 /*header div.cover {*/
   /*float:left;*/
   /*width: 200px;*/
@@ -187,25 +202,25 @@ header {
 /*header h1.song {*/
   /*color: #ffffff;*/
 /*}*/
-/*table.tracks {*/
-  /*float:left;*/
-  /*width: 100%;*/
-  /*margin: 0 0px;*/
-  /*border-collapse: collapse;*/
-/*}*/
+table.tracks {
+  float:left;
+  width: 100%;
+  margin: 0 0px;
+  border-collapse: collapse;
+}
 
-/*table tr {*/
-/*}*/
+table tr {
+}
 
-/*table tr:hover {*/
-  /*background-color: #222326;*/
-/*}*/
+table tr:hover {
+  background-color: #222326;
+}
 
-/*table tr td {*/
-  /*font-size: 9pt;*/
-  /*border-top: 1px solid #393b40;*/
-  /*padding: 4px 10px 4px 0;*/
-/*}*/
+table tr td {
+  font-size: 9pt;
+  border-top: 1px solid #393b40;
+  padding: 4px 10px 4px 0;
+}
 
 /*table tr td i {*/
   /*font-style: normal;*/

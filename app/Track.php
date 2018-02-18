@@ -21,8 +21,7 @@ class Track extends Model
 
     public static function getTracksInfo($track_ids) {
 
-        $tracksInfo = self::getTracksCompleteData($track_ids);
-        return view('tracks.ranking', compact('tracksInfo'));
+       return self::getTracksCompleteData($track_ids);
 
     }
 

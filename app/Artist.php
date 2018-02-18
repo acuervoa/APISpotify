@@ -19,14 +19,4 @@ class Artist extends Model
     ];
 
 
-    public static function getArtistsCompleteData($artists_id){
-        $clientToken = SpotifySessionController::clientCredentials();
-
-        $spotifyWebAPI = new SpotifyWebAPI();
-        $spotifyWebAPI->setAccessToken($clientToken);
-
-        $artistsInfo = $spotifyWebAPI->getArtists($artists_id);
-
-        return $artistsInfo;
-    }
 }
