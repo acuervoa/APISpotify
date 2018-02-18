@@ -7,13 +7,14 @@
     <div class="col-md-1">
         <h1 class="top1">#1</h1>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-4">
         <h1>{{ $genres[0]->name }}</h1>
+        <p>{{ $genres[0]->total }} times reproduced</p>
     </div>
 
 
 
-    <div class="col-lg-5">
+    <div class="col-lg-7">
         <table class="tracks">
 
             <thead>
@@ -31,7 +32,9 @@
                         <td>
                             {{ $a_genre->name }}
                         </td>
-                        <td></td>
+                        <td>
+                            Reproduced {{$a_genre->total}} times
+                        </td>
                     </tr>
                 @endif
 
