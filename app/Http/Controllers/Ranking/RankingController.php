@@ -28,7 +28,7 @@ class RankingController extends Controller {
 
         $genresInfo = GenreController::rankingGenres();
 
-
+        $lastTracks = TrackController::getLastTracks(Ranking::MEDIUM);
 
         return view('statistics.layout', [
             'tracks' => $tracksInfo->tracks,
@@ -38,7 +38,8 @@ class RankingController extends Controller {
             'numberUsers' => $this->getNumberOfUsers(),
             'numberOfTracks' => $this->getDistinctNumberOfTracks(),
             'numberOfAlbums' => $this->getDistinctNumberOfAlbums(),
-            'numberOfArtists' => $this->getDistinctNumberOfArtists()
+            'numberOfArtists' => $this->getDistinctNumberOfArtists(),
+            'lastTracks' => $lastTracks
         ]);
     }
 

@@ -31,6 +31,13 @@ class TrackController extends Controller {
 
     }
 
+    public static function getLastTracks($limit) {
+        return DB::table('tracks')
+                    ->orderby('played_at', 'desc')
+                    ->limit($limit)
+                    ->get();
+    }
+
     public function getRecentTracks() {
         $spotifyWebAPI = new SpotifyWebAPI();
         $spotifyProfiles = SpotifyProfile::all();
