@@ -1,9 +1,11 @@
 SpotyPitoColorito
 -
 
-**Actual version**: 0.0.2 - ALPHA VERSION
+**Actual version**: 0.0.5 - ALPHA VERSION
 
-Get data from Spotify API (https://developer.spotify.com/) from users who authorized the application.
+Framework: Laravel 5.5.34 [https://laravel.com]
+
+Get data from Spotify API [https://developer.spotify.com/] from users who authorized the application.
 
 You need a .env file with Laravel configuration.
 You need also the config keys:
@@ -14,28 +16,28 @@ SPOTIFY_CLIENT_SECRET=<your client secret token
 SPOTIFY_URI_CALLBACK=<your uri callback for auth>
 ```
 
-Use the SpotifyWebAPI wrapper from ()https://github.com/jwilsson/spotify-web-api-php
+Use the SpotifyWebAPI wrapper from [https://github.com/jwilsson/spotify-web-api-php]
 
-The code is under GNU GPLv3 License ()
+The code is under GNU GPLv3 License.
 
 ---
 
 **TO-DO LIST**:
 
-[ ] Screen with the more listen - Artist / Album / Song / Genre
+[ ] Filter with office hours
 
-[ ] Filter ranking with no same profile listen the same song
+[ ] Generate recommended list with more listenç
 
-[ ] Album / Artist Image
+[x] Screen with the more listen - Artist / Album / Song / Genre
+
+[x] Filter ranking with no same profile listen the same song
+
+[x] Album / Artist Image
 
 [x] Cron with auto get Tracks
 
-[ ] Filter with office hours
+[x] Example sound
 
-[ ] Generate recommended list with more listen
+[x] Improve when the accessToken is expired
 
-[ ] Example sound
-
-[ ] Improve when the accessToken is expired
-
-[ ] When a user revoke access, the application refresh crashed!
+[x] When a user revoke access, the application refresh crashed!

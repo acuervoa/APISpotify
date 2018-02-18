@@ -21,7 +21,7 @@
 
             <tbody>
             @foreach($lastTracks as $indexKey => $a_track)
-                @if( $indexKey < 5)
+                @if( $indexKey < 20)
                     <tr>
                         <td>{{ $indexKey + 1 }}</td>
                         <td>
@@ -31,7 +31,7 @@
                              {{$a_track->tracked_by}}
                         </td>
                         <td>
-                            {{ \Carbon\Carbon::parse($a_track->played_at)->format('d F Y h:i') }}
+                            {{ \Carbon\Carbon::parse($a_track->played_at)->format('d F Y H:i') }}
                     </tr>
                 @endif
 
