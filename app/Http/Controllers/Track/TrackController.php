@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Track;
 
+use App\Album;
 use App\Artist;
 use App\Genre;
 use App\Http\Controllers\Controller;
@@ -25,17 +26,26 @@ class TrackController extends Controller {
 
     public function showRecentTracks() {
 
-        $list = $this->getRecentTracks();
+        $this->saveAlbum();
+        $diffInMinutes = $this->getDiffInMinutesFromLastTrackToNow();
+        if ($diffInMinutes > 2 * (Carbon::MINUTES_PER_HOUR)) {
+            Log::info('Request for last tracks. ' . $diffInMinutes . ' minutes');
+            $list = $this->getRecentTracks();
 
-        return view('tracks.users', compact('list'));
+            return view('tracks.users', compact('list'));
+        }
 
+        Log::info('Request very near to the last update. ' . $diffInMinutes . ' minutes');
+        return redirect('/rankingTracks');
+        // $list = $this->getLastTracksByUsers();
+        // return view('tracks.lastUsersTrack', compact('list'));
     }
 
     public static function getLastTracks($limit) {
         return DB::table('tracks')
-                    ->orderby('played_at', 'desc')
-                    ->limit($limit)
-                    ->get();
+                 ->orderby('played_at', 'desc')
+                 ->limit($limit)
+                 ->get();
     }
 
     public function getRecentTracks() {
@@ -56,7 +66,6 @@ class TrackController extends Controller {
         return $list;
     }
 
-
     public function saveRecentTracks($array, $spotifyProfile) {
 
         foreach ($array->items as $element) {
@@ -68,6 +77,7 @@ class TrackController extends Controller {
                 'name' => $element->track->name,
                 'popularity' => $element->track->popularity,
                 'tracked_by' => $spotifyProfile->nick,
+                'preview_url' => $element->track->preview_url,
             ];
             $track = Track::firstOrCreate([
                 'played_at' => $played_at,
@@ -97,19 +107,15 @@ class TrackController extends Controller {
 
     }
 
-
-    public function saveAlbums() {
+    public function updateAlbumsAtTrackTable() {
 
         $tracksGroups = Track::all()->pluck('track_id')->chunk(50)->toArray();
         foreach ($tracksGroups as &$a_track_group) {
             $tracksInfo = Track::getTracksCompleteData($a_track_group);
             foreach ($tracksInfo as $a_track) {
                 foreach ($a_track as $track) {
-
                     Track::where(['track_id' => $track->id])
                          ->update(['album_id' => $track->album->id]);
-                    $this->saveArtist($track);
-
                 }
             }
         }
@@ -170,9 +176,7 @@ class TrackController extends Controller {
 
     }
 
-
     private function saveGenre($artist, $track) {
-
 
         $clientToken = SpotifySessionController::clientCredentials();
         $spotifyWebAPI = new SpotifyWebAPI();
@@ -184,7 +188,6 @@ class TrackController extends Controller {
                     ->get()
                     ->pluck('name')
                     ->all();
-
         if (empty($genres)) {
             $artistInfo = $spotifyWebAPI->getArtist($artist_id);
             $genres = $artistInfo->genres;
@@ -204,6 +207,56 @@ class TrackController extends Controller {
                 ]
             );
         }
+
+    }
+
+    private function saveAlbumsFromTracks() {
+        $tracksAlbums = Track::distinct()->get(['album_id'])->pluck('album_id')->chunk(50)->toArray();
+
+        foreach($tracksAlbums as $a_trackAlbum){
+            $albumsInfo = Album::getAlbumsCompleteData($a_trackAlbum);
+            foreach($albumsInfo as $a_album) {
+                Album::firstOrCreate(
+                    ['name' => $a_album->name],
+                    $a_album
+                );
+            }
+        }
+
+        dd($tracksAlbums);
+
+    }
+    /**
+     * @return int
+     */
+    private function getDiffInMinutesFromLastTrackToNow(): int {
+        $flag = Carbon::now();
+        $getLastFlag = DB::table('tracks')
+                         ->select()
+                         ->orderby('played_at', 'desc')
+                         ->first();
+        $lastFlag = Carbon::parse($getLastFlag->played_at);
+
+        return $lastFlag->diffInMinutes($flag, FALSE);
+    }
+
+    private function getLastTracksByUsers() {
+
+        $profiles = SpotifyProfile::all();
+        $list = [];
+        foreach ($profiles as $profile) {
+
+            $tracks = DB::table('tracks')
+                        ->select()
+                        ->where('tracked_by', $profile->nick)
+                        ->orderby('played_at', 'desc')
+                        ->limit(20)
+                        ->join('')
+                        ->get();
+            $list[$profile->nick] = $tracks;
+        }
+
+        return $list;
 
     }
 

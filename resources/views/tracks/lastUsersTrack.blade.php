@@ -25,26 +25,25 @@
                     </thead>
                     <tbody>
 
-                    @foreach($recentTracks->items as $indexKey => $recentTrack)
-
+                    @foreach($recentTracks as $indexKey => $recentTrack)
                         <tr>
                             <th scope="row">{{ $indexKey + 1 }}</th>
-                            <td>{{ $recentTrack->track->name }}</td>
-                            <td>{{ $recentTrack->track->album->name }}</td>
-                            <td>{{ $recentTrack->track->artists[0]->name }}</td>
+                            <td>{{ $recentTrack->name }}</td>
+                            <td>{{ $recentTrack->album->name }}</td>
+                            <td>{{ $recentTrack->artists[0]->name }}</td>
                             <td>{{ \Carbon\Carbon::parse($recentTrack->played_at)->format('d F Y H:i') }}</td>
                             <td>
-                                @if($recentTrack->track->album->images[2])
-                                    <img src="{{ $recentTrack->track->album->images[2]->url }}"
+                                @if($recentTrack->album->images[2])
+                                    <img src="{{ $recentTrack->album->images[2]->url }}"
                                          class="img-fluid rounded"
-                                         alt="{{ $recentTrack->track->album->name }}">
+                                         alt="{{ $recentTrack->album->name }}">
                                 @endif
-                                <audio preload id="audio-{{ $recentTrack->track->id }}">
-                                    <source src="{{ $recentTrack->track->preview_url }}">
+                                <audio preload id="audio-{{ $recentTrack->id }}">
+                                    <source src="{{ $recentTrack->preview_url }}">
                                     Tu navegador no soporta audio
                                 </audio>
                                     <a class="button green"
-                                       onclick="document.getElementById('audio-{{ $recentTrack->track->id }}').play()">
+                                       onclick="document.getElementById('audio-{{ $recentTrack->id }}').play()">
                                         <i class="fa fa-play" aria-hidden="true"></i>
                                     </a>
                             </td>

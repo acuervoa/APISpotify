@@ -32,6 +32,10 @@
                         </td>
                         <td>
                             {{ \Carbon\Carbon::parse($a_track->played_at)->format('d F Y H:i') }}
+                        </td>
+                        <td>
+
+                        </td>
                     </tr>
                 @endif
 

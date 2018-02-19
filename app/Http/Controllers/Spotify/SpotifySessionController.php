@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Spotify;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Error\ErrorController;
 use App\SpotifyProfile;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -37,17 +38,24 @@ class SpotifySessionController extends Controller {
                 'user-read-email',
             ],
         ];
-
-        return redirect($this->sessionSpotify->getAuthorizeUrl($options));
+        try {
+            return redirect($this->sessionSpotify->getAuthorizeUrl($options));
+        } catch (\Exception $e) {
+            return ErrorController::errorHandler();
+        }
     }
 
     public function callback() {
 
-        $this->sessionSpotify->requestAccessToken($_GET['code']);
-        $this->spotifyAccessToken = $this->sessionSpotify->getAccessToken();
-        $this->spotifyRefreshToken = $this->sessionSpotify->getRefreshToken();
-        $this->spotifyTokenExpirationTime = $this->sessionSpotify->getTokenExpiration();
-        $this->saveSpotifyProfile();
+        try {
+            $this->sessionSpotify->requestAccessToken($_GET['code']);
+            $this->spotifyAccessToken = $this->sessionSpotify->getAccessToken();
+            $this->spotifyRefreshToken = $this->sessionSpotify->getRefreshToken();
+            $this->spotifyTokenExpirationTime = $this->sessionSpotify->getTokenExpiration();
+            $this->saveSpotifyProfile();
+        } catch (\Exception $e) {
+           return ErrorController::errorHandler();
+        }
 
         return redirect('/');
     }
@@ -111,7 +119,12 @@ class SpotifySessionController extends Controller {
             env('SPOTIFY_CLIENT_ID'),
             env('SPOTIFY_CLIENT_SECRET')
         );
-        $session->requestCredentialsToken();
+        try {
+            $session->requestCredentialsToken();
+
+        } catch (\Exception $e) {
+            return ErrorController::errorHandler();
+        }
 
         return $session->getAccessToken();
     }

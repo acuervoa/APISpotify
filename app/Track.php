@@ -17,6 +17,7 @@ class Track extends Model
         'name',
         'popularity',
         'tracked_by',
+        'preview_url'
     ];
 
     public static function getTracksInfo($track_ids) {
