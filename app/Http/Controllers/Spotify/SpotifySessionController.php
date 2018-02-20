@@ -47,15 +47,13 @@ class SpotifySessionController extends Controller {
 
     public function callback() {
 
-        try {
-            $this->sessionSpotify->requestAccessToken($_GET['code']);
-            $this->spotifyAccessToken = $this->sessionSpotify->getAccessToken();
-            $this->spotifyRefreshToken = $this->sessionSpotify->getRefreshToken();
-            $this->spotifyTokenExpirationTime = $this->sessionSpotify->getTokenExpiration();
-            $this->saveSpotifyProfile();
-        } catch (\Exception $e) {
-           return ErrorController::errorHandler();
-        }
+
+        $this->sessionSpotify->requestAccessToken($_GET['code']);
+        $this->spotifyAccessToken = $this->sessionSpotify->getAccessToken();
+        $this->spotifyRefreshToken = $this->sessionSpotify->getRefreshToken();
+        $this->spotifyTokenExpirationTime = $this->sessionSpotify->getTokenExpiration();
+        $this->saveSpotifyProfile();
+
 
         return redirect('/');
     }
@@ -119,12 +117,9 @@ class SpotifySessionController extends Controller {
             env('SPOTIFY_CLIENT_ID'),
             env('SPOTIFY_CLIENT_SECRET')
         );
-        try {
-            $session->requestCredentialsToken();
 
-        } catch (\Exception $e) {
-            return ErrorController::errorHandler();
-        }
+        $session->requestCredentialsToken();
+
 
         return $session->getAccessToken();
     }

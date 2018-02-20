@@ -4,58 +4,51 @@
     <div class="row">
         <div class="col-md-12">
 
-            @foreach($list as $userNick => $recentTracks)
 
-                <hr/>
-                <hr/>
+    @foreach($list as $userNick => $recentTracks)
+        <h3>{{ $userNick }}</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Id</th>
+            <th scope="col">Song</th>
+            <th scope="col">Album Name</th>
+            <th scope="col">Artists</th>
+            <th scope="col">Played At</th>
+            <th scope="col">Preview</th>
+        </tr>
+        </thead>
+        <tbody>
 
-                <h2>{{ $userNick }}</h2>
+        @foreach($recentTracks->items as $indexKey => $recentTrack)
+{{--{{dd($recentTrack)}}v--}}
+            <tr>
+                <th scope="row">{{ $indexKey }}</th>
+                <td>{{ $recentTrack->track->id }}</td>
+                <td>{{ $recentTrack->track->name }}</td>
+                <td>{{ $recentTrack->track->album->name }}</td>
+                <td>{{ $recentTrack->track->artists[0]->name }}</td>
+                <td>{{ \Carbon\Carbon::parse($recentTrack->played_at)->format('d F Y') }}</td>
+                <td>
+                    @if($recentTrack->track->album->images[2])
+                        <img src="{{ $recentTrack->track->album->images[2]->url }}"
+                             class="rounded-right"
+                             alt="{{ $recentTrack->track->album->name }}">
+                    @endif
+                    <audio controls>
+                        <source src="{{ $recentTrack->track->preview_url }}">
+                        Tu navegador no soporta audio
+                    </audio>
+                </td>
+            </tr>
+        @endforeach
 
-                <table class="tracks">
-                    <thead>
-                     <tr>
-                        <th scope="col">#</th>
+        </tbody>
+    </table>
+    @endforeach
 
-                        <th scope="col">Song</th>
-                        <th scope="col">Album Name</th>
-                        <th scope="col">Artists</th>
-                        <th scope="col">Played At</th>
-                        <th scope="col">Preview</th>
-                    </tr>
-                    </thead>
-                    <tbody>
 
-                    @foreach($recentTracks->items as $indexKey => $recentTrack)
-
-                        <tr>
-                            <th scope="row">{{ $indexKey + 1 }}</th>
-                            <td>{{ $recentTrack->track->name }}</td>
-                            <td>{{ $recentTrack->track->album->name }}</td>
-                            <td>{{ $recentTrack->track->artists[0]->name }}</td>
-                            <td>{{ \Carbon\Carbon::parse($recentTrack->played_at)->format('d F Y H:i') }}</td>
-                            <td>
-                                @if($recentTrack->track->album->images[2])
-                                    <img src="{{ $recentTrack->track->album->images[2]->url }}"
-                                         class="img-fluid rounded"
-                                         alt="{{ $recentTrack->track->album->name }}">
-                                @endif
-                                <audio preload id="audio-{{ $recentTrack->track->id }}">
-                                    <source src="{{ $recentTrack->track->preview_url }}">
-                                    Tu navegador no soporta audio
-                                </audio>
-                                    <a class="button green"
-                                       onclick="document.getElementById('audio-{{ $recentTrack->track->id }}').play()">
-                                        <i class="fa fa-play" aria-hidden="true"></i>
-                                    </a>
-                            </td>
-                        </tr>
-                    @endforeach
-
-                    </tbody>
-                </table>
-            @endforeach
-        </div>
-    </div>
 @endsection
 
 

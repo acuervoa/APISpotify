@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Track;
 
-use App\Album;
+
 use App\Artist;
 use App\Genre;
 use App\Http\Controllers\Controller;
@@ -26,14 +26,9 @@ class TrackController extends Controller {
 
     public function showRecentTracks() {
 
-        $this->saveAlbum();
-        $diffInMinutes = $this->getDiffInMinutesFromLastTrackToNow();
-        if ($diffInMinutes > 2 * (Carbon::MINUTES_PER_HOUR)) {
-            Log::info('Request for last tracks. ' . $diffInMinutes . ' minutes');
-            $list = $this->getRecentTracks();
+        $list = $this->getRecentTracks();
 
-            return view('tracks.users', compact('list'));
-        }
+        return view('tracks.users', compact('list'));
 
         Log::info('Request very near to the last update. ' . $diffInMinutes . ' minutes');
         return redirect('/rankingTracks');
@@ -43,9 +38,10 @@ class TrackController extends Controller {
 
     public static function getLastTracks($limit) {
         return DB::table('tracks')
-                 ->orderby('played_at', 'desc')
-                 ->limit($limit)
-                 ->get();
+                    ->orderby('played_at', 'desc')
+                    ->limit($limit)
+                    ->get();
+
     }
 
     public function getRecentTracks() {
@@ -77,7 +73,6 @@ class TrackController extends Controller {
                 'name' => $element->track->name,
                 'popularity' => $element->track->popularity,
                 'tracked_by' => $spotifyProfile->nick,
-                'preview_url' => $element->track->preview_url,
             ];
             $track = Track::firstOrCreate([
                 'played_at' => $played_at,
@@ -91,9 +86,9 @@ class TrackController extends Controller {
 
     public function rankingTracks() {
         $tracksInfo = Track::getTracksInfo(self::getTracksRanking(Ranking::LARGE));
-
         return view('tracks.ranking', compact('tracksInfo'));
     }
+
 
     public static function getTracksRanking($limit) {
         $tracks = DB::table('tracks')
@@ -107,15 +102,20 @@ class TrackController extends Controller {
 
     }
 
-    public function updateAlbumsAtTrackTable() {
+
+    public function saveAlbums() {
+
 
         $tracksGroups = Track::all()->pluck('track_id')->chunk(50)->toArray();
         foreach ($tracksGroups as &$a_track_group) {
             $tracksInfo = Track::getTracksCompleteData($a_track_group);
             foreach ($tracksInfo as $a_track) {
                 foreach ($a_track as $track) {
+
                     Track::where(['track_id' => $track->id])
                          ->update(['album_id' => $track->album->id]);
+                    $this->saveArtist($track);
+
                 }
             }
         }
@@ -152,7 +152,6 @@ class TrackController extends Controller {
                                ->chunk(50)
                                ->toArray();
         foreach ($artistsGroups as $a_artistGroup) {
-
             $artistsInfo = Artist::getArtistsCompleteData($a_artistGroup);
             foreach ($artistsInfo as $a_artist_group) {
                 foreach ($a_artist_group as $a_artist) {
@@ -257,6 +256,42 @@ class TrackController extends Controller {
         }
 
         return $list;
+
+    }
+
+    private function saveGenre($artist, $track) {
+
+
+        $clientToken = SpotifySessionController::clientCredentials();
+        $spotifyWebAPI = new SpotifyWebAPI();
+        $spotifyWebAPI->setAccessToken($clientToken);
+        $artist_id = $artist->artist_id;
+        $genres = DB::table('genres')
+                    ->select('name')
+                    ->where('artist_id', $artist_id)
+                    ->get()
+                    ->pluck('name')
+                    ->all();
+
+        if (empty($genres)) {
+            $artistInfo = $spotifyWebAPI->getArtist($artist_id);
+            $genres = $artistInfo->genres;
+        }
+        foreach ($genres as $a_genre) {
+
+            Genre::firstOrCreate(
+                [
+                    'name' => strtolower($a_genre),
+                    'played_at' => $track->played_at,
+                ],
+                [
+                    'name' => strtolower($a_genre),
+                    'played_at' => $track->played_at,
+                    'tracked_by' => $track->tracked_by,
+                    'album_id' => $track->album_id,
+                ]
+            );
+        }
 
     }
 
