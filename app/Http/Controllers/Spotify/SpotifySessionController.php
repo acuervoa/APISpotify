@@ -71,7 +71,7 @@ class SpotifySessionController extends Controller {
     }
 
     public function saveSpotifyProfile() {
-
+        $time_start = microtime(true);
         $this->spotifyWebAPI = new SpotifyWebAPI();
         $this->spotifyWebAPI->setAccessToken($this->spotifyAccessToken);
         $request = $this->spotifyWebAPI->me();
@@ -87,11 +87,13 @@ class SpotifySessionController extends Controller {
         ];
         if (!empty($this->spotifyRefreshToken)) {
             $fields['refreshToken'] = $this->spotifyRefreshToken;
+            Log::info('Refresh token for ' . $request->id);
         }
         if (!empty($this->spotifyRefreshToken)) {
             $fields['expirationToken'] = $this->spotifyTokenExpirationTime;
         }
         SpotifyProfile::updateOrCreate(['email' => $request->email], $fields);
+        Log::info('The profile for ' . $request->id . ' get ' . (microtime(true) - $time_start));
 
     }
 
@@ -126,6 +128,7 @@ class SpotifySessionController extends Controller {
 
     public function refreshTokens() {
         $spotifyProfiles = SpotifyProfile::all();
+
         foreach ($spotifyProfiles as $a_profile) {
             try {
                 if (!$this->refreshToken($a_profile->refreshToken)) {
