@@ -14,13 +14,9 @@ class CreateTracksTable extends Migration
     public function up()
     {
         Schema::create('tracks', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('track_id');
+            $table->string('track_id')->unique();
             $table->string('album_id');
             $table->string('name');
-            $table->integer('popularity');
-            $table->dateTimeTz('played_at');
-            $table->string('tracked_by')->nullable();
             $table->timestamps();
         });
     }

@@ -14,11 +14,8 @@ class CreateGenresTable extends Migration
     public function up()
     {
         Schema::create('genres', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('genre_id')->unique();
             $table->string('name');
-            $table->dateTimeTz('played_at');
-            $table->string('tracked_by')->nullable();
-            $table->string('album_id');
             $table->timestamps();
         });
     }

@@ -14,14 +14,10 @@ class CreateArtistsTable extends Migration
     public function up()
     {
         Schema::create('artists', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('artist_id');
+            $table->string('artist_id')->unique();
             $table->string('name');
             $table->integer('popularity');
-            $table->dateTimeTz('played_at');
-            $table->string('tracked_by')->nullable();
-            $table->string('album_id')->nullable();
-            $table->string('track_id')->nullable();
+            $table->string('image_url')->nullable();
             $table->timestamps();
         });
     }
