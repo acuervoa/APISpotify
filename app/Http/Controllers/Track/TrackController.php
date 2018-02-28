@@ -28,8 +28,9 @@ class TrackController extends Controller {
     }
 
     public static function getLastTracks($limit) {
-        return DB::table('tracks')
+        return DB::table('profile_tracks')
                     ->orderby('played_at', 'desc')
+            ->join('tracks', 'profile_tracks.track_id', 'tracks.track_id')
                     ->limit($limit)
                     ->get();
     }
@@ -157,15 +158,13 @@ class TrackController extends Controller {
     }
 
     public function rankingTracks() {
-        $time_start = microtime(true);
         $tracksInfo = Track::getTracksInfo(self::getTracksRanking(Ranking::LARGE));
-        Log::info('TrackController.rankingTracks() : ' . (microtime(true) - $time_start));
         return view('tracks.ranking', compact('tracksInfo'));
     }
 
 
     public static function getTracksRanking($limit) {
-        $tracks = DB::table('tracks')
+        $tracks = DB::table('profile_tracks')
                     ->select('track_id', DB::raw('count(*) as total'))
                     ->groupBy('track_id')
                     ->orderBy('total', 'desc')

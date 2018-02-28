@@ -35,6 +35,11 @@ class SpotifyProfile extends Model
         'expirationToken'
     ];
 
+    protected $primaryKey='profile_id';
+
+    public function tracks(){
+        return $this->belongsToMany(Track::class, 'profile_tracks', 'track_id');
+    }
 
     public function getAccessProfile(){
         $spotifyWebAPI = new SpotifyWebAPI();

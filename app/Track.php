@@ -11,14 +11,15 @@ use SpotifyWebAPI\SpotifyWebAPI;
 class Track extends Model
 {
     protected $fillable=[
-        'played_at',
         'track_id',
-        'album_id',
-        'name',
-        'popularity',
-        'tracked_by',
-        'preview_url'
+        'name'
     ];
+
+    protected $primaryKey='track_id';
+
+    public function profiles(){
+        return $this->belongsToMany(SpotifyProfile::class, 'profile_tracks', 'profile_id');
+    }
 
     public static function getTracksInfo($track_ids) {
 
@@ -80,14 +81,14 @@ class Track extends Model
      */
     public static function getProfileReproductions($reproductions)
     {
-        $profiles = DB::table('tracks')
-            ->select('tracked_by', DB::raw('count(*) as times'))
+        $profiles = DB::table('profile_tracks')
+            ->select('profile_id', DB::raw('count(*) as times'))
             ->where('track_id', $reproductions->track_id)
-            ->groupBy('tracked_by')
+            ->groupBy('profile_id')
             ->get();
 
         foreach($profiles as $a_profile){
-           $a_profile->played_at = self::getWhenPlayedAtTracked($reproductions->track_id, $a_profile->tracked_by);
+           $a_profile->played_at = self::getWhenPlayedAtTracked($reproductions->track_id, $a_profile->profile_id);
            $a_profile->realReproductions = $a_profile->times;
            $a_profile->ponderatedReproductions = round(sqrt($a_profile->times ) );
         }
@@ -97,10 +98,10 @@ class Track extends Model
 
     public static function getWhenPlayedAtTracked($track_id, $tracked_by){
 
-        $played_at = DB::table('tracks')
+        $played_at = DB::table('profile_tracks')
             ->select('played_at')
             ->where('track_id', $track_id)
-            ->where('tracked_by', $tracked_by)
+            ->where('profile_id', $tracked_by)
             ->orderby('played_at', 'desc')
             ->get();
 

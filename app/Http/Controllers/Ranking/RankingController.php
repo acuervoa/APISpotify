@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Ranking;
 
+use App\Album;
 use App\Artist;
 use App\Http\Controllers\Album\AlbumController;
 use App\Http\Controllers\Artist\ArtistController;
@@ -45,18 +46,18 @@ class RankingController extends Controller {
     }
 
     public function getDistinctNumberOfTracks() {
-        return Track::distinct()->get(['track_id'])->count();
+        return Track::count();
     }
 
     public function getDistinctNumberOfAlbums() {
-        return Track::distinct()->get(['album_id'])->count();
+        return Album::count();
     }
 
     public function getDistinctNumberOfArtists() {
-        return Artist::distinct()->get(['artist_id'])->count();
+        return Artist::count();
     }
 
     public function getNumberOfUsers() {
-        return SpotifyProfile::distinct()->get()->count();
+        return SpotifyProfile::count();
     }
 }
