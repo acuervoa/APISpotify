@@ -58,4 +58,14 @@ class RankingController extends Controller {
     public function getNumberOfUsers() {
         return SpotifyProfile::distinct()->get()->count();
     }
+
+    /**
+     * [showPosterDigitalTops description]
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showPosterDigitalTops()
+    {
+        return view('posterdigital.tops');
+    }
 }

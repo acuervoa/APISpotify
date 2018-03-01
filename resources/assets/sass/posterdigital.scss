@@ -1,0 +1,32 @@
+.posterdigital {
+
+    background-color: #191414;
+    font-family: 'Open Sans', sans-serif;
+    color: #ecebe8;
+    padding: 40px;
+
+    .col-tracks, .col-albums {
+        margin-top: 60px;
+    }
+
+    .template {
+        display: none;
+    }
+
+    .item {
+        margin-bottom: 40px;
+
+        .image:first {
+
+        }
+
+        .artist {
+            color: #1db954;
+        }
+
+        .name {
+            font-size: 2rem;
+        }
+    }
+
+}

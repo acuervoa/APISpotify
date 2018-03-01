@@ -1,0 +1,28 @@
+.posterdigital {
+  background-color: #191414;
+  font-family: 'Open Sans', sans-serif;
+  color: #ecebe8;
+  padding: 40px;
+}
+
+.posterdigital .col-tracks,
+.posterdigital .col-albums {
+  margin-top: 60px;
+}
+
+.posterdigital .template {
+  display: none;
+}
+
+.posterdigital .item {
+  margin-bottom: 40px;
+}
+
+.posterdigital .item .artist {
+  color: #1db954;
+}
+
+.posterdigital .item .name {
+  font-size: 2rem;
+}
+
