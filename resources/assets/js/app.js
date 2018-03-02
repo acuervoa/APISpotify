@@ -15,8 +15,58 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('result', {
+    props: {
+        'item': {
+            type: Object,
+            required: true,
+        },
+        'index': {
+            default: 0,
+            type: Number,
+        },
+    },
+    template: `<div class="item">
+        <div :class="{ row: index != 0 }">
+            <div
+                :class="{ 'col-md-6': index != 0 }"
+                class="image-container">
+                <img class="image img-fluid rounded" :src="item.image"/>
+            </div>
+            <div
+                :class="{ 'col-md-6': index != 0 }"
+                class="info-container">
+                <p class="artist"> {{ item.artist }} </p>
+                <p class="name"> {{ item.name }} </p>
+            </div>
+        </div>
+    </div>`
+})
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    data: {
+        albums: [],
+        tracks: [],
+    },
+    methods: {
+        first: function(items) {
+            return items[0]
+        },
+        fetch() {
+            var self = this
+            $.ajax({
+                type: 'get',
+                url: '/api/tops/3',
+                success: function (response) {
+                    self.tracks = response.tracks
+                    self.albums = response.albums
+                }
+            })
+        },
+    },
+    created() {
+        this.fetch()
+        setInterval(this.fetch, 1000 * 10 * 1)
+    },
 });
