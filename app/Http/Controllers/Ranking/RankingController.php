@@ -60,7 +60,7 @@ class RankingController extends Controller {
     }
 
     /**
-     * [showPosterDigitalTops description]
+     * Show top tracks and albums endpoint for posterdigital display.
      *
      * @return \Illuminate\Http\Response
      */
