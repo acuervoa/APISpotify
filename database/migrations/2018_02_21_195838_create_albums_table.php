@@ -17,6 +17,7 @@ class CreateAlbumsTable extends Migration
             $table->string('album_id')->unique();
             $table->string('name');
             $table->string('image_url')->nullable();
+            $table->string('link_to');
             $table->timestamps();
         });
     }

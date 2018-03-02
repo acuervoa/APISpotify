@@ -11,7 +11,8 @@ use Ramsey\Uuid\Uuid;
 use SpotifyWebAPI\Session;
 use SpotifyWebAPI\SpotifyWebAPI;
 
-class SpotifySessionController extends Controller {
+class SpotifySessionController extends Controller
+{
 
     public $sessionSpotify;
     public $spotifyAccessToken;
@@ -20,7 +21,8 @@ class SpotifySessionController extends Controller {
 
     public $spotifyWebAPI;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->sessionSpotify = new Session(
             env('SPOTIFY_CLIENT_ID'),
             env('SPOTIFY_CLIENT_SECRET'),
@@ -28,7 +30,8 @@ class SpotifySessionController extends Controller {
         );
     }
 
-    public function authSpotifySession() {
+    public function authSpotifySession()
+    {
         $options = [
             'scope' => [
                 'user-read-private',
@@ -45,9 +48,8 @@ class SpotifySessionController extends Controller {
         }
     }
 
-    public function callback() {
-
-
+    public function callback()
+    {
         $this->sessionSpotify->requestAccessToken($_GET['code']);
         $this->spotifyAccessToken = $this->sessionSpotify->getAccessToken();
         $this->spotifyRefreshToken = $this->sessionSpotify->getRefreshToken();
@@ -58,20 +60,19 @@ class SpotifySessionController extends Controller {
         return redirect('/');
     }
 
-    public function loadSpotifyAPI() {
-
-
+    public function loadSpotifyAPI()
+    {
         $spotifyProfile = SpotifyProfile::where('accessToken', '=', $this->spotifyAccessToken)
-                                        ->get()
-                                        ->first();
-        if (NULL !== $spotifyProfile && ((int) $spotifyProfile->expirationToken <= Carbon::now()->timestamp)) {
+            ->get()
+            ->first();
+        if (NULL !== $spotifyProfile && ((int)$spotifyProfile->expirationToken <= Carbon::now()->timestamp)) {
             $this->refreshToken($this->spotifyRefreshToken);
         }
 
     }
 
-    public function saveSpotifyProfile() {
-        $time_start = microtime(true);
+    public function saveSpotifyProfile()
+    {
         $this->spotifyWebAPI = new SpotifyWebAPI();
         $this->spotifyWebAPI->setAccessToken($this->spotifyAccessToken);
         $request = $this->spotifyWebAPI->me();
@@ -92,12 +93,13 @@ class SpotifySessionController extends Controller {
         if (!empty($this->spotifyRefreshToken)) {
             $fields['expirationToken'] = $this->spotifyTokenExpirationTime;
         }
+
         SpotifyProfile::updateOrCreate(['email' => $request->email], $fields);
-        Log::info('The profile for ' . $request->id . ' get ' . (microtime(true) - $time_start));
 
     }
 
-    public function refreshToken($refreshToken) {
+    public function refreshToken($refreshToken)
+    {
 
         $allOk = TRUE;
         try {
@@ -114,7 +116,8 @@ class SpotifySessionController extends Controller {
         return $allOk;
     }
 
-    public static function clientCredentials() {
+    public static function clientCredentials()
+    {
         $session = new Session(
             env('SPOTIFY_CLIENT_ID'),
             env('SPOTIFY_CLIENT_SECRET')
@@ -122,11 +125,11 @@ class SpotifySessionController extends Controller {
 
         $session->requestCredentialsToken();
 
-
         return $session->getAccessToken();
     }
 
-    public function refreshTokens() {
+    public function refreshTokens()
+    {
         $spotifyProfiles = SpotifyProfile::all();
 
         foreach ($spotifyProfiles as $a_profile) {

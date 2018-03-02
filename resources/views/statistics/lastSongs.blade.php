@@ -28,7 +28,7 @@
                             {{ $a_track->name }}
                         </td>
                         <td>
-                             {{$a_track->profile_id}}
+                             {{$a_track->nick}}
                         </td>
                         <td>
                             {{ \Carbon\Carbon::parse($a_track->played_at)->format('d F Y H:i') }}

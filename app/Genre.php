@@ -8,9 +8,10 @@ class Genre extends Model
 {
     protected $fillable = [
         'name',
-        'artist_id',
-        'played_at',
-        'tracked_by',
-        'album_id'
     ];
+
+    public function artists()
+    {
+        return $this->belongsToMany(Artist::class, 'artist_genres', 'genre_id');
+    }
 }

@@ -7,10 +7,13 @@
     <div class="col-md-1">
         <h1 class="top1">#1</h1>
     </div>
+
     <div class="col-md-2">
-        <img src="{{ $artists[0]->images[1]->url }}"
-             alt="{{ $artists[0]->name }}"
-             class="img-fluid rounded">
+        @if ($artists[0] && $artists[0]->images[0])
+            <img src="{{ $artists[0]->images[0]->url }}"
+                 alt="{{ $artists[0]->name }}"
+                 class="img-fluid rounded">
+        @endif
     </div>
 
 

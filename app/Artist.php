@@ -11,13 +11,16 @@ class Artist extends Model
     protected $fillable = [
         'artist_id',
         'name',
-        'popularity',
-        'played_at',
-        'tracked_by',
-        'album_id',
-        'track_id'
+        'image_url',
+        'link_to'
     ];
 
+    public function albums() {
+        return $this->belongsToMany(Album::class, 'album_artists', 'artist_id');
+    }
 
+    public function genres() {
+        return $this->belongsToMany(Genre::class, 'artist_genres', 'artist_id');
+    }
 
 }

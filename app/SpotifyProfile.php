@@ -35,15 +35,14 @@ class SpotifyProfile extends Model
         'expirationToken'
     ];
 
-    protected $primaryKey='profile_id';
+    //protected $primaryKey='profile_id';
 
     public function tracks(){
-        return $this->belongsToMany(Track::class, 'profile_tracks', 'track_id');
+        return $this->belongsToMany(Track::class, 'profile_tracks',  'track_id', 'track_id');
     }
 
     public function getAccessProfile(){
         $spotifyWebAPI = new SpotifyWebAPI();
-
 
         if((int)$this->expirationToken <= Carbon::now()->timestamp){
             $spotifySession = new SpotifySessionController();

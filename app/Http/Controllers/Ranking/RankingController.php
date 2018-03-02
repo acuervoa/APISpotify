@@ -46,18 +46,18 @@ class RankingController extends Controller {
     }
 
     public function getDistinctNumberOfTracks() {
-        return Track::count();
+        return Track::distinct()->count();
     }
 
     public function getDistinctNumberOfAlbums() {
-        return Album::count();
+        return Album::distinct()->count();
     }
 
     public function getDistinctNumberOfArtists() {
-        return Artist::count();
+        return Artist::distinct()->count();
     }
 
     public function getNumberOfUsers() {
-        return SpotifyProfile::count();
+        return SpotifyProfile::distinct()->count();
     }
 }

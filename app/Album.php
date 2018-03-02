@@ -9,6 +9,24 @@ use SpotifyWebAPI\SpotifyWebAPI;
 class Album extends Model
 {
 
+    protected $fillable = [
+        'album_id',
+        'name',
+        'image_url',
+        'link_to'
+    ];
+
+    protected $primaryKey = 'album_id';
+
+    public function tracks(){
+        return $this->hasMany(Track::class, 'album_id', 'album_id');
+    }
+
+    public function artists(){
+        return $this->belongsToMany(Artist::class, 'album_artists', 'album_id');
+    }
+
+
     public static function getAlbumsCompleteData($albums_id) {
 
         $clientToken = SpotifySessionController::clientCredentials();

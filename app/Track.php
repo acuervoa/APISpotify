@@ -12,14 +12,24 @@ class Track extends Model
 {
     protected $fillable=[
         'track_id',
-        'name'
+        'name',
+        'album_id',
+        'preview_url',
+        'link_to',
+        'duration_ms'
     ];
 
     protected $primaryKey='track_id';
 
     public function profiles(){
-        return $this->belongsToMany(SpotifyProfile::class, 'profile_tracks', 'profile_id');
+        return $this->belongsToMany(SpotifyProfile::class, 'profile_tracks', 'profile_id','id');//, 'track_id');
     }
+
+    public function album(){
+        return $this->belongsTo(Album::class, 'album_id','album_id')->withDefault();
+    }
+
+
 
     public static function getTracksInfo($track_ids) {
 
@@ -66,7 +76,7 @@ class Track extends Model
      */
     public static function getReproductions($a_track)
     {
-        $reproductions = DB::table('tracks')
+        $reproductions = DB::table('profile_tracks')
             ->select('track_id', DB::raw('count(*) as total'))
             ->where('track_id', $a_track->id)
             ->groupBy('track_id')

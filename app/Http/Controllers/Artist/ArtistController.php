@@ -17,14 +17,25 @@ class ArtistController extends Controller
      * @return mixed
      */
     private static function getGroupedArtists($limit) {
-        $albums = DB::table('artists')
-                    ->select('artist_id', DB::raw('count(*) as total'))
-                    ->groupBy('artist_id')
+        $albums = DB::table('album_tracks')
+                    ->select('album_tracks.album_id', DB::raw('count(*) as total'))
+                    ->groupBy('album_tracks.album_id')
                     ->orderBy('total', 'desc')
                     ->take($limit)
                     ->get();
 
-        return $albums;
+        foreach ($albums as $a_album){
+            $artist = DB::table('album_artists')
+                ->select('album_artists.artist_id', 'artists.name')
+                ->join('artists', 'album_artists.artist_id', 'artists.artist_id')
+                ->where('album_artists.album_id', $a_album->album_id)
+                ->get();
+
+                $artists[] = $artist;
+
+        }
+        //dd($artists);
+        return $artists;
     }
 
 
@@ -35,9 +46,9 @@ class ArtistController extends Controller
     }
 
     public static function getArtistRanking($limit) {
-        $albums = self::getGroupedArtists($limit);
+        $artists = self::getGroupedArtists($limit);
 
-        return $albums->pluck('artist_id')->all();
+        return $artists;
 
     }
 
@@ -47,7 +58,7 @@ class ArtistController extends Controller
 
     public static function getReproductions($a_album)
     {
-        $reproductions = DB::table('artists')
+        $reproductions = DB::table('profile_tracks')
                            ->select('artist_id', DB::raw('count(*) as total'))
                            ->where('artist_id', $a_album->id)
                            ->groupBy('artist_id')
@@ -62,7 +73,8 @@ class ArtistController extends Controller
         $spotifyWebAPI = new SpotifyWebAPI();
         $spotifyWebAPI->setAccessToken($clientToken);
 
-        $artistsInfo = $spotifyWebAPI->getArtists($artists_ids);
+        //dd(collect($artists_ids)->collapse()->pluck('artist_id')->all());
+        $artistsInfo = $spotifyWebAPI->getArtists(collect($artists_ids)->collapse()->pluck('artist_id')->all());
 
         foreach($artistsInfo->artists as &$a_artist){
 
