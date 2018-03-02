@@ -1,5 +1,5 @@
 body {
-  background: #121314;
+  background: rgb(15,15,15);
   color: #ddd;
   margin: 0;
   padding: 0;
@@ -76,7 +76,7 @@ a.button {
 }
 
 a.button.green {
-  background-color: #070;
+  background-color: rgb(32,171,66);
   color: #fff;
   border: 1px solid #070;
 }
@@ -84,7 +84,7 @@ a.button.green {
 a.button.big.green {
   display: inline-block;
   text-align: center;
-  background-color: #070;
+  background-color: rgb(32,171,66);
   color: #fff;
   padding: 10px 40px;
   border-radius: 50px;
@@ -135,7 +135,7 @@ a.button.button-add {
 .titlebox{
   height: 80px;
   width: 100%;
-  background-color: #222326;
+  background-color: rgb(15,15,15);
   border-bottom: 1px solid #393b40;
   box-sizing: border-box;
   text-align: center;

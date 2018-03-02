@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Track;
 
-
 use App\Album;
 use App\Artist;
 use App\Genre;
@@ -110,6 +109,7 @@ class TrackController extends Controller
         }
 
     }
+
     public static function getLastTracks($limit)
     {
         return DB::table('profile_tracks')
@@ -119,9 +119,6 @@ class TrackController extends Controller
             ->limit($limit)
             ->get();
     }
-
-
-
 
     private function saveArtist($track, $element)
     {
@@ -148,7 +145,6 @@ class TrackController extends Controller
 
 
     }
-
 
     private function saveGenre($artist, $track)
     {
@@ -199,7 +195,6 @@ class TrackController extends Controller
         return view('tracks.ranking', compact('tracksInfo'));
     }
 
-
     public static function getTracksRanking($limit)
     {
         $tracks = DB::table('profile_tracks')
@@ -210,11 +205,9 @@ class TrackController extends Controller
             ->get();
 
         return $tracks->pluck('track_id')->all();
-
     }
 
-    public function saveAllAlbums()
-    {
+    public function saveAllAlbums() {
         $tracksGroups = Track::all()->pluck('track_id')->chunk(50)->toArray();
         foreach ($tracksGroups as &$a_track_group) {
             $tracksInfo = Track::getTracksCompleteData($a_track_group);
@@ -230,7 +223,6 @@ class TrackController extends Controller
         }
         //$this->saveAllGenres();
     }
-
 
     public function saveAllGenres()
     {
@@ -262,7 +254,6 @@ class TrackController extends Controller
 
 
     }
-
 
     private function saveAlbumsFromTracks()
     {
@@ -317,6 +308,5 @@ class TrackController extends Controller
         return $list;
 
     }
-
 
 }
