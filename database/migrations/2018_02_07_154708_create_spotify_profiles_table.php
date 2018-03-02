@@ -14,7 +14,8 @@ class CreateSpotifyProfilesTable extends Migration
     public function up()
     {
         Schema::create('spotify_profiles', function (Blueprint $table) {
-            $table->string('id')->unique();
+            $table->uuid('profile_id')->unique();
+            $table->primary('profile_id');
             $table->string('nick');
             $table->string('email');
             $table->string('display_name')->nullable();

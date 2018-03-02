@@ -16,7 +16,7 @@ class SpotifyProfile extends Model
     protected $dates =['deleted_at'];
 
     protected $fillable = [
-        'id',
+        'profile_id',
         'nick',
         'email',
         'display_name',

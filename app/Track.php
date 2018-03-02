@@ -22,7 +22,7 @@ class Track extends Model
     protected $primaryKey='track_id';
 
     public function profiles(){
-        return $this->belongsToMany(SpotifyProfile::class, 'profile_tracks', 'profile_id','id');//, 'track_id');
+        return $this->belongsToMany(SpotifyProfile::class, 'profile_tracks', 'track_id','profile_id');
     }
 
     public function album(){

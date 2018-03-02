@@ -23,7 +23,7 @@ class Album extends Model
     }
 
     public function artists(){
-        return $this->belongsToMany(Artist::class, 'album_artists', 'album_id');
+        return $this->belongsToMany(Artist::class, 'album_artists', 'album_id', 'artist_id');
     }
 
 

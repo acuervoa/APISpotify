@@ -77,7 +77,7 @@ class SpotifySessionController extends Controller
         $this->spotifyWebAPI->setAccessToken($this->spotifyAccessToken);
         $request = $this->spotifyWebAPI->me();
         $fields = [
-            'id' => Uuid::uuid1()->toString(),
+            'profile_id' => Uuid::uuid1()->toString(),
             'nick' => $request->id,
             'email' => $request->email,
             'display_name' => $request->display_name,

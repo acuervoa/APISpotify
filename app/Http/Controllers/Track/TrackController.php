@@ -94,8 +94,8 @@ class TrackController extends Controller
             ], $response_artists);
 
 
-            $spotifyProfile->tracks()->attach($track);
-            dd($spotifyProfile);
+            $track->profiles()->save($spotifyProfile);
+            dd($track);
 
             $track->profile()->attach($track);
             dd($track);
