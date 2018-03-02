@@ -10,7 +10,7 @@ use App\Http\Controllers\Track\TrackController;
 class APIController extends Controller
 {
     /**
-     * [getTops description]
+     * Return the top albums and songs.
      *
      * @param  int $max
      * @return \Illuminate\Http\JsonResponse
@@ -30,7 +30,7 @@ class APIController extends Controller
     }
 
     /**
-     * [minimizeAlbumData description]
+     * Simplify album data.
      *
      * @param  object $element
      * @return array
@@ -52,7 +52,7 @@ class APIController extends Controller
     }
 
     /**
-     * [minimizeAlbumData description]
+     * Simplify song data.
      *
      * @param  object $element
      * @return array
