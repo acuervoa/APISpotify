@@ -15,12 +15,15 @@ class Artist extends Model
         'link_to'
     ];
 
+    protected $primaryKey = 'artist_id';
+    public $incrementing = false;
+
     public function albums() {
         return $this->belongsToMany(Album::class, 'album_artists', 'artist_id');
     }
 
     public function genres() {
-        return $this->belongsToMany(Genre::class, 'artist_genres', 'artist_id');
+        return $this->belongsToMany(Genre::class, 'artist_genres', 'artist_id', 'genre_id');
     }
 
 }

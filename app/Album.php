@@ -17,6 +17,7 @@ class Album extends Model
     ];
 
     protected $primaryKey = 'album_id';
+    public $incrementing=false;
 
     public function tracks(){
         return $this->hasMany(Track::class, 'album_id', 'album_id');

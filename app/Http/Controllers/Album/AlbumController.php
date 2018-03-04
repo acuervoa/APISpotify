@@ -18,7 +18,7 @@ class AlbumController extends Controller
      * @return mixed
      */
     private static function getGroupedAlbums($limit) {
-        $albums = DB::table('album_tracks')
+        $albums = DB::table('albums')
                     ->select('album_id', DB::raw('count(*) as total'))
                     ->groupBy('album_id')
                     ->orderBy('total', 'desc')
@@ -49,7 +49,7 @@ class AlbumController extends Controller
     public static function getReproductions($a_album)
     {
 
-        $reproductions = DB::table('album_tracks')
+        $reproductions = DB::table('tracks')
                            ->select('album_id', DB::raw('count(*) as total'))
                            ->where('album_id', $a_album->id)
                            ->groupBy('album_id')

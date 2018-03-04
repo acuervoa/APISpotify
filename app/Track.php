@@ -20,16 +20,16 @@ class Track extends Model
     ];
 
     protected $primaryKey='track_id';
+    public $incrementing=false;
 
     public function profiles(){
-        return $this->belongsToMany(SpotifyProfile::class, 'profile_tracks', 'track_id','profile_id');
+        return $this->belongsToMany(SpotifyProfile::class, 'profile_tracks', 'track_id','profile_id')
+           ->withPivot('played_at');
     }
 
     public function album(){
         return $this->belongsTo(Album::class, 'album_id','album_id')->withDefault();
     }
-
-
 
     public static function getTracksInfo($track_ids) {
 

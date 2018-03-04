@@ -17,9 +17,9 @@ class ArtistController extends Controller
      * @return mixed
      */
     private static function getGroupedArtists($limit) {
-        $albums = DB::table('album_tracks')
-                    ->select('album_tracks.album_id', DB::raw('count(*) as total'))
-                    ->groupBy('album_tracks.album_id')
+        $albums = DB::table('tracks')
+                    ->select('album_id', DB::raw('count(*) as total'))
+                    ->groupBy('album_id')
                     ->orderBy('total', 'desc')
                     ->take($limit)
                     ->get();
@@ -34,7 +34,6 @@ class ArtistController extends Controller
                 $artists[] = $artist;
 
         }
-        //dd($artists);
         return $artists;
     }
 
