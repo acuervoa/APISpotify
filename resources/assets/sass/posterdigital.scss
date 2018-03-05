@@ -1,0 +1,80 @@
+.posterdigital {
+    width: 1920px;
+    height: 1200px;
+    font-family: 'Open Sans', sans-serif;
+    color: #ecebe8;
+    padding: 100px 50px;
+    display: table;
+    position: absolute;
+
+    &::after {
+        content: "";
+        background: url('/img/background.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        opacity: 0.3;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        z-index: -1;
+    }
+
+    h2 {
+        font-weight: bold;
+    }
+
+    .container-fluid {
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    .col-tracks {
+        margin-right: 50px;
+    }
+
+    .col-tracks, .col-albums {
+        margin-top: 60px;
+    }
+
+    .template {
+        display: none;
+    }
+
+    .secondary {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+}
+
+.item {
+    margin-bottom: 40px;
+
+    .secondary & {
+        margin-bottom: 50px;
+    }
+
+    .artist {
+        color: #1db954;
+        font-size: 1.8rem;
+        margin-top: 1rem;
+        font-weight: bold;
+
+        .secondary & {
+            font-size: 1.3rem;
+        }
+    }
+
+    .name {
+        color: #191414;
+        font-size: 2rem;
+
+        .secondary & {
+            font-size: 1.5rem;
+        }
+    }
+}

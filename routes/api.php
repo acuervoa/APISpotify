@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,3 +14,12 @@ use Illuminate\Http\Request;
 Route::get('/auth', 'Spotify\SpotifySessionController@authSpotifySession');
 Route::get('/callback', 'Spotify\SpotifySessionController@callback');
 Route::get('/refresh', 'Spotify\SpotifySessionController@refreshToken');
+
+/**
+ * API routes.
+ */
+Route::group(['prefix' => 'api'], function () {
+
+    Route::get('/tops/{max?}', 'API\APIController@getTops')->name('api.tops.get');
+
+});
