@@ -37,7 +37,7 @@ class RankingController extends Controller {
 //            'artists' => $artistsInfo->artists,
 //            'genres' => $genresInfo,
 //            'numberUsers' => $this->getNumberOfUsers(),
-//            'numberOfTracks' => $this->getDistinctNumberOfTracks(),
+            'numberOfTracks' => $this->getDistinctNumberOfTracks(),
 //            'numberOfAlbums' => $this->getDistinctNumberOfAlbums(),
 //            'numberOfArtists' => $this->getDistinctNumberOfArtists(),
 //            'lastTracks' => $lastTracks
