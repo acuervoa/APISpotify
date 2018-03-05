@@ -17,3 +17,12 @@ Route::get('/rankingTracks', 'Track\TrackController@rankingTracks');
 Route::get('/recentTracks', 'Track\TrackController@showRecentTracks');
 
 Route::get('/refreshTokens', 'Spotify\SpotifySessionController@refreshTokens');
+
+/**
+ * Poster Digital routes.
+ */
+Route::group(['prefix' => 'posterdigital'], function () {
+
+    Route::get('/tops', 'Ranking\RankingController@showPosterDigitalTops');
+
+});

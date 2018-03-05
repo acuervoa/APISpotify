@@ -61,6 +61,7 @@ class RankingController extends Controller {
         return SpotifyProfile::distinct()->count();
     }
 
+
     public function rankingTracks()
     {
         $tracksInfo = Track::getTracksInfo(self::getTracksRanking(Ranking::LARGE));
@@ -77,6 +78,17 @@ class RankingController extends Controller {
                     ->get();
 
         return $tracks->pluck('track_id')->all();
+    }
+
+
+    /**
+     * Show top tracks and albums endpoint for posterdigital display.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showPosterDigitalTops()
+    {
+        return view('posterdigital.tops');
     }
 
 }
