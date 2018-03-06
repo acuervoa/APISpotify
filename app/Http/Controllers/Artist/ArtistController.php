@@ -45,10 +45,7 @@ class ArtistController extends Controller
     }
 
     public static function getArtistRanking($limit) {
-        $artists = self::getGroupedArtists($limit);
-
-        return $artists;
-
+        return self::getGroupedArtists($limit);
     }
 
     public static function getArtistInfo($album_ids) {
@@ -57,13 +54,12 @@ class ArtistController extends Controller
 
     public static function getReproductions($a_album)
     {
-        $reproductions = DB::table('profile_tracks')
+        return DB::table('profile_tracks')
                            ->select('artist_id', DB::raw('count(*) as total'))
                            ->where('artist_id', $a_album->id)
                            ->groupBy('artist_id')
                            ->first();
 
-        return $reproductions;
     }
 
     public static function getArtistsCompleteData($artists_ids){
@@ -72,7 +68,6 @@ class ArtistController extends Controller
         $spotifyWebAPI = new SpotifyWebAPI();
         $spotifyWebAPI->setAccessToken($clientToken);
 
-        //dd(collect($artists_ids)->collapse()->pluck('artist_id')->all());
         $artistsInfo = $spotifyWebAPI->getArtists(collect($artists_ids)->collapse()->pluck('artist_id')->all());
 
         foreach($artistsInfo->artists as &$a_artist){
