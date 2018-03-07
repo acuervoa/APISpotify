@@ -14,11 +14,7 @@
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     </head>
     <body class="posterdigital">
-        <div class="container-fluid">
-
-            @yield('content')
-
-        </div>
+        @yield('content')
     </body>
 
     <!-- Vue -->
