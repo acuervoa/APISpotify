@@ -3,51 +3,29 @@
 @section('content')
 
     <div id="app">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h2>Top songs</h2>
-                        <div class="col-tracks">
+        <h2> @{{ title }} </h2>
+        <div class="container-fluid" v-if="results.length">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-results">
                             <div class="row">
                                 <div class="principal col-md-6">
                                     <result
-                                        :item="first(tracks)">
+                                        :item="first(results)">
                                     </result>
                                 </div>
-                                <div class="secondary col-md-6">
+                                <div class="secondary col-md-5">
                                     <result
-                                        v-for="(track, index) in tracks"
+                                        v-for="(result, index) in results"
                                         v-if="index > 0"
-                                        :item="track"
+                                        :item="result"
                                         :index="index"
                                         :key="index">
                                     </result>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-md-6">
-                    <h2>Top albums</h2>
-                    <div class="col-albums">
-                        <div class="row">
-                            <div class="principal col-md-6">
-                                <result
-                                    :item="first(albums)">
-                                </result>
-                            </div>
-                            <div class="secondary col-md-6">
-                                <result
-                                    v-for="(album, index) in albums"
-                                    v-if="index > 0"
-                                    :item="album"
-                                    :index="index"
-                                    :key="index">
-                                </result>
-                            </div>
-                        </div>
-                    </div>
                     </div>
                 </div>
             </div>

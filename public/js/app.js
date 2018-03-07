@@ -963,8 +963,8 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(10);
-__webpack_require__(42);
-module.exports = __webpack_require__(43);
+__webpack_require__(38);
+module.exports = __webpack_require__(39);
 
 
 /***/ }),
@@ -1005,8 +1005,19 @@ Vue.component('result', {
 var app = new Vue({
     el: '#app',
     data: {
+        show: null,
+        title: null,
         albums: [],
         tracks: []
+    },
+    computed: {
+        results: function results() {
+            if (this.show === 'tracks') {
+                return this.tracks;
+            } else {
+                return this.albums;
+            }
+        }
     },
     methods: {
         first: function first(items) {
@@ -1014,19 +1025,36 @@ var app = new Vue({
         },
         fetch: function fetch() {
             var self = this;
-            $.ajax({
-                type: 'get',
-                url: '/api/tops/3',
-                success: function success(response) {
-                    self.tracks = response.tracks;
-                    self.albums = response.albums;
-                }
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    type: 'get',
+                    url: '/api/tops/3',
+                    success: function success(response) {
+                        self.tracks = response.tracks;
+                        self.albums = response.albums;
+                        resolve();
+                    }
+                });
             });
+        },
+        toggle: function toggle() {
+            if (this.show === 'tracks') {
+                this.show = 'albums';
+                this.title = 'Top albums';
+            } else {
+                this.show = 'tracks';
+                this.title = 'Top songs';
+            }
         }
     },
     created: function created() {
-        this.fetch();
-        setInterval(this.fetch, 1000 * 10 * 1);
+        var _this = this;
+
+        this.fetch().then(function () {
+            _this.toggle();
+            setInterval(_this.toggle, 1000 * 60 * 30);
+        });
+        setInterval(this.fetch, 1000 * 15 * 1);
     }
 });
 
@@ -42945,17 +42973,13 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(4)))
 
 /***/ }),
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */
+/* 38 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 43 */
+/* 39 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

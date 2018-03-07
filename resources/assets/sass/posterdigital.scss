@@ -1,9 +1,8 @@
-.posterdigital {
+#app {
     width: 1920px;
     height: 1200px;
     font-family: 'Open Sans', sans-serif;
     color: #ecebe8;
-    padding: 100px 50px;
     display: table;
     position: absolute;
 
@@ -22,30 +21,31 @@
     }
 
     h2 {
+        font-size: 3rem;
         font-weight: bold;
+        position: absolute;
+        right: 100px;
+        top: 120px;
     }
 
     .container-fluid {
         display: table-cell;
         vertical-align: middle;
+        padding: 0 100px;
     }
 
-    .col-tracks {
-        margin-right: 50px;
+    .col-results {
+        max-height: 800px;
+        margin-top: 150px;
     }
 
-    .col-tracks, .col-albums {
-        margin-top: 60px;
+    .principal {
+
     }
 
-    .template {
-        display: none;
-    }
-
-    .secondary {
+    .principal, .secondary {
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
         flex-wrap: wrap;
     }
@@ -58,23 +58,19 @@
         margin-bottom: 50px;
     }
 
+    font-size: 3rem;
+    font-weight: bold;
+
+    .secondary & {
+        font-size: 2.5rem;
+    }
+
     .artist {
         color: #1db954;
-        font-size: 1.8rem;
         margin-top: 1rem;
-        font-weight: bold;
-
-        .secondary & {
-            font-size: 1.3rem;
-        }
     }
 
     .name {
         color: #191414;
-        font-size: 2rem;
-
-        .secondary & {
-            font-size: 1.5rem;
-        }
     }
 }
