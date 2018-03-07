@@ -46,8 +46,19 @@ Vue.component('result', {
 const app = new Vue({
     el: '#app',
     data: {
+        show: null,
+        title: null,
         albums: [],
         tracks: [],
+    },
+    computed: {
+        results: function () {
+            if (this.show === 'tracks') {
+                return this.tracks
+            } else {
+                return this.albums
+            }
+        }
     },
     methods: {
         first: function(items) {
@@ -55,18 +66,33 @@ const app = new Vue({
         },
         fetch() {
             var self = this
-            $.ajax({
-                type: 'get',
-                url: '/api/tops/3',
-                success: function (response) {
-                    self.tracks = response.tracks
-                    self.albums = response.albums
-                }
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    type: 'get',
+                    url: '/api/tops/3',
+                    success: function (response) {
+                        self.tracks = response.tracks
+                        self.albums = response.albums
+                        resolve()
+                    }
+                })
             })
+        },
+        toggle() {
+            if (this.show === 'tracks') {
+                this.show = 'albums';
+                this.title = 'Top albums';
+            } else {
+                this.show = 'tracks';
+                this.title = 'Top songs';
+            }
         },
     },
     created() {
-        this.fetch()
-        setInterval(this.fetch, 1000 * 10 * 1)
+        this.fetch().then(() => {
+            this.toggle()
+            setInterval(this.toggle, 1000 * 60 * 30)
+        })
+        setInterval(this.fetch, 1000 * 15 * 1)
     },
 });
