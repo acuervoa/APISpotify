@@ -1,14 +1,13 @@
-.posterdigital {
+#app {
   width: 1920px;
   height: 1200px;
   font-family: 'Open Sans', sans-serif;
   color: #ecebe8;
-  padding: 100px 50px;
   display: table;
   position: absolute;
 }
 
-.posterdigital::after {
+#app::after {
   content: "";
   background: url("/img/background.jpg");
   background-size: cover;
@@ -22,29 +21,27 @@
   z-index: -1;
 }
 
-.posterdigital h2 {
+#app h2 {
+  font-size: 3rem;
   font-weight: bold;
+  position: absolute;
+  right: 100px;
+  top: 120px;
 }
 
-.posterdigital .container-fluid {
+#app .container-fluid {
   display: table-cell;
   vertical-align: middle;
+  padding: 0 100px;
 }
 
-.posterdigital .col-tracks {
-  margin-right: 50px;
+#app .col-results {
+  max-height: 800px;
+  margin-top: 150px;
 }
 
-.posterdigital .col-tracks,
-.posterdigital .col-albums {
-  margin-top: 60px;
-}
-
-.posterdigital .template {
-  display: none;
-}
-
-.posterdigital .secondary {
+#app .principal,
+#app .secondary {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -52,9 +49,6 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -64,29 +58,24 @@
 
 .item {
   margin-bottom: 40px;
+  font-size: 3rem;
+  font-weight: bold;
 }
 
 .secondary .item {
   margin-bottom: 50px;
 }
 
-.item .artist {
-  color: #1db954;
-  font-size: 1.8rem;
-  margin-top: 1rem;
-  font-weight: bold;
+.secondary .item {
+  font-size: 2.5rem;
 }
 
-.secondary .item .artist {
-  font-size: 1.3rem;
+.item .artist {
+  color: #1db954;
+  margin-top: 1rem;
 }
 
 .item .name {
   color: #191414;
-  font-size: 2rem;
-}
-
-.secondary .item .name {
-  font-size: 1.5rem;
 }
 
