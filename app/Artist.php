@@ -26,4 +26,7 @@ class Artist extends Model
         return $this->belongsToMany(Genre::class, 'artist_genres', 'artist_id', 'genre_id');
     }
 
+    public function tracks() {
+        return $this->belongsToMany(Track::class, 'artist_tracks', 'artists_id', 'track_id');
+    }
 }

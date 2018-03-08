@@ -31,43 +31,71 @@ class Track extends Model
         return $this->belongsTo(Album::class, 'album_id','album_id')->withDefault();
     }
 
-    public static function getTracksInfo($track_ids) {
-
-       return self::getTracksCompleteData($track_ids);
-
+    public function artists() {
+        return $this->belongsToMany(Artist::class, 'artist_tracks', 'track_id', 'artists_id');
     }
 
-    public static function getTracksCompleteData($track_ids){
-        $clientToken = SpotifySessionController::clientCredentials();
+    public static function getTracksInfo($track_ids) {
+       return self::getTracksCompleteData($track_ids);
+    }
 
+    public static function getTracksCompleteData(array $track_ids)
+    {
+        $clientToken = SpotifySessionController::clientCredentials();
         $spotifyWebAPI = new SpotifyWebAPI();
         $spotifyWebAPI->setAccessToken($clientToken);
 
-        $tracksInfo = $spotifyWebAPI->getTracks($track_ids);
+        $tracks = [];
+        foreach($track_ids as $track_id){
+            $track = self::find($track_id)->load('album');
 
-        foreach($tracksInfo->tracks as &$a_track) {
+            if(empty($track->preview_url)) {
+                $trackInfo = $spotifyWebAPI->getTrack($track_id);
+               // dd($trackInfo);
+                $track->preview_url = $trackInfo->preview_url;
+                $track->link_to = $trackInfo->href;
+                $track->duration_ms = $trackInfo->duration_ms;
+
+                $album = $track->album;
+
+                $album->name = $trackInfo->album->name;
+                $album->image_url = isset($trackInfo->album->images[0]) ? $trackInfo->album->images[0]->url : '';
+                $album->link_to = $trackInfo->album->href;
+
+                foreach($trackInfo->artists as $artistInfo) {
+                    $artist = $album->artists->where('artist_id', $artistInfo->id);
+                    $artist->link_to = $artistInfo->href;
+                }
+
+                $album->save();
+                $track->save();
+            }
+
+            $tracks[] = $track;
+
+        }
+
+        foreach($tracks as $a_track) {
             $reproductions = self::getReproductions($a_track);
             $a_track->reproductions = $reproductions->total;
-
             $profiles = self::getProfileReproductions($reproductions);
-            $a_track->profiles = $profiles;
 
             $ponderatedReproductions = 0;
-            foreach ($profiles as $a_profile){
+            foreach ($profiles as $a_profile) {
                 $ponderatedReproductions += $a_profile->ponderatedReproductions;
             }
 
-            $a_track->ponderatedReproductions = (int)$ponderatedReproductions;
+            $a_track->ponderatedReproductions = (int)sqrt($ponderatedReproductions);
+
+            usort($tracks, function ($a, $b) {
+                if ($a->ponderatedReproductions === $b->ponderatedReproductions) {
+                    return ($a->reproductions <= $b->reproductions) ? -1 : 1;
+                }
+                return ($a->ponderatedReproductions > $b->ponderatedReproductions) ? -1 : 1;
+            });
         }
 
-        usort($tracksInfo->tracks, function($a, $b){
-            if($a->ponderatedReproductions === $b->ponderatedReproductions) {
-                return ($a->reproductions <= $b->reproductions) ? -1 : 1;
-            }
-            return ($a->ponderatedReproductions > $b->ponderatedReproductions) ? -1 : 1;
-        });
-
-        return $tracksInfo;
+        return $tracks;
     }
 
     /**
@@ -78,7 +106,7 @@ class Track extends Model
     {
         $reproductions = DB::table('profile_tracks')
             ->select('track_id', DB::raw('count(*) as total'))
-            ->where('track_id', $a_track->id)
+            ->where('track_id', $a_track->track_id)
             ->groupBy('track_id')
             ->first();
 

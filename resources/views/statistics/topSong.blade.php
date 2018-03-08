@@ -20,7 +20,7 @@
         <h1 class="top1">#1</h1>
     </div>
     <div class="col-md-2">
-        <img src="{{ $tracks[0]->album->images[1]->url }}"
+        <img src="{{ $tracks[0]->album->image_url }}"
              alt="{{ $tracks[0]->album->name }}"
              class="img-fluid rounded">
     </div>
@@ -33,7 +33,7 @@
         <p>{{ $tracks[0]->ponderatedReproductions }} ponderated times reproduced <br>
             {{ $tracks[0]->reproductions }} times reproduced</p>
         <div class="byAuthor">
-            By <a href="#">{{ $tracks[0]->artists[0]->name }}</a>
+            By <a href="#">{{-- $tracks[0]->album->artists->name --}}</a>
             &middot;
             Duration {{ gmdate('i:s', $tracks[0]->duration_ms / 1000) }}
             &middot;
@@ -66,7 +66,7 @@
                     <tr>
                         <td>{{ $indexKey + 1 }}</td>
                         <td>
-                        <!--img class="img-fluid rounded" src="{{ $a_track->album->images[2]->url }}"-->
+                        <!--img class="img-fluid rounded" src="{{-- $a_track->album->images[2]->url --}}"-->
                             {{ $a_track->name }}
                         </td>
                         <td>{{ $a_track->artists[0]->name  }}</td>

@@ -13,6 +13,7 @@ use App\Ranking;
 use App\SpotifyProfile;
 use App\Track;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 
 class RankingController extends Controller {
 
@@ -20,6 +21,7 @@ class RankingController extends Controller {
 
         $track_id = self::getTracksRanking(Ranking::SHORT);
         $tracksInfo = Track::getTracksCompleteData($track_id);
+
 
 //        $albums_id = AlbumController::getAlbumsRanking(Ranking::MEDIUM);
 //        $albumsInfo = AlbumController::getAlbumsCompleteData($albums_id);
@@ -32,7 +34,7 @@ class RankingController extends Controller {
 //        $lastTracks = TrackController::getLastTracks(Ranking::MEDIUM);
 
         return view('statistics.layout', [
-            'tracks' => $tracksInfo->tracks,
+            'tracks' => $tracksInfo,
 //            'albums' => $albumsInfo->albums,
 //            'artists' => $artistsInfo->artists,
 //            'genres' => $genresInfo,
