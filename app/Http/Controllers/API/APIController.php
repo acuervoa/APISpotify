@@ -17,10 +17,12 @@ class APIController extends Controller
      */
     public function getTops($max = 3)
     {
-        $topTrackList = TrackController::getTracksRanking($max);
-        $topTrackList = Track::getTracksCompleteData($topTrackList)->tracks;
+        // get tops
+        $topTrackList = TrackController::getTracksRankingLastDay($max);
+        $topAlbums = AlbumController::getAlbumsRankingLastDay($max);
 
-        $topAlbums = AlbumController::getAlbumsRanking($max);
+        // get detailed info
+        $topTrackList = Track::getTracksCompleteData($topTrackList)->tracks;
         $topAlbums = AlbumController::getAlbumsCompleteData($topAlbums)->albums;
 
         return response()->json([

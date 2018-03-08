@@ -97,6 +97,25 @@ class TrackController extends Controller {
 
     }
 
+    /**
+     * Get top tracks from last 24 hours.
+     *
+     * @param  int $limit
+     * @return array
+     */
+    public static function getTracksRankingLastDay($limit)
+    {
+        $tracks = DB::table('tracks')
+            ->select('track_id', DB::raw('count(*) as total'))
+            ->where('played_at', '>=', Carbon::now()->subDay())
+            ->groupBy('track_id')
+            ->orderBy('total', 'desc')
+            ->take($limit)
+            ->get();
+
+        return $tracks->pluck('track_id')->all();
+    }
+
 
     public function saveAlbums() {
 
