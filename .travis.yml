@@ -1,6 +1,5 @@
 language: php
 php:
-  - '5.6'
   - '7.0'
 
 before_script:
@@ -8,6 +7,3 @@ before_script:
   - mysql -e 'create database homestead_test;'
   - composer self-update
   - composer install --no-interaction
-
-script:
-  - vendor/bin/phpunit
