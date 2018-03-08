@@ -7,6 +7,12 @@
 
 require('./bootstrap');
 
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
 window.Vue = require('vue');
 
 /**
@@ -81,10 +87,10 @@ const app = new Vue({
         toggle() {
             if (this.show === 'tracks') {
                 this.show = 'albums';
-                this.title = 'Top albums';
+                this.title = 'Last 24h top albums';
             } else {
                 this.show = 'tracks';
-                this.title = 'Top songs';
+                this.title = 'Last 24h top songs';
             }
         },
     },
