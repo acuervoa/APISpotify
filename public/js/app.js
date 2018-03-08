@@ -1054,13 +1054,14 @@ var app = new Vue({
         }
     },
     created: function created() {
-        var _this = this;
+        var self = this;
 
         this.fetch().then(function () {
             _this.toggle();
             setInterval(_this.toggle, 1000 * 15 * 1);
         });
         setInterval(this.fetch, 1000 * 60 * 30);
+
     }
 });
 
