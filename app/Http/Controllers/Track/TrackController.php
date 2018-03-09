@@ -110,6 +110,7 @@ class TrackController extends Controller {
             ->where('played_at', '>=', Carbon::now()->subDay())
             ->groupBy('track_id')
             ->orderBy('total', 'desc')
+            ->orderBy('track_id', 'desc')
             ->take($limit)
             ->get();
 

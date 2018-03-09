@@ -1,10 +1,8 @@
 #app {
   width: 1920px;
-  height: 1200px;
+  height: 1080px;
   font-family: 'Open Sans', sans-serif;
   color: #ecebe8;
-  display: table;
-  position: absolute;
 }
 
 #app::after {
@@ -29,31 +27,13 @@
   top: 120px;
 }
 
-#app .container-fluid {
-  display: table-cell;
-  vertical-align: middle;
-  padding: 0 100px;
-}
-
 #app .col-results {
   max-height: 800px;
-  margin-top: 150px;
+  margin-top: 240px;
 }
 
-#app .principal,
 #app .secondary {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  margin-left: 50px;
 }
 
 .item {
@@ -73,9 +53,16 @@
 .item .artist {
   color: #1db954;
   margin-top: 1rem;
+  margin-bottom: 0;
 }
 
 .item .name {
   color: #191414;
+}
+
+@media only screen and (min-height: 1200px) {
+  #app {
+    height: 1200px;
+  }
 }
 

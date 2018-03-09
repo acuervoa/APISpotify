@@ -41,7 +41,8 @@ class Kernel extends ConsoleKernel
             $trackController->recentTracks();
 
             Log::info('New tracks adquisition');
-        })->everyThirtyMinutes();
+        // })->everyThirtyMinutes();
+        })->everyMinute();
     }
 
     /**
