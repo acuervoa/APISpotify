@@ -1,17 +1,15 @@
 #app {
     width: 1920px;
-    height: 1200px;
+    height: 1080px;
     font-family: 'Open Sans', sans-serif;
-    color: #ecebe8;
-    display: table;
-    position: absolute;
+    color: #eb2033;
 
     &::after {
         content: "";
-        background: url('/img/background.jpg');
+        background: url('/img/background2.jpg');
         background-size: cover;
         background-repeat: no-repeat;
-        opacity: 0.3;
+        opacity: 0.1;
         top: 0;
         left: 0;
         bottom: 0;
@@ -25,52 +23,46 @@
         font-weight: bold;
         position: absolute;
         right: 100px;
-        top: 120px;
-    }
-
-    .container-fluid {
-        display: table-cell;
-        vertical-align: middle;
-        padding: 0 100px;
+        top: 80px;
     }
 
     .col-results {
         max-height: 800px;
-        margin-top: 150px;
+        margin-top: 200px;
     }
 
-    .principal {
-
+    .secondary {
+        margin-left: 50px;
     }
 
-    .principal, .secondary {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        flex-wrap: wrap;
-    }
 }
 
 .item {
     margin-bottom: 40px;
+    font-size: 3rem;
+    font-weight: bold;
 
     .secondary & {
         margin-bottom: 50px;
     }
-
-    font-size: 3rem;
-    font-weight: bold;
 
     .secondary & {
         font-size: 2.5rem;
     }
 
     .artist {
-        color: #1db954;
+        color: #1d6450;
         margin-top: 1rem;
+        margin-bottom: 0;
     }
 
     .name {
         color: #191414;
+    }
+}
+
+@media only screen and (min-height: 1200px) {
+    #app {
+        height: 1200px;
     }
 }

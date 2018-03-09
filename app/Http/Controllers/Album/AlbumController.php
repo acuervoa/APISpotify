@@ -57,6 +57,7 @@ class AlbumController extends Controller
             ->where('played_at', '>=', Carbon::now()->subDay())
             ->groupBy('album_id')
             ->orderBy('total', 'desc')
+            ->orderBy('album_id', 'desc')
             ->take($limit)
             ->get();
 
