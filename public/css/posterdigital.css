@@ -7,10 +7,10 @@
 
 #app::after {
   content: "";
-  background: url("/img/background.jpg");
+  background: url("/img/background2.jpg");
   background-size: cover;
   background-repeat: no-repeat;
-  opacity: 0.2;
+  opacity: 0.1;
   top: 0;
   left: 0;
   bottom: 0;
@@ -24,12 +24,12 @@
   font-weight: bold;
   position: absolute;
   right: 100px;
-  top: 120px;
+  top: 80px;
 }
 
 #app .col-results {
   max-height: 800px;
-  margin-top: 240px;
+  margin-top: 200px;
 }
 
 #app .secondary {
