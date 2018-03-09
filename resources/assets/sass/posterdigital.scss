@@ -2,14 +2,14 @@
     width: 1920px;
     height: 1080px;
     font-family: 'Open Sans', sans-serif;
-    color: #ecebe8;
+    color: #eb2033;
 
     &::after {
         content: "";
         background: url('/img/background.jpg');
         background-size: cover;
         background-repeat: no-repeat;
-        opacity: 0.3;
+        opacity: 0.2;
         top: 0;
         left: 0;
         bottom: 0;
@@ -51,7 +51,7 @@
     }
 
     .artist {
-        color: #1db954;
+        color: #1d6450;
         margin-top: 1rem;
         margin-bottom: 0;
     }
