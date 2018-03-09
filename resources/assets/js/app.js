@@ -97,7 +97,7 @@ const app = new Vue({
     created() {
         this.fetch().then(() => {
             this.toggle()
-            setInterval(this.toggle, 1000 * 15 * 1)
+            setInterval(this.toggle, 1000 * 5 * 1)
         })
         setInterval(this.fetch, 1000 * 60 * 30)
     },
