@@ -22,7 +22,7 @@ class RankingController extends Controller {
         $track_id = self::getTracksRanking(Ranking::SHORT);
         $tracksInfo = Track::getTracksCompleteData($track_id);
 
-
+dd($tracksInfo);
 //        $albums_id = AlbumController::getAlbumsRanking(Ranking::MEDIUM);
 //        $albumsInfo = AlbumController::getAlbumsCompleteData($albums_id);
 //

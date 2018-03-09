@@ -69,7 +69,7 @@
                         <!--img class="img-fluid rounded" src="{{-- $a_track->album->images[2]->url --}}"-->
                             {{ $a_track->name }}
                         </td>
-                        <td>{{ $a_track->artists[0]->name  }}</td>
+{{--                        <td>{{ $a_track->artists->name  }}</td>--}}
                         <td> Reproduced {{ $a_track->reproductions }} (pond. {{ $a_track->ponderatedReproductions }}) Times</td>
                         <td>
                             <audio id="audio-{{$indexKey + 1}}">
