@@ -128,6 +128,19 @@ class SpotifySessionController extends Controller
         return $session->getAccessToken();
     }
 
+
+    /**
+     * @return SpotifyWebAPI
+     */
+    public static function getClientAuthorization(): SpotifyWebAPI
+    {
+        $clientToken = self::clientCredentials();
+        $spotifyWebAPI = new SpotifyWebAPI();
+        $spotifyWebAPI->setAccessToken($clientToken);
+
+        return $spotifyWebAPI;
+    }
+
     public function refreshTokens()
     {
         $spotifyProfiles = SpotifyProfile::all();

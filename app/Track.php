@@ -47,9 +47,8 @@ class Track extends Model
         foreach($track_ids as $track_id){
             $track = self::with(['album'])->find($track_id);
 
-//            if(empty($track->preview_url)) {
+            if(empty($track->preview_url)) {
                 $trackInfo = $spotifyWebAPI->getTrack($track_id);
-               // dd($trackInfo);
                 $track->preview_url = $trackInfo->preview_url;
                 $track->link_to = $trackInfo->href;
                 $track->duration_ms = $trackInfo->duration_ms;
@@ -60,23 +59,15 @@ class Track extends Model
                 $album->image_url = isset($trackInfo->album->images[0]) ? $trackInfo->album->images[0]->url : '';
                 $album->link_to = $trackInfo->album->href;
 
-                $album->artistas = $album->artist->;
-                
-//                foreach($trackInfo->artists as $artistInfo) {
-//                    $artist = $album->artists->where('artist_id', $artistInfo->id);
-//                    $artist->link_to = $artistInfo->href;
-//                }
-dd($album);
                 $album->save();
                 $track->save();
-  //          }
-
+            }
             $tracks[] = $track;
 
         }
 
-        dd($tracks);
-die();
+
+
         foreach($tracks as $a_track) {
 
 
