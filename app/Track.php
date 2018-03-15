@@ -27,6 +27,10 @@ class Track extends Model
            ->withPivot('played_at');
     }
 
+    public function artists() {
+        return $this->belongsToMany(Artist::class, 'artist_tracks', 'track_id', 'artist_id');
+    }
+
     public function album(){
         return $this->belongsTo(Album::class, 'album_id','album_id')->withDefault();
     }

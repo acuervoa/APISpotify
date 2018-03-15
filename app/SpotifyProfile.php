@@ -39,7 +39,7 @@ class SpotifyProfile extends Model
     public $incrementing=false;
 
     public function tracks(){
-        return $this->belongsToMany(Track::class, 'profile_tracks',  'track_id', 'track_id');
+        return $this->belongsToMany(Track::class, 'profile_tracks',  'profile_id', 'track_id');
     }
 
     public function getAccessProfile(){

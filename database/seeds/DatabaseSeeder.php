@@ -13,9 +13,9 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UsersTableSeeder::class);
         $this->call(SpotifyProfilesSeeder::class);
-        $this->call(TracksSeeder::class);
-        $this->call(AlbumsSeeder::class);
-        $this->call(ArtistsSeeder::class);
-        $this->call(GenresSeeder::class);
+//        $this->call(TracksSeeder::class);
+//        $this->call(AlbumsSeeder::class);
+//        $this->call(ArtistsSeeder::class);
+//        $this->call(GenresSeeder::class);
     }
 }
