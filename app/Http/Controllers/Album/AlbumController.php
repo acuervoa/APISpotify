@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Album;
 
+use App\Album;
 use Carbon\Carbon;
 
 use App\Http\Controllers\Spotify\SpotifySessionController;
@@ -73,7 +74,7 @@ class AlbumController extends Controller
 
         $reproductions = DB::table('tracks')
                            ->select('album_id', DB::raw('count(*) as total'))
-                           ->where('album_id', $a_album->id)
+                           ->where('album_id', $a_album->album_id)
                            ->groupBy('album_id')
                            ->first();
 
@@ -82,19 +83,8 @@ class AlbumController extends Controller
     }
 
     public static function getAlbumsCompleteData($album_ids){
-        $clientToken = SpotifySessionController::clientCredentials();
 
-        $spotifyWebAPI = new SpotifyWebAPI();
-        $spotifyWebAPI->setAccessToken($clientToken);
-
-        $albumsInfo = $spotifyWebAPI->getAlbums($album_ids);
-        foreach($albumsInfo->albums as &$a_album){
-
-            $reproductions = self::getReproductions($a_album);
-            $a_album->reproductions = $reproductions->total;
-        }
-
-        return $albumsInfo;
+        return Album::select()->whereIn('album_id',$album_ids)->get();
     }
 
 }

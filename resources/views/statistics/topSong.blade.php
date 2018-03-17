@@ -1,9 +1,9 @@
 <div class="row">
     <div class="col-md-12">
         <h1 class="titlebox">{{ $numberOfTracks }} reproductions &middot;
-            {{--{{ $numberOfAlbums }} albums &middot;--}}
-            {{--{{ $numberOfArtists }} artists &middot;--}}
-            {{--{{ $numberUsers }} users--}}
+            {{ $numberOfAlbums }} albums &middot;
+            {{ $numberOfArtists }} artists &middot;
+            {{ $numberUsers }} users
         </h1>
     </div>
 
@@ -33,7 +33,7 @@
         <p>{{ $tracks[0]->ponderatedReproductions }} ponderated times reproduced <br>
             {{ $tracks[0]->reproductions }} times reproduced</p>
         <div class="byAuthor">
-            By <a href="#">{{-- $tracks[0]->album->artists->name --}}</a>
+            By <a href="#">{{ $tracks[0]->album->artists[0]->name }}</a>
             &middot;
             Duration {{ gmdate('i:s', $tracks[0]->duration_ms / 1000) }}
             &middot;
@@ -66,10 +66,10 @@
                     <tr>
                         <td>{{ $indexKey + 1 }}</td>
                         <td>
-                        <!--img class="img-fluid rounded" src="{{-- $a_track->album->images[2]->url --}}"-->
+                        <img class="img-fluid rounded thumbnail" src="{{ $a_track->album->image_thumb_url }}">
                             {{ $a_track->name }}
                         </td>
-{{--                        <td>{{ $a_track->artists->name  }}</td>--}}
+                        <td>{{ $a_track->album->artists[0]->name  }}</td>
                         <td> Reproduced {{ $a_track->reproductions }} (pond. {{ $a_track->ponderatedReproductions }}) Times</td>
                         <td>
                             <audio id="audio-{{$indexKey + 1}}">

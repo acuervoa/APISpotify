@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Artist;
 
+use App\Artist;
 use App\Http\Controllers\Spotify\SpotifySessionController;
 use App\Ranking;
+use App\SpotifyProfile;
+use App\Track;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -17,24 +20,21 @@ class ArtistController extends Controller
      * @return mixed
      */
     private static function getGroupedArtists($limit) {
-        $albums = DB::table('tracks')
-                    ->select('album_id', DB::raw('count(*) as total'))
-                    ->groupBy('album_id')
-                    ->orderBy('total', 'desc')
-                    ->take($limit)
-                    ->get();
 
-        foreach ($albums as $a_album){
-            $artist = DB::table('album_artists')
-                ->select('album_artists.artist_id', 'artists.name')
-                ->join('artists', 'album_artists.artist_id', 'artists.artist_id')
-                ->where('album_artists.album_id', $a_album->album_id)
-                ->get();
-
-                $artists[] = $artist;
-
+        $result = DB::table('profile_tracks')->select('track_id')->get();//select('track_id');
+        $artists = [];
+        foreach($result as $a_track_id){
+            dd($a_track_id);
+            dd(Track::find($a_track_id));//->album->artists()->toArray();
         }
-        return $artists;
+        dd($artists);
+//        $albums = DB::table('profile_tracks')
+//                    ->select('tracks')->load('albums')
+//                    ->toSql();
+//
+//             dd($albums);
+
+    //    return $artists;
     }
 
 
@@ -63,19 +63,8 @@ class ArtistController extends Controller
     }
 
     public static function getArtistsCompleteData($artists_ids){
-        $clientToken = SpotifySessionController::clientCredentials();
 
-        $spotifyWebAPI = new SpotifyWebAPI();
-        $spotifyWebAPI->setAccessToken($clientToken);
-
-        $artistsInfo = $spotifyWebAPI->getArtists(collect($artists_ids)->collapse()->pluck('artist_id')->all());
-
-        foreach($artistsInfo->artists as &$a_artist){
-
-            $reproductions = self::getReproductions($a_artist);
-            $a_artist->reproductions = $reproductions->total;
-        }
-
-        return $artistsInfo;
+        dd($artists_ids);
+        return Artist::select()->whereIn('artist_id',$artists_ids)->get();
     }
 }

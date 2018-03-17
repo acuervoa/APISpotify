@@ -13,6 +13,7 @@ class Album extends Model
         'album_id',
         'name',
         'image_url',
+        'image_thumb_url',
         'link_to'
     ];
 

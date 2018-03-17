@@ -66,6 +66,7 @@ class TrackController extends Controller
                       ->attach($spotifyProfile->profile_id, ['played_at' => $played_at]);
                 $track->album->save($album->toArray());
                 $album->artists()->attach($artist->artist_id);
+
                 $this->saveGenres($artist);
             }
         }
@@ -76,9 +77,10 @@ class TrackController extends Controller
         return DB::table('profile_tracks')
             ->orderby('played_at', 'desc')
             ->join('tracks', 'profile_tracks.track_id', 'tracks.track_id')
-            ->join('spotify_profiles', 'profile_tracks.profile_id', 'spotify_profiles.id')
+            ->join('spotify_profiles', 'profile_tracks.profile_id', 'spotify_profiles.profile_id')
             ->limit($limit)
             ->get();
+
     }
 
 
@@ -109,6 +111,7 @@ class TrackController extends Controller
             'album_id'  => $element->track->album->id,
             'name'      => $element->track->album->name,
             'image_url' => $element->track->album->images[0]->url,
+            'image_thumb_url' => $element->track->album->images[1]->url,
             'link_to'   => $element->track->album->href,
         ];
 
@@ -196,6 +199,7 @@ class TrackController extends Controller
                     'name' => strtolower($a_genre),
                 ]
             );
+
             $artist->genres()->syncWithoutDetaching($genre);
         }
     }
@@ -212,6 +216,7 @@ class TrackController extends Controller
                      ->first();
     }
 
+    /**
      * Get top tracks from last 24 hours.
      *
      * @param  int $limit
