@@ -65,7 +65,7 @@ class TrackController extends Controller
                       ->attach($spotifyProfile->profile_id, ['played_at' => $played_at]);
                 $track->album->save($album->toArray());
                 $album->artists()->syncWithoutDetaching($artist->artist_id);
-
+                $track->artists()->syncWithoutDetaching($artist->artist_id);
                 $this->saveGenres($artist);
             }
         }
