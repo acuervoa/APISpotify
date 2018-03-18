@@ -7,7 +7,6 @@ use App\Artist;
 use App\Genre;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Spotify\SpotifySessionController;
-use App\Ranking;
 use App\SpotifyProfile;
 use App\Track;
 use Carbon\Carbon;
@@ -65,7 +64,7 @@ class TrackController extends Controller
                 $track->profiles()
                       ->attach($spotifyProfile->profile_id, ['played_at' => $played_at]);
                 $track->album->save($album->toArray());
-                $album->artists()->attach($artist->artist_id);
+                $album->artists()->syncWithoutDetaching($artist->artist_id);
 
                 $this->saveGenres($artist);
             }
@@ -111,7 +110,7 @@ class TrackController extends Controller
             'album_id'  => $element->track->album->id,
             'name'      => $element->track->album->name,
             'image_url' => $element->track->album->images[0]->url,
-            'image_thumb_url' => $element->track->album->images[1]->url,
+            'image_thumb_url' => $element->track->album->images[2]->url,
             'link_to'   => $element->track->album->href,
         ];
 

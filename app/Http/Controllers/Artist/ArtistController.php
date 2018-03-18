@@ -21,20 +21,28 @@ class ArtistController extends Controller
      */
     private static function getGroupedArtists($limit) {
 
-        $result = DB::table('profile_tracks')->select('track_id')->get();//select('track_id');
+        $result = DB::table('profile_tracks')
+            ->select('_id')
+            ->join('tracks', 'tracks.track_id', '=', 'profile_tracks.track_id')
+            ->join('album_artists', 'album_artists.album_id', '=', 'tracks.album_id')
+            ->join('artists', 'album_artists.artist_id', '=', 'artists.artist_id')
+            ->get();
+
+
+
         $artists = [];
         foreach($result as $a_track_id){
             dd($a_track_id);
             dd(Track::find($a_track_id));//->album->artists()->toArray();
         }
         dd($artists);
-//        $albums = DB::table('profile_tracks')
-//                    ->select('tracks')->load('albums')
-//                    ->toSql();
-//
-//             dd($albums);
+        $albums = DB::table('profile_tracks')
+                    ->select('tracks')->load('albums')
+                    ->toSql();
 
-    //    return $artists;
+             dd($albums);
+
+        return $artists;
     }
 
 
@@ -64,7 +72,6 @@ class ArtistController extends Controller
 
     public static function getArtistsCompleteData($artists_ids){
 
-        dd($artists_ids);
         return Artist::select()->whereIn('artist_id',$artists_ids)->get();
     }
 }

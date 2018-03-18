@@ -17,9 +17,9 @@ class CreateTracksTable extends Migration
             $table->string('track_id')->unique();
             $table->string('name');
             $table->string('album_id');
-            $table->string('preview_url');
-            $table->string('link_to');
-            $table->integer('duration_ms');
+            $table->string('preview_url')->nullable();
+            $table->string('link_to')->nullable();
+            $table->integer('duration_ms')->nullable();
             $table->timestamps();
         });
     }

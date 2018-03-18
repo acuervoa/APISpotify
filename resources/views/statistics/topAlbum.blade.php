@@ -45,7 +45,7 @@
                     <tr>
                         <td>{{ $indexKey + 1 }}</td>
                         <td>
-                        <img class="img-fluid rounded" src="{{ $a_album->image_thumb_url }}">
+                        <img class="img-thumbnail rounded" src="{{ $a_album->image_thumb_url }}">
                             {{ $a_album->name }}
                         </td>
                         <td>{{ $a_album->artists[0]->name  }}</td>

@@ -7,14 +7,14 @@
         <hr/>
         @include('statistics.topAlbum')
         <hr/>
-        <hr/>
-        @include('statistics.topArtist')
-        <hr/>
-        <hr/>
+        {{--<hr/>--}}
+        {{--@include('statistics.topArtist')--}}
+        {{--<hr/>--}}
+        {{--<hr/>--}}
         {{--@include('statistics.topGenre')--}}
         {{--<hr/>--}}
         {{--<hr/>--}}
-        {{--@include('statistics.lastSongs')--}}
+        @include('statistics.lastSongs')
 
 
     </div>
