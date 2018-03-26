@@ -24,7 +24,6 @@ class SpotifyProfilesSeeder extends Seeder
                 $track->artists()->attach($artist->artist_id);
                 $profile->tracks()->attach($track->track_id, ['played_at' => \Carbon\Carbon::now()]);
 
-
             }
         }
 
