@@ -21,28 +21,29 @@ class ArtistController extends Controller
      */
     private static function getGroupedArtists($limit) {
 
-        $result = DB::table('profile_tracks')
-            ->select('_id')
-            ->join('tracks', 'tracks.track_id', '=', 'profile_tracks.track_id')
-            ->join('album_artists', 'album_artists.album_id', '=', 'tracks.album_id')
-            ->join('artists', 'album_artists.artist_id', '=', 'artists.artist_id')
-            ->get();
 
+        $results = DB::table('artists')
+            ->select('artists.artist_id', 'name', 'results.total')
+            ->join(DB::raw(' 
+                    (
+                    select artist_tracks.artist_id, count(*) as total from artist_tracks where track_id in 
+                        (
+                            select track_id from tracks where track_id in
+                            (
+                                select track_id from profile_tracks
+                            )
+                        )
+                    group by artist_id
+                    order by total desc
+                    )
+                    as results'),
+                    function ($join) {
+                         $join->on('artists.artist_id', '=', 'results.artist_id');
+                    }
+            )->take($limit)->get();
 
+        return $results; // ->pluck('artist_id')->all() ;
 
-        $artists = [];
-        foreach($result as $a_track_id){
-            dd($a_track_id);
-            dd(Track::find($a_track_id));//->album->artists()->toArray();
-        }
-        dd($artists);
-        $albums = DB::table('profile_tracks')
-                    ->select('tracks')->load('albums')
-                    ->toSql();
-
-             dd($albums);
-
-        return $artists;
     }
 
 
@@ -53,7 +54,10 @@ class ArtistController extends Controller
     }
 
     public static function getArtistRanking($limit) {
-        return self::getGroupedArtists($limit);
+
+        $artists = self::getGroupedArtists($limit);
+
+        return $artists->pluck('artist_id')->all();
     }
 
     public static function getArtistInfo($album_ids) {

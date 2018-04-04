@@ -20,25 +20,39 @@ class AlbumController extends Controller
      *
      * @return mixed
      */
-    private static function getGroupedAlbums($limit) {
-        $albums = DB::table('albums')
-                    ->select('album_id', DB::raw('count(*) as total'))
-                    ->groupBy('album_id')
-                    ->orderBy('total', 'desc')
-                    ->take($limit)
-                    ->get();
+    private static function getGroupedAlbums($limit)
+    {
+        $results = DB::table('albums')
+            ->select('albums.album_id', 'name', 'results.total')
+            ->join(DB::raw(' 
+                    (
+                        select album_id, count(*) as total from tracks where track_id 
+                        in (select track_id from profile_tracks order by played_at desc)
+                        group by album_id
+                        order by total desc) as results'),
 
-        return $albums;
+                function ($join) {
+                    $join->on('albums.album_id', '=', 'results.album_id');
+                }
+            )->orderBy('total', 'desc')
+            ->take($limit)
+            ->get();
+
+
+        return $results;
     }
 
 
     public function rankingAlbums()
     {
-        return self::getAlbumsInfo(self::getAlbumsRanking(Ranking::MEDIUM));
+        $albums = self::getAlbumsRanking(Ranking::SHORT);
+
+        return self::getAlbumsInfo($albums);
 
     }
 
-    public static function getAlbumsRanking($limit) {
+    public static function getAlbumsRanking($limit)
+    {
         $albums = self::getGroupedAlbums($limit);
 
         return $albums->pluck('album_id')->all();
@@ -65,26 +79,30 @@ class AlbumController extends Controller
         return $albums->pluck('album_id')->all();
     }
 
-    public static function getAlbumsInfo($album_ids) {
-         return self::getAlbumsCompleteData($album_ids);
+    public static function getAlbumsInfo($album_ids)
+    {
+
+        return self::getAlbumsCompleteData($album_ids);
     }
 
     public static function getReproductions($a_album)
     {
 
         $reproductions = DB::table('tracks')
-                           ->select('album_id', DB::raw('count(*) as total'))
-                           ->where('album_id', $a_album->album_id)
-                           ->groupBy('album_id')
-                           ->first();
+            ->select('album_id', DB::raw('count(*) as total'))
+            ->where('album_id', $a_album->album_id)
+            ->groupBy('album_id')
+            ->first();
 
 
         return $reproductions;
     }
 
-    public static function getAlbumsCompleteData($album_ids){
-
-        return Album::select()->whereIn('album_id',$album_ids)->get();
+    public static function getAlbumsCompleteData($album_ids)
+    {
+        var_dump($album_ids);
+        $albums = Album::select()->whereIn('album_id', $album_ids)->get();
+        dd($albums);
     }
 
 }
