@@ -14,21 +14,23 @@ class GenreController extends Controller
      *
      * @return mixed
      */
-    private static function getGroupedGenres($limit) {
-        $albums = DB::table('genres')
-                    ->select('name', DB::raw('count(*) as total'))
-                    ->groupBy('name')
-                    ->orderBy('total', 'desc')
-                    ->take($limit)
-                    ->get();
+    private static function getTopGenres($limit) {
 
-        return $albums;
+        $genres = DB::table('artist_genres')
+            ->select('artist_genres.genre_id', DB::raw('count(*) as total'))
+            ->groupBy('artist_genres.genre_id')
+            ->orderBy('total', 'desc')
+            ->take($limit)
+            ->get();
+
+
+        return $genres;
     }
 
 
-    public static function rankingGenres()
+    public static function getGenresRanking($limit)
     {
-        return self::getGroupedGenres(Ranking::MEDIUM);
+        return self::getTopGenres($limit);
 
     }
 

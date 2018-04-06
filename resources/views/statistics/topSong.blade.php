@@ -20,7 +20,7 @@
         <h1 class="top1">#1</h1>
     </div>
     <div class="col-md-2">
-        <img src="{{ $tracks[0]->album->image_url }}"
+        <img src="{{ $tracks[0]->album->image_url_300x300 }}"
              alt="{{ $tracks[0]->album->name }}"
              class="img-fluid rounded">
     </div>
@@ -37,12 +37,13 @@
             &middot;
             Duration {{ gmdate('i:s', $tracks[0]->duration_ms / 1000) }}
             &middot;
+
+            <a class="playback button green">
+              <i class="fa fa-play" aria-hidden="true"></i>
+            </a>
             <audio preload id="audio-top1">
                 <source src="{{ $tracks[0]->preview_url }}">
             </audio>
-            <a class="button green" onclick="document.getElementById('audio-top1').play()">
-              <i class="fa fa-play" aria-hidden="true"></i>
-            </a>
 
         </div>
 
@@ -66,21 +67,18 @@
                     <tr>
                         <td>{{ $indexKey + 1 }}</td>
                         <td>
-                        <img class="img-fluid rounded img-thumbnail" src="{{ $a_track->album->image_thumb_url }}">
+                        <img class="img-fluid rounded img-thumbnail" src="{{ $a_track->album->image_url_64x64 }}">
                             {{ $a_track->name }}
                         </td>
                         <td>{{ $a_track->album->artists[0]->name  }}</td>
                         <td> Reproduced {{ $a_track->reproductions }} (pond. {{ $a_track->ponderatedReproductions }}) Times</td>
                         <td>
+                            <a class="playback button green">
+                                <i class="fa fa-play" aria-hidden="true"></i>
+                            </a>
                             <audio id="audio-{{$indexKey + 1}}">
                                 <source src="{{ $a_track->preview_url }}">
                             </audio>
-                            <a class="button green" onclick="document.getElementById('audio-{{$indexKey +1}}').play()">
-                                <i class="fa fa-play" aria-hidden="true"></i>
-                                {{--<span id="btn-pause-manage-{{ $indexKey +1 }}" style="display:none"><i
-                                            class="fa fa-pause" aria-hidden="true"></i></span>--}}
-                            </a>
-
                         </td>
                     </tr>
                 @endif

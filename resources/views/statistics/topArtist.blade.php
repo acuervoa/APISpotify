@@ -1,3 +1,5 @@
+
+
 <div class="row">
     <div class="col-md-12">
         <h1>Top Artist</h1>
@@ -9,8 +11,8 @@
     </div>
 
     <div class="col-md-2">
-        @if ($artists[0] && $artists[0]->images_url)
-            <img src="{{ $artists[0]->images_url }}"
+        @if ($artists[0] && $artists[0]->image_url_320x320)
+            <img src="{{ $artists[0]->image_url_320x320 }}"
                  alt="{{ $artists[0]->name }}"
                  class="img-fluid rounded">
         @endif
@@ -37,7 +39,7 @@
                     <tr>
                         <td>{{ $indexKey + 1 }}</td>
                         <td>
-                            <img class="img-fluid rounded imgArtist" src="{{ $a_artist->image_url }}">
+                            <img class="img-fluid rounded imgArtist" src="{{ $a_artist->image_url_160x160 }}">
                             {{ $a_artist->name }}
                         </td>
                         <td>Reproduced {{ $a_artist->reproductions }} times</td>

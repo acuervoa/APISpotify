@@ -29,4 +29,14 @@ class Artist extends Model
     public function tracks() {
         return $this->belongsToMany(Track::class, 'artist_tracks', 'artist_id', 'track_id');
     }
+
+    public static function getArtistCompleteData($artist_id)
+    {
+        $clientToken = SpotifySessionController::clientCredentials();
+
+        $spotifyWebAPI = new SpotifyWebAPI();
+        $spotifyWebAPI->setAccessToken($clientToken);
+
+        return $spotifyWebAPI->getArtist($artist_id);
+    }
 }

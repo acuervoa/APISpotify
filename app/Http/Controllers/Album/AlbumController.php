@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Album;
 
 use App\Album;
+use App\Artist;
 use Carbon\Carbon;
 
 use App\Http\Controllers\Spotify\SpotifySessionController;
@@ -20,14 +21,14 @@ class AlbumController extends Controller
      *
      * @return mixed
      */
-    private static function getGroupedAlbums($limit)
+    private static function getTopReproductionsAlbums($limit)
     {
         $results = DB::table('albums')
-            ->select('albums.album_id', 'name', 'results.total')
+            ->select('albums.album_id', 'results.total')
             ->join(DB::raw(' 
                     (
                         select album_id, count(*) as total from tracks where track_id 
-                        in (select track_id from profile_tracks order by played_at desc)
+                        in (select track_id from profile_tracks)
                         group by album_id
                         order by total desc) as results'),
 
@@ -35,28 +36,38 @@ class AlbumController extends Controller
                     $join->on('albums.album_id', '=', 'results.album_id');
                 }
             )->orderBy('total', 'desc')
+            ->orderBy('album_id', 'desc')
             ->take($limit)
             ->get();
 
 
-        return $results;
+
+        return $results->pluck('total', 'album_id')->all();
     }
 
-
-    public function rankingAlbums()
-    {
-        $albums = self::getAlbumsRanking(Ranking::SHORT);
-
-        return self::getAlbumsInfo($albums);
-
-    }
 
     public static function getAlbumsRanking($limit)
     {
-        $albums = self::getGroupedAlbums($limit);
+       $albums = self::getTopReproductionsAlbums($limit);
+       $response = [];
 
-        return $albums->pluck('album_id')->all();
+       foreach((array) $albums as $album_id => $reproductions) {
+           $album = Album::find($album_id)->load('artists');
 
+           if(!$album->image_url_640x640){
+               $infoAlbum = Album::getAlbumCompleteData($album_id);
+
+               $album->image_url_640x640 = $infoAlbum->images[0]->url;
+               $album->image_url_300x300 = $infoAlbum->images[1]->url;
+               $album->image_url_64x64 = $infoAlbum->images[2]->url;
+               $album->save();
+           }
+
+           $album->reproductions = $reproductions;
+           $response[] = $album;
+       }
+
+       return $response;
     }
 
     /**
@@ -67,42 +78,35 @@ class AlbumController extends Controller
      */
     public static function getAlbumsRankingLastDay($limit)
     {
-        $albums = DB::table('tracks')
-            ->select('album_id', DB::raw('count(*) as total'))
-            ->where('played_at', '>=', Carbon::now()->subDay())
-            ->groupBy('album_id')
-            ->orderBy('total', 'desc')
+
+        $results =  $results = DB::table('albums')
+            ->select('albums.*', 'results.total')
+            ->join(DB::raw(' 
+                    (
+                        select album_id, count(*) as total from tracks where track_id 
+                        in (select track_id from profile_tracks where played_at >=\''. Carbon::now()->subDay() . '\' )
+                        group by album_id
+                        order by total desc) as results'),
+
+                function ($join) {
+                    $join->on('albums.album_id', '=', 'results.album_id');
+                }
+            )->orderBy('total', 'desc')
             ->orderBy('album_id', 'desc')
             ->take($limit)
             ->get();
 
-        return $albums->pluck('album_id')->all();
-    }
 
-    public static function getAlbumsInfo($album_ids)
-    {
+//        $albums = DB::table('tracks')
+//            ->select('album_id', DB::raw('count(*) as total'))
+//            ->where('played_at', '>=', Carbon::now()->subDay())
+//            ->groupBy('album_id')
+//            ->orderBy('total', 'desc')
+//            ->orderBy('album_id', 'desc')
+//            ->take($limit)
+//            ->get();
 
-        return self::getAlbumsCompleteData($album_ids);
-    }
-
-    public static function getReproductions($a_album)
-    {
-
-        $reproductions = DB::table('tracks')
-            ->select('album_id', DB::raw('count(*) as total'))
-            ->where('album_id', $a_album->album_id)
-            ->groupBy('album_id')
-            ->first();
-
-
-        return $reproductions;
-    }
-
-    public static function getAlbumsCompleteData($album_ids)
-    {
-        var_dump($album_ids);
-        $albums = Album::select()->whereIn('album_id', $album_ids)->get();
-        dd($albums);
+        return $results->pluck('album_id')->all();
     }
 
 }

@@ -76,8 +76,8 @@ class SpotifySessionController extends Controller
         $this->spotifyWebAPI = new SpotifyWebAPI();
         $this->spotifyWebAPI->setAccessToken($this->spotifyAccessToken);
         $request = $this->spotifyWebAPI->me();
+
         $fields = [
-            'profile_id' => Uuid::uuid1()->toString(),
             'nick' => $request->id,
             'email' => $request->email,
             'display_name' => $request->display_name,
@@ -86,6 +86,7 @@ class SpotifySessionController extends Controller
             'image_url' => empty($request->images) ?: $request->images[0]->url,
             'accessToken' => $this->spotifyAccessToken,
         ];
+
         if (!empty($this->spotifyRefreshToken)) {
             $fields['refreshToken'] = $this->spotifyRefreshToken;
             Log::info('Refresh token for ' . $request->id);
@@ -94,7 +95,12 @@ class SpotifySessionController extends Controller
             $fields['expirationToken'] = $this->spotifyTokenExpirationTime;
         }
 
-        SpotifyProfile::updateOrCreate(['email' => $request->email], $fields);
+        $newProfile = SpotifyProfile::updateOrCreate(['email' => $request->email], $fields);
+
+        if (!$newProfile->profile_id) {
+            $newProfile->profile_id = Uuid::uuid1()->toString();
+            $newProfile->save();
+        }
 
     }
 
@@ -149,7 +155,7 @@ class SpotifySessionController extends Controller
             try {
                 if (!$this->refreshToken($a_profile->refreshToken)) {
                     //$a_profile->delete(['id' => (string)$a_profile->id ]);
-                    Log::info('El profile de ' . $a_profile->name . ' debe ser eliminado');
+                    Log::info('El profile de ' . $a_profile->name . '(' . $a_profile->email . ') debe ser eliminado');
                 }
             } catch (\Exception $e) {
                 Log::error($e->getMessage());

@@ -11,7 +11,7 @@
         <h1 class="top1">#1</h1>
     </div>
     <div class="col-md-2">
-        <img src="{{ $albums[0]->image_url }}"
+        <img src="{{ $albums[0]->image_url_300x300 }}"
              alt="{{ $albums[0]->name }}"
              class="img-fluid rounded">
     </div>
@@ -45,7 +45,7 @@
                     <tr>
                         <td>{{ $indexKey + 1 }}</td>
                         <td>
-                        <img class="img-thumbnail rounded" src="{{ $a_album->image_thumb_url }}">
+                        <img class="img-thumbnail rounded" src="{{ $a_album->image_url_64x64 }}">
                             {{ $a_album->name }}
                         </td>
                         <td>{{ $a_album->artists[0]->name  }}</td>

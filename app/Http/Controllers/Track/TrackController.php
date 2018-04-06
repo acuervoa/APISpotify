@@ -10,9 +10,11 @@ use App\Http\Controllers\Spotify\SpotifySessionController;
 use App\SpotifyProfile;
 use App\Track;
 use Carbon\Carbon;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use SpotifyWebAPI\SpotifyWebAPI;
+
 
 class TrackController extends Controller
 {
@@ -28,7 +30,7 @@ class TrackController extends Controller
         return view('tracks.users', compact('list'));
     }
 
-    public function getRecentTracks():array
+    public function getRecentTracks(): array
     {
         $spotifyWebAPI = new SpotifyWebAPI();
         $spotifyProfiles = SpotifyProfile::orderBy('nick', 'asc')->get();
@@ -38,48 +40,68 @@ class TrackController extends Controller
             try {
                 $spotifyWebAPI->setAccessToken($a_spotifyProfile->accessToken);
                 $recentTracks = $spotifyWebAPI->getMyRecentTracks();
-                $list[$a_spotifyProfile->nick] = $recentTracks;
-                $this->saveRecentTracksInfo($recentTracks, $a_spotifyProfile);
+                $list[$a_spotifyProfile->profile_id] = $recentTracks;
             } catch (\Exception $e) {
                 Log::error('I can\'t recovery data from ' . $a_spotifyProfile->nick . ' -- ' . $e->getMessage());
             }
         }
 
+        $this->saveRecentTracksInfo($list);
         return $list;
     }
 
-    public function saveRecentTracksInfo($array, $spotifyProfile)
+    public function saveRecentTracksInfo($recentTracksInfo)
     {
-        $items = $array->items;
 
-        foreach ($items as $element) {
-            $played_at = (new Carbon($element->played_at))->toDateTimeString();
+        foreach ($recentTracksInfo as $profile_id => $elements) {
 
-            $track = $this->saveTrackInfo($element);
-            $album = $this->saveAlbumInfo($element);
-            $artist = $this->saveArtistInfo($element);
+            $profile = SpotifyProfile::find($profile_id)->load('tracks');
 
-            if (!$this->isTrackProfilePlayedAlreadySaved($track, $played_at))
-            {
-                $track->profiles()
-                      ->attach($spotifyProfile->profile_id, ['played_at' => $played_at]);
-                $track->album->save($album->toArray());
-                $album->artists()->syncWithoutDetaching($artist->artist_id);
-                $track->artists()->syncWithoutDetaching($artist->artist_id);
-                $this->saveGenres($artist);
+            foreach($elements as $a_element) {
+
+                $played_at = (new Carbon($a_element['played_at']))->toDateTimeString();
+
+                dd($a_element->track);
+                $track = $this->saveTrackInfo($a_element->track);
+
             }
+//
+//            $album = $this->saveAlbumInfo($element);
+//            $artist = $this->saveArtistInfo($element);
+//
+//            if (!$this->isTrackProfilePlayedAlreadySaved($track, $played_at))
+//            {
+//                $track->profiles()
+//                      ->attach($spotifyProfile->profile_id, ['played_at' => $played_at]);
+//                $track->album->save($album->toArray());
+//                $album->artists()->syncWithoutDetaching($artist->artist_id);
+//                $track->artists()->syncWithoutDetaching($artist->artist_id);
+//                $this->saveGenres($artist);
+//            }
         }
     }
 
     public static function getLastTracks($limit)
     {
-        return DB::table('profile_tracks')
+        $lastTracks = DB::table('profile_tracks')
             ->orderby('played_at', 'desc')
-            ->join('tracks', 'profile_tracks.track_id', 'tracks.track_id')
-            ->join('spotify_profiles', 'profile_tracks.profile_id', 'spotify_profiles.profile_id')
             ->limit($limit)
             ->get();
 
+        $response = [];
+
+        foreach ($lastTracks as $index => $profileTrack) {
+            $profile = SpotifyProfile::find($profileTrack->profile_id);
+            if (NULL === $profile) Log::info($profileTrack->profile_id . ' is null?');
+            $track = Track::find($profileTrack->track_id)->load('album', 'artists');
+            $played = $profileTrack->played_at;
+
+            $response[$index]['profile'] = $profile;
+            $response[$index]['track'] = $track;
+            $response[$index]['played'] = $played;
+        }
+
+        return $response;
     }
 
 
@@ -88,13 +110,14 @@ class TrackController extends Controller
      *
      * @return array
      */
-    private function getTrackInfo($element): array {
+    private function getTrackInfo($element): array
+    {
         return [
-            'track_id'    => $element->track->id,
-            'name'        => $element->track->name,
-            'album_id'    => $element->track->album->id,
+            'track_id' => $element->track->id,
+            'name' => $element->track->name,
+            'album_id' => $element->track->album->id,
             'preview_url' => $element->track->preview_url,
-            'link_to'     => $element->track->href,
+            'link_to' => $element->track->href,
             'duration_ms' => $element->track->duration_ms
         ];
 
@@ -105,13 +128,15 @@ class TrackController extends Controller
      *
      * @return array
      */
-    private function getAlbumInfo($element): array {
+    private function getAlbumInfo($element): array
+    {
         return [
-            'album_id'  => $element->track->album->id,
-            'name'      => $element->track->album->name,
-            'image_url' => $element->track->album->images[0]->url,
-            'image_thumb_url' => $element->track->album->images[2]->url,
-            'link_to'   => $element->track->album->href,
+            'album_id' => $element->track->album->id,
+            'name' => $element->track->album->name,
+            'image_url_640x640' => $element->track->album->images[0]->url,
+            'image_url_300x300' => $element->track->album->images[1]->url,
+            'image_url_64x64' => $element->track->album->images[2]->url,
+            'link_to' => $element->track->album->href,
         ];
 
     }
@@ -121,11 +146,12 @@ class TrackController extends Controller
      *
      * @return array
      */
-    private function getArtistInfo($element): array {
+    private function getArtistInfo($element): array
+    {
         return [
             'artist_id' => $element->track->artists[0]->id,
-            'name'      => $element->track->artists[0]->name,
-            'link_to'   => $element->track->artists[0]->href,
+            'name' => $element->track->artists[0]->name,
+            'link_to' => $element->track->artists[0]->href,
         ];
 
     }
@@ -135,7 +161,8 @@ class TrackController extends Controller
      *
      * @return mixed
      */
-    private function getGenresFromArtist($artist) {
+    private function getGenresFromArtist($artist)
+    {
         $spotifyWebAPI = $this->getSpotifyWebAPI();
         $artist_id = $artist->artist_id;
         $artistInfo = $spotifyWebAPI->getArtist($artist_id);
@@ -150,7 +177,8 @@ class TrackController extends Controller
      *
      * @return mixed
      */
-    private function saveTrackInfo($element) {
+    private function saveTrackInfo($element)
+    {
         return Track::firstOrCreate([
             'track_id' => $element->track->id,
             'album_id' => $element->track->album->id
@@ -164,8 +192,9 @@ class TrackController extends Controller
      *
      * @return mixed
      */
-    private function saveAlbumInfo($element) {
-        return  Album::firstOrCreate([
+    private function saveAlbumInfo($element)
+    {
+        return Album::firstOrCreate([
             'album_id' => $element->track->album->id
         ], $this->getAlbumInfo($element));
 
@@ -177,7 +206,8 @@ class TrackController extends Controller
      *
      * @return mixed
      */
-    private function saveArtistInfo($element) {
+    private function saveArtistInfo($element)
+    {
         return Artist::firstOrCreate([
             'artist_id' => $element->track->artists[0]->id
         ], $this->getArtistInfo($element));
@@ -191,16 +221,16 @@ class TrackController extends Controller
     private function saveGenres($artist)
     {
         $genres = $this->getGenresFromArtist($artist);
+        $artist->genres()->syncWithoutDetaching($genres);
 
-        foreach ($genres as $a_genre) {
-            $genre = Genre::firstOrCreate(
-                [
-                    'name' => strtolower($a_genre),
-                ]
-            );
-
-            $artist->genres()->syncWithoutDetaching($genre);
-        }
+//        foreach ($genres as $a_genre) {
+//            $genre = Genre::firstOrCreate(
+//                [
+//                    'name' => strtolower($a_genre),
+//                ]
+//            );
+//
+//        }
     }
 
     /**
@@ -209,10 +239,11 @@ class TrackController extends Controller
      *
      * @return mixed
      */
-    private function isTrackProfilePlayedAlreadySaved($track, $played_at) {
+    private function isTrackProfilePlayedAlreadySaved($track, $played_at)
+    {
         return $track->profiles()
-                     ->wherePivot('played_at', '=', $played_at)
-                     ->first();
+            ->wherePivot('played_at', '=', $played_at)
+            ->first();
     }
 
     /**
@@ -236,11 +267,11 @@ class TrackController extends Controller
     }
 
 
-
     /**
      * @return \SpotifyWebAPI\SpotifyWebAPI
      */
-    private function getSpotifyWebAPI(): \SpotifyWebAPI\SpotifyWebAPI {
+    private function getSpotifyWebAPI(): \SpotifyWebAPI\SpotifyWebAPI
+    {
 
         $clientToken = SpotifySessionController::clientCredentials();
         $spotifyWebAPI = new SpotifyWebAPI();
@@ -250,11 +281,8 @@ class TrackController extends Controller
     }
 
 
-
-
-
-
-    public function saveAllAlbums() {
+    public function saveAllAlbums()
+    {
         $tracksGroups = Track::all()->pluck('track_id')->chunk(50)->toArray();
         foreach ($tracksGroups as &$a_track_group) {
             $tracksInfo = Track::getTracksCompleteData($a_track_group);
@@ -262,7 +290,7 @@ class TrackController extends Controller
                 foreach ($a_track as $track) {
 
                     Track::where(['track_id' => $track->id])
-                         ->update(['album_id' => $track->album->id]);
+                        ->update(['album_id' => $track->album->id]);
                     $this->saveArtist($track);
 
                 }
@@ -274,9 +302,9 @@ class TrackController extends Controller
     {
 
         $artistsGroups = Artist::all()
-                               ->pluck('artist_id')
-                               ->chunk(50)
-                               ->toArray();
+            ->pluck('artist_id')
+            ->chunk(50)
+            ->toArray();
         foreach ($artistsGroups as $a_artistGroup) {
             $artistsInfo = Artist::getArtistsCompleteData($a_artistGroup);
             foreach ($artistsInfo as $a_artist_group) {
@@ -326,9 +354,9 @@ class TrackController extends Controller
     {
         $flag = Carbon::now();
         $getLastFlag = DB::table('tracks')
-                         ->select()
-                         ->orderby('played_at', 'desc')
-                         ->first();
+            ->select()
+            ->orderby('played_at', 'desc')
+            ->first();
         $lastFlag = Carbon::parse($getLastFlag->played_at);
 
         return $lastFlag->diffInMinutes($flag, FALSE);
@@ -342,12 +370,12 @@ class TrackController extends Controller
         foreach ($profiles as $profile) {
 
             $tracks = DB::table('tracks')
-                        ->select()
-                        ->where('tracked_by', $profile->nick)
-                        ->orderby('played_at', 'desc')
-                        ->limit(20)
-                        ->join('')
-                        ->get();
+                ->select()
+                ->where('tracked_by', $profile->nick)
+                ->orderby('played_at', 'desc')
+                ->limit(20)
+                ->join('')
+                ->get();
             $list[$profile->nick] = $tracks;
         }
 

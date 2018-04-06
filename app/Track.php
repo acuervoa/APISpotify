@@ -60,7 +60,9 @@ class Track extends Model
                 $album = $track->album;
 
                 $album->name = $trackInfo->album->name;
-                $album->image_url = isset($trackInfo->album->images[0]) ? $trackInfo->album->images[0]->url : '';
+                $album->image_url_640x640 = isset($trackInfo->album->images[0]) ? $trackInfo->album->images[0]->url : '';
+                $album->image_url_300x300 = isset($trackInfo->album->images[1]) ? $trackInfo->album->images[0]->url : '';
+                $album->image_url_64x64 = isset($trackInfo->album->images[2]) ? $trackInfo->album->images[0]->url : '';
                 $album->link_to = $trackInfo->album->href;
 
                 $album->save();
