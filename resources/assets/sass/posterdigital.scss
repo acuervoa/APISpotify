@@ -22,8 +22,28 @@
         font-size: 3rem;
         font-weight: bold;
         position: absolute;
-        right: 100px;
         top: 80px;
+        left: 25px;
+
+        &.logo {
+            width: 181px;
+            height: 57px;
+            right: 100px;
+            left: unset;
+            top: 90px;
+
+            &::after {
+                content: "";
+                background: url('/img/logo.png');
+                background-size: cover;
+                background-repeat: no-repeat;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                position: absolute;
+            }
+        }
     }
 
     .col-results {
@@ -41,6 +61,12 @@
     margin-bottom: 40px;
     font-size: 3rem;
     font-weight: bold;
+
+    .principal & p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 
     .secondary & {
         margin-bottom: 50px;
