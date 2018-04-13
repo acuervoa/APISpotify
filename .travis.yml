@@ -1,11 +1,29 @@
 language: php
 php:
-  - '7.0'
+- '7.0'
+env:
+  global:
+  - secure: VKhAK35HmV5hVc9EyZOppZeLGB1N7wt4XGStjcnA3OWG3fstVM201zbHAmNRw0/goQlD0tkLFrbLaUYtEhLUSgJ639sYiWwCdfz28iHE67yXF+EltxwJ31pwd/Eq3Ocbh5XAZ727k9GwcXhqwI1xGhimfsdzKCoihnIvUcSMkDONnyNIvjUPZwxJG2IbvI7OfE//W7w9BH/FYwOq65n5DJoZqetZKWO4A39FD3QRHQpfSibMDx4rm4sXC0j0GUCiMj1Gh+GVoEocdNsj67hVYrDk7wOztbfZ4gsnZe5fFlON5U4Vtv4P5EmOMqzgey2xq+mjuzgwq+79t6eLNldt9jH7Y07ewcZRP8zsul8ikZAItHPn+rqpUELwouiT70Q/WXhKKF3SQ3j4z8JIMFX+5TpQe1ieZtOvc/gG8pAyO/evI7FxggaG1BH9QMbFqAGB2NAvXtyJRz+ZmJRtjLhf4MIdcRT9IdD09dO50imkjdHu25yeA6JcDQlAt9FCNoiC0CyzuKykSohHvKZEJcb1TerXCKq3m2gOHq8sWkg2XTrDLdyUAJ7HHEmuOR3izj2qidLB3Bwy6mp6/oQ8q3fUnQ4RrsMTH16cCTPStv/EIZ/fir0SiTyvuCqIkCxhFkSX1pKu5yXOJAwmbfNnjbO0qS0qdWwzAnh6tSi2XT6abiY=
+  - secure: QeaLudpJuAmBOjtwyhtk2J8NsTM1E7LnTZt7QrDbGBXt4dMj+4z9JseLFvOqiRkDX+mCWtdy8pinemMufqLYaG8LDl2Q1K7qTszZxN+OD9NONjYlj6pXXwa16reV9C44zN8Pw7GJxb+X48yFhYIrB7pZnVJP+jQaU2A5o7XGuHmckHVmipdV6SgFsjfs4f6+5QaeWacpooVz6T68r75AgohKU5ogQa12lzyX+oe7DQZ2GbASIWjkydC+HTgIKnuVtcGK05C8I9lyCOQQSQ/nfZHOMKWiEBlAoyEoavwCOLLZVQLtQYRESp7eiKX51EO+hDXKxV+RdxlfS/w96LxaR0ZAMeK1OZwpdqMOs1BuFUholCv4BbzR3K5T/Rt0gqm+MFl/JRSZm4fdHdivViVPPRxwMUq42iLIQHSW3ikphwwGllvepeXXP2wKj020QXTzy6GqWRaQWgytCzSF9jC8OvdYspx30pN90Qo1Be5sXyP9mpk5uA4uVAGrUmj/T3U87mijigmxRfEU3J8608Ps/L7SJaULgPhBgputTVwQ6W6uGaQ/iUlzwmRxm6UwMFc4JAjVEOMJH8WVUiCUL1FQmsveSAgtGpB8+aD/r7VoB0S+s+UtX/hKI71OGZ01SzSv4hg0HMFWM4aQ37bkbquFXuwvqXgfUBkc4nUYihWn898=
+  - secure: WOZRXZaGFn8CY3z+pTZGOui1cfjyoND6+lPu/BcmpzV7OOkW0iko2DToRwS+GTF1mDmmv6uvY1dSModMl8osPDw+Zsi0yjs/UEPIcG4JiIFFwkg4JQbVWB1vVB9D9uoz4X3+aSbc+sT0AfwST7Q8wDjdbQ39HWWvIiG6DSWUeGv90Y0VuOWJhDA6yrQJZ51cLeVfTRjz4QmSpxGnvz+yIt8YPEKmjFYcE2NYagUpTiNfUwGQr/oFo5IaBHvU/gG0kxP6NTt3V2jC893beEE54lfGAReM+fdiZccdZz9Gp9jk1Jp0f3Bow8OyOCxTADJvaVJslwuaiwXcak98aRTfWnR3joB/Zqkf7BOtErcsH3p6lsD9z+a7tPTb8iLj0EV1vJ2JGqJ5eIqh7QnwcOyjudKjPQ8/15eFQw9ss+FxIM3pX6wN1WnBVukVtymx8emccOdyt6gGdxYuhNnB8EYoClPftSNvWHNoIr0irv/bstgKomguuz0hY+LJHpIoyaAXwcg1jc86n4e0VSGahQ+8Cx6eAnsJm0Ez9yS/hnjrgpnW/UGyLJUESwDoyfKlLX1TZHtuX9ica5oedJjpFB2cG3HaMt9292RcCO2S11LLwnETMGjJ9sarqhl2s1N+AE5w/Lk7jZbYlLowsvgo0i10kIr+FQ8+ZehsgS5+RfQLkHE=
+before_install:
+- phpenv config-rm xdebug.ini
+- mv .env.travis .env
+- composer self-update
+install:
+- composer install --no-interaction
+- npm install
 before_script:
-  - cp .env.travis .env
-  - mysql -e 'create database homestead_test;'
-  - composer self-update
-  - composer install --no-interaction
+- mysql -e 'CREATE DATABASE homestead_test;'
+- php artisan key:generate
 script:
-  - php artisan key:generate
-  - vendor/bin/phpunit
+- vendor/bin/phpunit
+after_script:
+- git config git-ftp.url $FTP_SITE
+- git config git-ftp.user $FTP_USERNAME
+- git config git-ftp.password $FTP_PASSWORD
+- git ftp push
+cache:
+  directories:
+  - framework/node_modules
+  - framework/vendor
