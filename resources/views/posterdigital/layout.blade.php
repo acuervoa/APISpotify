@@ -10,13 +10,13 @@
 
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,700' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="{{ asset('css/posterdigital.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/posterdigital.css') }}?random={{ rand(10000) }}">
     </head>
     <body class="posterdigital">
 
         @yield('content')
 
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/app.js') }}?random={{ rand(10000) }}"></script>
     </body>
 </html>
