@@ -62,35 +62,9 @@ jobs:
   phpunit-71:
      <<: *phpunit
 
-  code-fixer:
-    <<: *defaults
-
-    steps:
-      - checkout
-
-      - run:
-          <<: *install_composer
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "composer.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run: composer install -n --prefer-dist
-
-      - save_cache:
-          paths:
-            - ./vendor
-          key: v1-dependencies-{{ checksum "composer.json" }}
-
-      # run tests!
-      - run: vendor/bin/php-cs-fixer fix -v --dry-run --stop-on-violation --using-cache=no --path-mode=intersection -- src tests
 
 workflows:
   version: 2
   test_and_lint:
     jobs:
       - phpunit-71
-      - code-fixer
