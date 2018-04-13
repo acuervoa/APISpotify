@@ -25,9 +25,29 @@
 #app h2 {
   font-size: 60px;
   position: absolute;
-  font-weight: 100;
-  left: 80px;
+
   top: 80px;
+  left: 25px;
+}
+
+#app h2.logo {
+  width: 181px;
+  height: 57px;
+  right: 100px;
+  left: unset;
+  top: 90px;
+}
+
+#app h2.logo::after {
+  content: "";
+  background: url("/img/logo.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
 }
 
 #app .col-results {
@@ -110,11 +130,16 @@
   padding: 0;
 }
 
-#app .secondary .item .name {
-  color: #FFFFFF;
-  font-size: 30px;
-  margin-top: 16px;
-  padding: 0;
+
+.principal .item p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.secondary .item {
+  margin-bottom: 50px;
+
 }
 
 #app .item {

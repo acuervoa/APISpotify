@@ -41,7 +41,7 @@ Vue.component('result', {
                 <p class="name"> {{ item.name }} </p>
             </div>
     </div>`
-})
+});
 
 const app = new Vue({
     el: '#app',
@@ -71,12 +71,12 @@ const app = new Vue({
                     type: 'get',
                     url: '/api/tops/3',
                     success: function (response) {
-                        self.tracks = response.tracks
-                        self.albums = response.albums
+                        self.tracks = response.tracks;
+                        self.albums = response.albums;
                         resolve()
                     }
                 })
-            })
+        })
         },
         toggle() {
             if (this.show === 'tracks') {
@@ -94,5 +94,6 @@ const app = new Vue({
             setInterval(this.toggle, 1000 * 15 * 1)
         })
         setInterval(this.fetch, 1000 * 60 * 30)
+
     },
 });
