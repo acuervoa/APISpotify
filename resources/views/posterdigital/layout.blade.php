@@ -10,7 +10,7 @@
 
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,700' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="/css/posterdigital.css">
+        <link rel="stylesheet" href="{{ asset('css/posterdigital.css') }}">
     </head>
     <body class="posterdigital">
 

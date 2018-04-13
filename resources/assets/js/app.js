@@ -33,19 +33,13 @@ Vue.component('result', {
         },
     },
     template: `<div class="item">
-        <div :class="{ row: index != 0 }">
-            <div
-                :class="{ 'col-md-6': index != 0 }"
-                class="image-container">
+            <div class="image-container">
                 <img class="image img-fluid rounded" :src="item.image"/>
             </div>
-            <div
-                :class="{ 'col-md-6': index != 0 }"
-                class="info-container">
+            <div class="info-container">
                 <p class="artist"> {{ item.artist }} </p>
                 <p class="name"> {{ item.name }} </p>
             </div>
-        </div>
     </div>`
 });
 
