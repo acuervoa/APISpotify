@@ -2,22 +2,42 @@
 #
 # Check https://circleci.com/docs/2.0/language-php/ for more details
 #
-version: 2
-jobs:
-  build:
-    docker:
+
+defaults: &defaults
+  docker:
       # specify the version you desire here
-      - image: circleci/php:7.1.5-browsers
+      - image: circleci/php:7.1
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mysql:9.4
 
-    working_directory: ~/repo
+  working_directory: ~/repo
 
+install_composer: &install_composer
+    command: |
+        cd /tmp
+        EXPECTED_SIGNATURE=$(curl -q https://composer.github.io/installer.sig)
+        php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+        ACTUAL_SIGNATURE=$(php -r "echo hash_file('SHA384', 'composer-setup.php');")
+        if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]
+        then
+            >&2 echo 'ERROR: Invalid installer signature'
+            rm composer-setup.php
+            exit 1
+        fi
+        sudo php composer-setup.php --quiet --install-dir /usr/local/bin --filename composer
+        RESULT=$?
+        rm composer-setup.php
+        exit $RESULT
+phpunit: &phpunit
+    <<: *defaults
     steps:
       - checkout
+
+      - run:
+          <<: *install_composer
 
       # Download and cache dependencies
       - restore_cache:
@@ -34,4 +54,85 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
 
       # run tests!
-      - run: phpunit
+      - run: vendor/bin/phpunit
+
+phpunit-lowest: &phpunit-lowest
+    <<: *defaults
+    steps:
+      - checkout
+
+      - run:
+          <<: *install_composer
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "composer.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: composer update --prefer-lowest
+
+      - save_cache:
+          paths:
+            - ./vendor
+          key: v1-dependencies-{{ checksum "composer.json" }}
+
+      # run tests!
+      - run: vendor/bin/phpunit
+
+version: 2
+jobs:
+  phpunit-56-lowest:
+    <<: *phpunit-lowest
+    docker:
+         - image: circleci/php:5.6
+
+  phpunit-56:
+     <<: *phpunit
+     docker:
+         - image: circleci/php:5.6
+
+  phpunit-70:
+     <<: *phpunit
+     docker:
+         - image: circleci/php:7.0
+
+  phpunit-71:
+     <<: *phpunit
+
+  code-fixer:
+    <<: *defaults
+
+    steps:
+      - checkout
+
+      - run:
+          <<: *install_composer
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "composer.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: composer install -n --prefer-dist
+
+      - save_cache:
+          paths:
+            - ./vendor
+          key: v1-dependencies-{{ checksum "composer.json" }}
+
+      # run tests!
+      - run: vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no --path-mode=intersection -- src tests
+
+workflows:
+  version: 2
+  test_and_lint:
+    jobs:
+      - phpunit-56-lowest
+      - phpunit-56
+      - phpunit-70
+      - phpunit-71
+      - code-fixer
