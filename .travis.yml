@@ -1,11 +1,29 @@
 language: php
 php:
-  - '7.0'
+- '7.0'
+before_install:
+- phpenv config-rm xdebug.ini
+- mv .env.travis .env
+- composer self-update
+install:
+- composer install --no-interaction
+- npm install
 before_script:
-  - cp .env.travis .env
-  - mysql -e 'create database homestead_test;'
-  - composer self-update
-  - composer install --no-interaction
+- mysql -e 'CREATE DATABASE homestead_test;'
+- php artisan key:generate
 script:
-  - php artisan key:generate
-  - vendor/bin/phpunit
+- vendor/bin/phpunit
+after_script:
+- git config git-ftp.url $FTP_SITE
+- git config git-ftp.user $FTP_USERNAME
+- git config git-ftp.password $FTP_PASSWORD
+- git ftp push
+cache:
+  directories:
+  - framework/node_modules
+  - framework/vendor
+env:
+  global:
+  - secure: sLNCqoGYRqKgFeNcSwWkd2KuojuQI+k8rDyx43ktH4y2k/o4KW+LulnfytbwKyQqdyTQLcjGg0A3adQgSK1qpeUbUSmlYpro/AaMA7kxKWuYZiGa7i7lNquoSshzEiGM68HDa336vYJuU7XILbOiHZVpiXHj5oMdcyTzE15aIYykgKM5/Rx8jBiUae2+tYU8D5ErOgy4lB8pdPVL01iHy2IgcZLPw1zkc7xyctKnh/rwGPtOm7lDsx7zakub24nZAru96HrOO8MmREsjXUIrh5zaaMQMMaGYShMOzVVXF9LFvloa0PdJ4rwBcMKg/x3P/bh0t9vJ7wHj6vWeswoiftoQy1O1AnKsGEMiFysCFLWk/YSSEoyAIhAEOpsyvEeJuF12gLhx3D0A8tyUb3wIMSPAeImXOBFsoWjZ/NDR8JXcK6H874Pv/dlHHUEXisywllbQKe5y1UHYQhpanbbAsG6XnfB15UihGi3PJ/WTA7vOJDxNizXJ/gDBZV1FJe21EMnTf47ftSoHFivtsABvsqUAiaj/g7sPYJHKFTq0dHJsYXU65K+JlfKi4ELQ37x1BhN9eJNL0HqBigq2xlzdCvGbwO1vl5i5Afo8DrDwM9VZRv6+tjcWYWE22muV6leRy8FpGHtMwBIg+eqCDRpKa56Dprvx8nYm2iTfz4jey/U=
+  - secure: oZ0mwew+2tzeTkWVo3/1QaXL2AcnzwK4zBnhNk9FTHzYEmk43L73qktzej58deLXFSw3pBmdi/JpR9r4GyOYywk5KdtQRFMiztOvXWge0WUq/3HDDS0ChZGE08BChHuENIAfofAHQYtWAMAy8cNy5oOvjdNvVTmuUtSyZk0rkgyCbN5GjjdvFHmL0D1nT6AjUJ/jfkKMsg5RNJu5lrjksYhPMnNLCho9WFhUR/dfE0F8AlXekyW27VNZ2kjbqqXk9VI0X9bGSoG7RiVa8vvQC+QBZDnrYZpN9YotSAPlhoyMon80mWY4LHyu9blIm3uxcOnI4R2ft6T84lpkw2N/N6MH7ifwbP1aNG4Hyykn8vwpS6DTb7Rcknwm03DZJJ5WeDVjJoaDiEZnUIlSR6JRrIBHR5/6gRlZayTOgdRs9ZohySVKirJ3k9Mr7si6QiM4HYymMILeQtL+hArnQrkQGDHH2ijfhsR/OyEmNroZz0Z7bUW5Ogl36wDimRskqBFOKHO1sVApAFXE+UIuIVQtS8D/gia+YnHu6T8NyPy8piq6ToxuUuH01UGTykoFbNeRnPLc7FcFI0JPhVzlqvGm2qN/0XwliODMPY502GEHYZGW8ZnwsPC/o3HQtSON9YOdlebxqJMdwCcbAf8G5hMIK5cCGBJohuzOrGEhjMvXlg4=
+  - secure: n4/A8oBcnFasWzveQXteY9JyEaxvOTXhb7JXnwX8bABtHTADToj9UM+pyjlYHxCft7UIaVPz3KJ1qmNrXTur0+3mJGSpQXkUn3gT7ebnf0mGXC5A9Od2A8EanICHGRmhTAPcr/bH8PMOnRJIZcFJv/S8WfmnZPLYHXISYUhKgfONlLDgu6gGJ9+mjhLMtZPkbcwkXrEPpbuj3CU/UuiVNEEIL6CVxGNN4UWdZ9xAnwT7b8+wxtKPOH9tIo+DLPp+laQ5gQx1C1r1wJkMtrw/zgQQD9dNC8UiBN6nqx54VmNk3yt0+1iUgLxIWwuByz7tYKXkhBMUx9SKnH3EyI0z9nYv1kT3tbyHdhWYht/rjUGayS3qa0NvZuHF1UBX/PgChPtuf+0mLW/J4rPBDySuZeyYDr6AgBQbXXoXeanVNuEOUHNEiE4sEdJSWEeohjrFDdQLtoDPLDzUHkBq2xwfpQ8B3BgjBQqFH20uKl/Qg//0kBxM/EVpoivGnFpJpwjMAdbOu94g4M1eXL/KiOpPwNGbzdrUI6BkWFb8nUW8jcFxyI4jbGmTKPxKF2PBHKIBv3y+X9u/XT4HqT3ivxOGb1nvrqpmcmNmy/jp209Uhq7EcyP2OeWbxFtLjJLGTPEunFYC5XD/Uhy5aLu6t3fjm8hh6+eEE7RvymxZH44ajog=
