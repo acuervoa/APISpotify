@@ -26,3 +26,6 @@ Route::group(['prefix' => 'posterdigital'], function () {
     Route::get('/tops', 'Ranking\RankingController@showPosterDigitalTops');
 
 });
+
+
+Route::get('/refactorDB', 'RefactorDB\RefactorDBController@refactorGenresWithArtistIdNull');

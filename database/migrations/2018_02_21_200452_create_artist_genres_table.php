@@ -13,8 +13,8 @@ class CreateArtistGenresTable extends Migration
      */
     public function up()
     {
-        Schema::create('artist_genres', function (Blueprint $table) {
-            $table->string('artist_id');
+        Schema::create('albums_genres', function (Blueprint $table) {
+            $table->string('album_id');
             $table->string('genre_id');
             $table->timestamps();
         });
@@ -27,6 +27,6 @@ class CreateArtistGenresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('artist_genres');
+        Schema::dropIfExists('albums_genres');
     }
 }
