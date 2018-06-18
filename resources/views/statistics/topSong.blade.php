@@ -30,7 +30,7 @@
         <h4>{{ $tracks[0]->album->name }}</h4>
 
         <h1 class="song">{{ $tracks[0]->name }}</h1>
-        <p>{{ $tracks[0]->ponderatedReproductions }} ponderated times reproduced <br>
+        {{--<p>{{ $tracks[0]->ponderatedReproductions }} ponderated times reproduced <br>--}}
             {{ $tracks[0]->reproductions }} times reproduced</p>
         <div class="byAuthor">
             By <a href="#">{{ $tracks[0]->album->artists[0]->name }}</a>

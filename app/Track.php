@@ -51,7 +51,7 @@ class Track extends Model
         foreach($track_ids as $track_id){
             $track = self::with(['album'])->find($track_id);
 
-            if(empty($track->preview_url)) {
+            if(empty($track->link_to)) {
                 $trackInfo = $spotifyWebAPI->getTrack($track_id);
                 $track->preview_url = $trackInfo->preview_url;
                 $track->link_to = $trackInfo->href;
@@ -79,20 +79,9 @@ class Track extends Model
 
             $reproductions = self::getReproductions($a_track);
             $a_track->reproductions = $reproductions->total;
-            $profiles = self::getProfileReproductions($reproductions);
-
-            $ponderatedReproductions = 0;
-            foreach ($profiles as $a_profile) {
-                $ponderatedReproductions += $a_profile->ponderatedReproductions;
-            }
-
-            $a_track->ponderatedReproductions = (int)sqrt($ponderatedReproductions);
 
             usort($tracks, function ($a, $b) {
-                if ($a->ponderatedReproductions === $b->ponderatedReproductions) {
-                    return ($a->reproductions <= $b->reproductions) ? -1 : 1;
-                }
-                return ($a->ponderatedReproductions > $b->ponderatedReproductions) ? -1 : 1;
+                return ($a->reproductions <= $b->reproductions) ? 1 : -1;
             });
         }
 

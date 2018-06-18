@@ -2820,16 +2820,16 @@
         },
         {
             "name": "laravel/homestead",
-            "version": "v7.7.0",
+            "version": "v7.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/homestead.git",
-                "reference": "4895d028e1214c9df34ed0104775e6ae1eb23d77"
+                "reference": "5b2e6fb35a80314af38328dca04273d782b36724"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/homestead/zipball/4895d028e1214c9df34ed0104775e6ae1eb23d77",
-                "reference": "4895d028e1214c9df34ed0104775e6ae1eb23d77",
+                "url": "https://api.github.com/repos/laravel/homestead/zipball/5b2e6fb35a80314af38328dca04273d782b36724",
+                "reference": "5b2e6fb35a80314af38328dca04273d782b36724",
                 "shasum": ""
             },
             "require": {
@@ -2839,6 +2839,7 @@
                 "symfony/yaml": "~3.3|~4.0"
             },
             "require-dev": {
+                "phly/changelog-generator": "^2.2",
                 "phpunit/phpunit": "^5.7 || ^6.0"
             },
             "bin": [
@@ -2866,7 +2867,7 @@
                 }
             ],
             "description": "A virtual machine for web artisans.",
-            "time": "2018-06-03T21:17:32+00:00"
+            "time": "2018-06-18T13:10:20+00:00"
         },
         {
             "name": "maximebf/debugbar",

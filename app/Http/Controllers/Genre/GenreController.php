@@ -16,9 +16,9 @@ class GenreController extends Controller
      */
     private static function getTopGenres($limit) {
 
-        $genres = DB::table('albums_genres')
-            ->select('albums_genres.genre_id', DB::raw('count(*) as total'))
-            ->groupBy('albums_genres.genre_id')
+        $genres = DB::table('album_genres')
+            ->select('album_genres.genre_id', DB::raw('count(*) as total'))
+            ->groupBy('album_genres.genre_id')
             ->orderBy('total', 'desc')
             ->take($limit)
             ->get();
