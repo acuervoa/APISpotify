@@ -30,6 +30,9 @@ class Album extends Model
         return $this->belongsToMany(Artist::class, 'album_artists', 'album_id', 'artist_id');
     }
 
+    public function genres() {
+        return $this->belongsToMany(Genre::class, 'album_genres', 'album_id', 'genre_id');
+    }
 
     public static function getAlbumCompleteData($album_id)
     {

@@ -71,7 +71,7 @@ class RefactorDBController extends Controller
     }
 
     private function refactorAlbumGenres() {
-        $genres = DB::raw('INSERT INTO albums_genres_new(album_id, genre_id)
+        $genres = DB::raw('INSERT INTO album_genres_new(album_id, genre_id)
                             SELECT DISTINCT(album_id), genres_new.genre_id
                              FROM genres
                              JOIN genres_new ON genres_new.name = genres.name

@@ -22,10 +22,6 @@ class Artist extends Model
         return $this->belongsToMany(Album::class, 'album_artists', 'artist_id');
     }
 
-    public function genres() {
-        return $this->belongsToMany(Genre::class, 'artist_genres', 'artist_id', 'genre_id');
-    }
-
     public function tracks() {
         return $this->belongsToMany(Track::class, 'artist_tracks', 'artist_id', 'track_id');
     }

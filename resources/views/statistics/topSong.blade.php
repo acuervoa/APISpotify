@@ -22,7 +22,7 @@
     <div class="col-md-2">
         <img src="{{ $tracks[0]->album->image_url_300x300 }}"
              alt="{{ $tracks[0]->album->name }}"
-             class="img-fluid rounded">
+             class="img-fluid rounded img-thumbnail">
     </div>
 
     <div class="col-md-4">
