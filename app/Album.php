@@ -4,7 +4,6 @@ namespace App;
 
 use App\Http\Controllers\Spotify\SpotifySessionController;
 use Illuminate\Database\Eloquent\Model;
-use SpotifyWebAPI\SpotifyWebAPI;
 
 class Album extends Model
 {
@@ -19,6 +18,7 @@ class Album extends Model
     ];
 
     protected $primaryKey = 'album_id';
+
     public $incrementing=false;
 
 
@@ -34,23 +34,16 @@ class Album extends Model
         return $this->belongsToMany(Genre::class, 'album_genres', 'album_id', 'genre_id');
     }
 
-    public static function getAlbumCompleteData($album_id)
+    public static function getSpotifyData($album_id)
     {
-        $clientToken = SpotifySessionController::clientCredentials();
-
-        $spotifyWebAPI = new SpotifyWebAPI();
-        $spotifyWebAPI->setAccessToken($clientToken);
+        $spotifyWebAPI = SpotifySessionController::getClientAuthorization();
 
         return $spotifyWebAPI->getAlbum($album_id);
-
     }
 
-    public static function getAlbumsCompleteData($albums_id) {
+    public static function getSpotifyMultipleData(array $albums_id) {
 
-        $clientToken = SpotifySessionController::clientCredentials();
-
-        $spotifyWebAPI = new SpotifyWebAPI();
-        $spotifyWebAPI->setAccessToken($clientToken);
+        $spotifyWebAPI = SpotifySessionController::getClientAuthorization();
 
         return $spotifyWebAPI->getAlbums($albums_id);
     }

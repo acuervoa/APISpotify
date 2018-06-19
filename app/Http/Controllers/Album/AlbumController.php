@@ -40,34 +40,13 @@ class AlbumController extends Controller
             ->take($limit)
             ->get();
 
-
-
         return $results->pluck('total', 'album_id')->all();
     }
 
 
-    public static function getAlbumsRanking($limit)
+    public static function getAlbumsRanking($limit): array
     {
-       $albums = self::getTopReproductionsAlbums($limit);
-       $response = [];
-
-       foreach((array) $albums as $album_id => $reproductions) {
-           $album = Album::find($album_id)->load('artists');
-
-           if(!$album->image_url_640x640){
-               $infoAlbum = Album::getAlbumCompleteData($album_id);
-
-               $album->image_url_640x640 = $infoAlbum->images[0]->url;
-               $album->image_url_300x300 = $infoAlbum->images[1]->url;
-               $album->image_url_64x64 = $infoAlbum->images[2]->url;
-               $album->save();
-           }
-
-           $album->reproductions = $reproductions;
-           $response[] = $album;
-       }
-
-       return $response;
+        return self::fillAlbumsData(self::getTopReproductionsAlbums($limit));
     }
 
     /**
@@ -76,7 +55,7 @@ class AlbumController extends Controller
      * @param  int $limit
      * @return array
      */
-    public static function getAlbumsRankingLastDay($limit)
+    public static function getAlbumsRankingLastDay($limit): array
     {
 
         $results =  $results = DB::table('albums')
@@ -96,17 +75,36 @@ class AlbumController extends Controller
             ->take($limit)
             ->get();
 
-
-//        $albums = DB::table('tracks')
-//            ->select('album_id', DB::raw('count(*) as total'))
-//            ->where('played_at', '>=', Carbon::now()->subDay())
-//            ->groupBy('album_id')
-//            ->orderBy('total', 'desc')
-//            ->orderBy('album_id', 'desc')
-//            ->take($limit)
-//            ->get();
-
         return $results->pluck('album_id')->all();
+    }
+
+    /**
+     * @param $albums
+     * @return array
+     */
+    private static function fillAlbumsData(array $albums): array
+    {
+        $response = [];
+
+        foreach ($albums as $album_id => $reproductions) {
+            $album = Album::find($album_id)->get();
+
+            if (null === $album->image_url_640x640) {
+                $infoAlbum = Album::getSpotifyData($album_id);
+
+                $album->name = $infoAlbum->name;
+                $album->image_url_640x640 = $infoAlbum->images[0]->url;
+                $album->image_url_300x300 = $infoAlbum->images[1]->url;
+                $album->image_url_64x64 = $infoAlbum->images[2]->url;
+                $album->link_to = $infoAlbum->linkTo;
+
+                $album->save();
+            }
+
+            $album->reproductions = $reproductions;
+            $response[] = $album;
+        }
+        return $response;
     }
 
 }
