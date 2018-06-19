@@ -11,10 +11,10 @@
     </div>
 
     <div class="col-md-2">
-        @if ($artists[0] && $artists[0]->image_url_320x320)
-            <img src="{{ $artists[0]->image_url_320x320 }}"
+        @if ($artists[0] && $artists[0]->image_url_160x160)
+            <img src="{{ $artists[0]->image_url_160x160 }}"
                  alt="{{ $artists[0]->name }}"
-                 class="img-fluid rounded">
+                 class="img-thumbnail rounded">
         @endif
     </div>
 

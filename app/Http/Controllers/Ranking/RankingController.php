@@ -19,25 +19,23 @@ class RankingController extends Controller {
 
     public function showStatistics() {
 
-        $track_id = self::getTracksRanking(Ranking::SHORT);
-
-        $tracksInfo = Track::getTracksCompleteData($track_id);
+        $tracksInfo = TrackController::getTracksInfo(self::getTracksRanking(Ranking::SHORT));
         $albumsInfo = AlbumController::getAlbumsRanking(Ranking::SHORT);
         $artistsInfo = ArtistController::getArtistRanking(Ranking::SHORT);
-        $genresInfo = GenreController::getGenresRanking(Ranking::SHORT);
-
-        $lastTracks = TrackController::getLastTracks(Ranking::MEDIUM);
+//        $genresInfo = GenreController::getGenresRanking(Ranking::SHORT);
+//
+//        $lastTracks = TrackController::getLastTracks(Ranking::MEDIUM);
 
         return view('statistics.layout', [
             'tracks' => $tracksInfo,
             'albums' => $albumsInfo,
             'artists' => $artistsInfo,
-            'genres' => $genresInfo,
+//            'genres' => $genresInfo,
             'numberUsers' => $this->getNumberOfUsers(),
             'numberOfTracks' => $this->getDistinctNumberOfTracks(),
             'numberOfAlbums' => $this->getDistinctNumberOfAlbums(),
             'numberOfArtists' => $this->getDistinctNumberOfArtists(),
-            'lastTracks' => $lastTracks
+//            'lastTracks' => $lastTracks
         ]);
 
     }

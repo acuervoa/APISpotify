@@ -59,16 +59,21 @@ class ArtistController extends Controller
 
             $artist = Artist::find($artist_id);
 
-            if (!$artist->image_url) {
-                $infoArtist = Artist::getArtistCompleteData($artist_id);
+            if (null === $artist->image_url_320x320) {
+                $infoArtist = Artist::getSpotifyData($artist_id);
 
-                $artist->image_url_640x640 = $infoArtist->images[0]->url;
-                $artist->image_url_320x320 = isset($infoArtist->images[1]->url) ? $infoArtist->images[1]->url : $infoArtist->images[0]->url;
-                $artist->image_url_160x160 = isset($infoArtist->images[2]->url) ? $infoArtist->images[2]->url : $artist->image_url_320x320;
-                $artist->save();
+                $artist = Artist::updateOrCreate(['artist_id' => $artist_id],
+                    [
+                        'name' => $infoArtist->name,
+                        'image_url_640x640' => $infoArtist->images[0]->url,
+                        'image_url_320x320' => $infoArtist->images[1]->url,
+                        'image_url_160x160' => $infoArtist->images[2]->url,
+                        'link_to' => $infoArtist->href,
+                    ]);
             }
 
             $artist->reproductions = $reproductions;
+
             $response[] = $artist;
         }
 

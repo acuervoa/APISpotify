@@ -112,7 +112,7 @@ class TrackController extends Controller
      */
     public static function getTracksRankingLastDay($limit)
     {
-        $tracks = DB::table('tracks')
+        $tracks = DB::table('profile_tracks')
             ->select('track_id', DB::raw('count(*) as total'))
             ->where('played_at', '>=', Carbon::now()->subDay())
             ->groupBy('track_id')
@@ -164,16 +164,20 @@ class TrackController extends Controller
 
         $tracks = [];
         foreach ($track_ids as $track_id) {
-            $track = Track::with(['album'])->find($track_id);
+            $track = Track::find($track_id);
 
             if (empty($track->link_to)) {
 
                 $trackInfo = Track::getSpotifyData($track_id);
-                $track->preview_url = $trackInfo->preview_url;
-                $track->link_to = $trackInfo->href;
-                $track->duration_ms = $trackInfo->duration_ms;
 
-                $track->save();
+                $track = Track::updateOrCreate(['track_id' => $track_id],
+                    [
+                        'preview_url' => $trackInfo->preview_url,
+                        'link_to' => $trackInfo->href,
+                        'duration_ms' => $trackInfo->duration_ms,
+                    ]);
+
+
             }
 
             $tracks[] = $track;

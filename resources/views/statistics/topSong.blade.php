@@ -66,12 +66,10 @@
                 @if($indexKey > 0 && $indexKey < 5)
                     <tr>
                         <td>{{ $indexKey + 1 }}</td>
-                        <td>
-                        <img class="rounded img-thumbnail" src="{{ $a_track->album->image_url_64x64 }}">
-                            {{ $a_track->name }}
-                        </td>
+                        <td>{{ $a_track->name }}</td>
                         <td>{{ $a_track->album->artists[0]->name  }}</td>
-                        <td> Reproduced {{ $a_track->reproductions }} (pond. {{ $a_track->ponderatedReproductions }}) Times</td>
+                        <td> Reproduced {{ $a_track->reproductions }}  Times</td>
+                        {{--(pond. {{ $a_track->ponderatedReproductions }})--}}
                         <td>
                             <a class="playback button green">
                                 <i class="fa fa-play" aria-hidden="true"></i>

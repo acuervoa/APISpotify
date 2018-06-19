@@ -23,22 +23,20 @@ class AlbumController extends Controller
      */
     private static function getTopReproductionsAlbums($limit)
     {
-        $results = DB::table('albums')
-            ->select('albums.album_id', 'results.total')
-            ->join(DB::raw(' 
-                    (
-                        select album_id, count(*) as total from tracks where track_id 
-                        in (select track_id from profile_tracks)
-                        group by album_id
-                        order by total desc) as results'),
 
-                function ($join) {
-                    $join->on('albums.album_id', '=', 'results.album_id');
-                }
-            )->orderBy('total', 'desc')
-            ->orderBy('album_id', 'desc')
-            ->take($limit)
+        $tracksByAlbum = DB::table('profile_tracks')
+            ->join('tracks', 'profile_tracks.track_id', '=', 'tracks.track_id')
+            ->select('profile_tracks.track_id', 'tracks.album_id');
+
+        $results = DB::table(DB::raw("(" . $tracksByAlbum->toSql() .") as tracksByAlbum" ))
+            ->mergeBindings($tracksByAlbum)
+            ->select('album_id', DB::raw('count(*) as total'))
+            ->distinct()
+            ->groupBy('album_id')
+            ->orderBy('total', 'desc')
+            ->limit($limit)
             ->get();
+
 
         return $results->pluck('total', 'album_id')->all();
     }
@@ -87,23 +85,24 @@ class AlbumController extends Controller
         $response = [];
 
         foreach ($albums as $album_id => $reproductions) {
-            $album = Album::find($album_id)->get();
+            $album = Album::find($album_id);
 
-            if (null === $album->image_url_640x640) {
-                $infoAlbum = Album::getSpotifyData($album_id);
+            if (empty($album->name) || empty($album->image_url_640x640)) {
+               $infoAlbum = Album::getSpotifyData($album_id);
 
-                $album->name = $infoAlbum->name;
-                $album->image_url_640x640 = $infoAlbum->images[0]->url;
-                $album->image_url_300x300 = $infoAlbum->images[1]->url;
-                $album->image_url_64x64 = $infoAlbum->images[2]->url;
-                $album->link_to = $infoAlbum->linkTo;
-
-                $album->save();
+               $album = Album::updateOrCreate(['album_id' => $album_id], [
+                    'name' => $infoAlbum->name,
+                    'image_url_640x640' => $infoAlbum->images[0]->url,
+                    'image_url_300x300' => $infoAlbum->images[1]->url,
+                    'image_url_64x64' => $infoAlbum->images[2]->url,
+                    'link_to' => $infoAlbum->href
+                ]);
             }
 
             $album->reproductions = $reproductions;
             $response[] = $album;
         }
+
         return $response;
     }
 

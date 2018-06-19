@@ -4,14 +4,15 @@ namespace App;
 
 use App\Http\Controllers\Spotify\SpotifySessionController;
 use Illuminate\Database\Eloquent\Model;
-use SpotifyWebAPI\SpotifyWebAPI;
 
 class Artist extends Model
 {
     protected $fillable = [
         'artist_id',
         'name',
-        'image_url',
+        'image_url_640x640',
+        'image_url_320x6320',
+        'image_url_160x160',
         'link_to'
     ];
 
@@ -26,13 +27,9 @@ class Artist extends Model
         return $this->belongsToMany(Track::class, 'artist_tracks', 'artist_id', 'track_id');
     }
 
-    public static function getArtistCompleteData($artist_id)
+    public static function getSpotifyData($artist_id)
     {
-        $clientToken = SpotifySessionController::clientCredentials();
-
-        $spotifyWebAPI = new SpotifyWebAPI();
-        $spotifyWebAPI->setAccessToken($clientToken);
-
+        $spotifyWebAPI = SpotifySessionController::getClientAuthorization();
         return $spotifyWebAPI->getArtist($artist_id);
     }
 }
