@@ -34,7 +34,7 @@
 
             <thead>
                 <th>#</th>
-                <th>SONG</th>
+                <th>ALBUM</th>
                 <th>ARTIST</th>
                 <th>REPRODUCTIONS</th>
             </thead>

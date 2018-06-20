@@ -11,9 +11,9 @@
         @include('statistics.topArtist')
         <hr/>
         <hr/>
-        {{--@include('statistics.topGenre')--}}
-        {{--<hr/>--}}
-        {{--<hr/>--}}
+        @include('statistics.topGenre')
+        <hr/>
+        <hr/>
         {{--@include('statistics.lastSongs')--}}
 
 

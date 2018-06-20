@@ -16,12 +16,18 @@ class GenreController extends Controller
      */
     private static function getTopGenres($limit) {
 
-        $genres = DB::table('album_genres')
+        $topGenres = DB::table('album_genres')
             ->select('album_genres.genre_id', DB::raw('count(*) as total'))
             ->groupBy('album_genres.genre_id')
             ->orderBy('total', 'desc')
-            ->take($limit)
+            ->take($limit);
+
+        $genres = DB::table(DB::raw("(" . $topGenres->toSql() .") as topGenres"))
+            ->mergeBindings($topGenres)
+            ->join('genres', 'genres.genre_id', '=', 'topGenres.genre_id')
+            ->select('genres.genre_id', 'genres.name', 'topGenres.total')
             ->get();
+
 
 
         return $genres;

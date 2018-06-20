@@ -11,8 +11,8 @@
     </div>
 
     <div class="col-md-2">
-        @if ($artists[0] && $artists[0]->image_url_160x160)
-            <img src="{{ $artists[0]->image_url_160x160 }}"
+        @if ($artists[0] && (!empty($artists[0]->image_url_320x320) || !empty($artists[0]->image_url_160x160)))
+            <img src="{{ $artists[0]->image_url_320x320 ?? $artists[0]->image_url_160x160 }}"
                  alt="{{ $artists[0]->name }}"
                  class="img-thumbnail rounded">
         @endif

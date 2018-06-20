@@ -8,7 +8,7 @@
         <h1 class="top1">#1</h1>
     </div>
     <div class="col-md-4">
-        <h1>{{ $genres[0]->genre_id }}</h1>
+        <h1>{{ $genres[0]->name }}</h1>
         <p>{{ $genres[0]->total }} times reproduced</p>
     </div>
 
@@ -30,7 +30,7 @@
                     <tr>
                         <td>{{ $indexKey + 1 }}</td>
                         <td>
-                            {{ $a_genre->genre_id }}
+                            {{ $a_genre->name }}
                         </td>
                         <td>
                             Reproduced {{$a_genre->total}} times

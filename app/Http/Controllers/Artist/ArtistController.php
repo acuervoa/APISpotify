@@ -49,7 +49,7 @@ class ArtistController extends Controller
 
             $artist = Artist::find($artist_id);
 
-            if (null === $artist->image_url_320x320) {
+            if (empty($artist->name)  || empty($artist->image_url_320x320)) {
                 $infoArtist = Artist::getSpotifyData($artist_id);
 
                 $artist = Artist::updateOrCreate(['artist_id' => $artist_id],

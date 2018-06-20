@@ -22,7 +22,7 @@ class RankingController extends Controller {
         $tracksInfo = TrackController::getTracksInfo(self::getTracksRanking(Ranking::SHORT));
         $albumsInfo = AlbumController::getAlbumsRanking(Ranking::SHORT);
         $artistsInfo = ArtistController::getArtistRanking(Ranking::SHORT);
-//        $genresInfo = GenreController::getGenresRanking(Ranking::SHORT);
+        $genresInfo = GenreController::getGenresRanking(Ranking::SHORT);
 //
 //        $lastTracks = TrackController::getLastTracks(Ranking::MEDIUM);
 
@@ -30,7 +30,7 @@ class RankingController extends Controller {
             'tracks' => $tracksInfo,
             'albums' => $albumsInfo,
             'artists' => $artistsInfo,
-//            'genres' => $genresInfo,
+            'genres' => $genresInfo,
             'numberUsers' => $this->getNumberOfUsers(),
             'numberOfTracks' => $this->getDistinctNumberOfTracks(),
             'numberOfAlbums' => $this->getDistinctNumberOfAlbums(),
