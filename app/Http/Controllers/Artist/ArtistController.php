@@ -21,29 +21,19 @@ class ArtistController extends Controller
      */
     private static function getTopReproductionsArtist($limit) {
 
+        $artistByTracks = DB::table('artist_tracks')
+            ->leftJoin('profile_tracks', 'profile_tracks.track_id', '=', 'artist_tracks.track_id' )
+            ->join('artists', 'artists.artist_id', '=', 'artist_tracks.artist_id')
+            ->select('profile_tracks.track_id', 'artists.artist_id');
 
-        $results = DB::table('artists')
-            ->select('artists.artist_id',  'results.total')
-            ->join(DB::raw(' 
-                    (
-                    select artist_tracks.artist_id, count(*) as total from artist_tracks where track_id in 
-                        (
-                            select track_id from tracks where track_id in
-                            (
-                                select track_id from profile_tracks
-                            )
-                        )
-                    group by artist_id
-                    order by total desc
-                    )
-                    as results'),
-                    function ($join) {
-                         $join->on('artists.artist_id', '=', 'results.artist_id');
-                    }
-            )->take($limit)
+        $results = DB::table(DB::raw("(" . $artistByTracks->toSql() . ") as artistByTracks"))
+            ->mergeBindings($artistByTracks)
+            ->select('artist_id', DB::raw('count(*) as total'))
+            ->groupBy('artist_id')
             ->orderBy('total', 'desc')
-            ->orderBy('artist_id', 'desc')
+            ->limit($limit)
             ->get();
+
 
         return $results->pluck('total', 'artist_id')->all();
 
