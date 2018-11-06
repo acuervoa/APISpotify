@@ -11,17 +11,15 @@
     </div>
 
     <div class="col-md-2">
-        @if ($artists[0] && (!empty($artists[0]->image_url_320x320) || !empty($artists[0]->image_url_160x160)))
-            <img src="{{ $artists[0]->image_url_320x320 ?? $artists[0]->image_url_160x160 }}"
-                 alt="{{ $artists[0]->name }}"
+            <img src="{{ !(count($artists) >= 1) ?: $artists[0]->image_url_320x320 ?? $artists[0]->image_url_160x160 }}"
+                 alt="{{ !(count($artists) >= 1) ?: $artists[0]->name }}"
                  class="img-thumbnail rounded">
-        @endif
     </div>
 
 
     <div class="col-md-4">
-        <h1 class="song">{{ $artists[0]->name }}</h1>
-        <p>Reproduced {{ $artists[0]->reproductions }} times</p>
+        <h1 class="song">{{  !(count($artists) >= 1) ?: $artists[0]->name }}</h1>
+        <p>Reproduced {{  !(count($artists) >= 1) ?: $artists[0]->reproductions }} times</p>
     </div>
     <div class="col-lg-5">
         <table class="tracks">

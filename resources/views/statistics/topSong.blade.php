@@ -20,29 +20,29 @@
         <h1 class="top1">#1</h1>
     </div>
     <div class="col-md-2">
-        <img src="{{ $tracks[0]->album->image_url_300x300 }}"
-             alt="{{ $tracks[0]->album->name }}"
+        <img src="{{ !(count($tracks) >= 1) ?: $tracks[0]->album->image_url_300x300 }}"
+             alt="{{ !(count($tracks) >= 1) ?: $tracks[0]->album->name }}"
              class="img-fluid rounded img-thumbnail">
     </div>
 
     <div class="col-md-4">
 
-        <h4>{{ $tracks[0]->album->name }}</h4>
+        <h4>{{ !(count($tracks) >= 1) ?: $tracks[0]->album->name }}</h4>
 
-        <h1 class="song">{{ $tracks[0]->name }}</h1>
-        {{--<p>{{ $tracks[0]->ponderatedReproductions }} ponderated times reproduced <br>--}}
-            {{ $tracks[0]->reproductions }} times reproduced</p>
+        <h1 class="song">{{ !(count($tracks) >= 1) ?: $tracks[0]->name }}</h1>
+        {{--<p>{{ !(count($tracks) >= 1) ?: $tracks[0]->ponderatedReproductions }} ponderated times reproduced <br>--}}
+            {{ !(count($tracks) >= 1) ?: $tracks[0]->reproductions }} times reproduced</p>
         <div class="byAuthor">
-            By <a href="#">{{ $tracks[0]->album->artists[0]->name }}</a>
+            By <a href="#">{{ !(count($tracks) >= 1) ?: $tracks[0]->album->artists[0]->name }}</a>
             &middot;
-            Duration {{ gmdate('i:s', $tracks[0]->duration_ms / 1000) }}
+            Duration {{ gmdate('i:s', !(count($tracks) >= 1) ?: $tracks[0]->duration_ms / 1000) }}
             &middot;
 
             <a class="playback button green">
               <i class="fa fa-play" aria-hidden="true"></i>
             </a>
             <audio preload id="audio-top1">
-                <source src="{{ $tracks[0]->preview_url }}">
+                <source src="{{ !(count($tracks) >= 1) ?: $tracks[0]->preview_url }}">
             </audio>
 
         </div>

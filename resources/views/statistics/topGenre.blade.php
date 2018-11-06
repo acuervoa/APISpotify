@@ -8,8 +8,8 @@
         <h1 class="top1">#1</h1>
     </div>
     <div class="col-md-4">
-        <h1>{{ $genres[0]->name }}</h1>
-        <p>{{ $genres[0]->total }} times reproduced</p>
+        <h1>{{ !(count($genres) >= 1) ?: $genres[0]->name }}</h1>
+        <p>{{ !(count($genres) >= 1) ?: $genres[0]->total }} times reproduced</p>
     </div>
 
 

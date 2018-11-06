@@ -11,18 +11,18 @@
         <h1 class="top1">#1</h1>
     </div>
     <div class="col-md-2">
-        <img src="{{ $albums[0]->image_url_300x300 }}"
-             alt="{{ $albums[0]->name }}"
+        <img src="{{  !(count($albums) >= 1) ?: $albums[0]->image_url_300x300 }}"
+             alt="{{ !(count($albums) >= 1) ?: $albums[0]->name }}"
              class="img-fluid rounded">
     </div>
 
 
     <div class="col-md-4">
-        <h1 class="song">{{ $albums[0]->name }}</h1>
+        <h1 class="song">{{ !(count($albums) >= 1) ?: $albums[0]->name }}</h1>
         <div class="byAuthor">
-            By <a href="#">{{ $albums[0]->artists[0]->name }}</a>
+            By <a href="#">{{ !(count($albums) >= 1) ?: $albums[0]->artists[0]->name }}</a>
             &middot;
-            Reproduced {{ $albums[0]->reproductions }} times
+            Reproduced {{ !(count($albums) >= 1) ?: $albums[0]->reproductions }} times
 
 
         </div>
