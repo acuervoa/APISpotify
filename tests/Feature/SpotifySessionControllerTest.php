@@ -8,6 +8,7 @@ use Tests\TestCase;
 class SpotifySessionControllerTest extends TestCase
 {
     use DatabaseMigrations;
+
     /**
      * A basic test example.
      *
@@ -33,11 +34,19 @@ class SpotifySessionControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
+    /** @test */
     public function a_guess_can_access_to_index_with_values_in_database(){
 
-        factory(\App\Track::class,200)->create();
+        $tracks = factory(\App\Track::class,200)->create();
+        $album = \App\Album::find($tracks[0]->album_id);
+        $artists = $album->artists();
 
         $response = $this->get(url('/'));
         $response->assertStatus(200);
+
+        foreach ($artists as $artist) {
+            var_dump($artist);
+        }
+
     }
 }
