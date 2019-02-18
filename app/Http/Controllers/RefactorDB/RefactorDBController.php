@@ -8,8 +8,16 @@ use Illuminate\Support\Facades\DB;
 class RefactorDBController extends Controller
 {
 
-    public function __construct()
+    public function __invoke()
     {
+        $this->refactorTracks();
+        $this->refactorAlbums();
+        $this->refactorProfileTracks();
+        $this->refactorArtists();
+        $this->refactorArtistsTracks();
+        $this->refactorAlbumArtists();
+        $this->refactorGenres();
+        $this->refactorAlbumGenres();
 
     }
 
