@@ -26,7 +26,6 @@ class TrackController extends Controller {
     public function showRecentTracks() {
 
         $list = $this->getRecentTracks();
-
         return view('tracks.users', compact('list'));
 
     }
@@ -40,12 +39,16 @@ class TrackController extends Controller {
 
     public function getRecentTracks() {
         $spotifyWebAPI = new SpotifyWebAPI();
+
         $spotifyProfiles = SpotifyProfile::all();
         $list = [];
         foreach ($spotifyProfiles as $a_spotifyProfile) {
             try {
                 $spotifyWebAPI->setAccessToken($a_spotifyProfile->accessToken);
+
                 $recentTracks = $spotifyWebAPI->getMyRecentTracks();
+                Log::info(json_encode($recentTracks));
+
                 $list[$a_spotifyProfile->nick] = $recentTracks;
                 $this->saveRecentTracks($recentTracks, $a_spotifyProfile);
             } catch (\Exception $e) {

@@ -86,6 +86,7 @@ class SpotifySessionController extends Controller {
             $fields['expirationToken'] = $this->spotifyTokenExpirationTime;
         }
         SpotifyProfile::updateOrCreate(['email' => $request->email], $fields);
+        Log::info($request->email . ' Actualizó su profile \n' . json_encode($fields));
 
     }
 
@@ -118,16 +119,20 @@ class SpotifySessionController extends Controller {
 
     public function refreshTokens() {
         $spotifyProfiles = SpotifyProfile::all();
+
         foreach ($spotifyProfiles as $a_profile) {
             try {
                 if (!$this->refreshToken($a_profile->refreshToken)) {
                     //$a_profile->delete(['id' => (string)$a_profile->id ]);
-                    Log::info('El profile de ' . $a_profile->name . ' debe ser eliminado');
+                    Log::info('El profile de ' . $a_profile->nick . ' debe ser eliminado');
+                }else{
+                    Log::info('El profile de ' . $a_profile->nick . ' ha sido actualizado');
                 }
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
             }
         }
+
 
         return redirect('/recentTracks');
     }
