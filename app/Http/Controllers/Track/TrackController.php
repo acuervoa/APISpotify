@@ -11,6 +11,7 @@ use App\Ranking;
 use App\SpotifyProfile;
 use App\Track;
 use Carbon\Carbon;
+use DebugBar\DebugBar;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use SpotifyWebAPI\SpotifyWebAPI;
@@ -49,7 +50,8 @@ class TrackController extends Controller {
                 $spotifyWebAPI->setAccessToken($a_spotifyProfile->accessToken);
 
                 $recentTracks = $spotifyWebAPI->getMyRecentTracks();
-                Log::info(json_encode($recentTracks));
+
+                Log::info('Recent tracks for ' . $a_spotifyProfile->nick);
 
                 $list[$a_spotifyProfile->nick] = $recentTracks;
                 $this->saveRecentTracks($recentTracks, $a_spotifyProfile);

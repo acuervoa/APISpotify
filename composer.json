@@ -15,6 +15,7 @@
         "ramsey/uuid": "^3.7"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.2",
         "filp/whoops": "~2.0",
         "friendsofphp/php-cs-fixer": "^2.11",
         "fzaninotto/faker": "~1.4",

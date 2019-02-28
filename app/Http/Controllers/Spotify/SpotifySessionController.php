@@ -135,8 +135,8 @@ class SpotifySessionController extends Controller {
         foreach ($spotifyProfiles as $a_profile) {
             try {
                 if (!$this->refreshToken($a_profile->refreshToken)) {
-                    //$a_profile->delete(['id' => (string)$a_profile->id ]);
-                    Log::info('El profile de ' . $a_profile->nick . ' debe ser eliminado');
+                    $a_profile->delete(['id' => (string)$a_profile->id ]);
+                    Log::info('El profile de ' . $a_profile->nick . ' ha sido eliminado');
                 }else{
                     Log::info('El profile de ' . $a_profile->nick . ' ha sido actualizado');
                 }
