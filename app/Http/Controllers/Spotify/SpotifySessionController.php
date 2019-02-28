@@ -93,11 +93,10 @@ class SpotifySessionController extends Controller {
             $fields['expirationToken'] = $this->spotifyTokenExpirationTime;
         }
         SpotifyProfile::updateOrCreate(['email' => $request->email], $fields);
-<<<<<<< HEAD
+
         Log::info('The profile for ' . $request->id . ' get ' . (microtime(true) - $time_start));
-=======
+
         Log::info($request->email . ' Actualizó su profile \n' . json_encode($fields));
->>>>>>> master
 
     }
 
