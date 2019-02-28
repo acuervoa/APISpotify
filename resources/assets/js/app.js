@@ -7,6 +7,12 @@
 
 require('./bootstrap');
 
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
 window.Vue = require('vue');
 
 /**
@@ -15,8 +21,78 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('result', {
+    props: {
+        'item': {
+            type: Object,
+            required: true,
+        },
+        'index': {
+            default: 0,
+            type: Number,
+        },
+    },
+    template: `<div class="item">
+            <div class="image-container">
+                <img class="image img-fluid rounded" :src="item.image"/>
+            </div>
+            <div class="info-container">
+                <p class="artist"> {{ item.artist }} </p>
+                <p class="name"> {{ item.name }} </p>
+            </div>
+    </div>`
+})
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    data: {
+        show: null,
+        title: null,
+        albums: [],
+        tracks: [],
+    },
+    computed: {
+        results: function () {
+            if (this.show === 'tracks') {
+                return this.tracks
+            } else {
+                return this.albums
+            }
+        }
+    },
+    methods: {
+        first: function(items) {
+            return items[0]
+        },
+        fetch() {
+            var self = this
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    type: 'get',
+                    url: '/api/tops/3',
+                    success: function (response) {
+                        self.tracks = response.tracks
+                        self.albums = response.albums
+                        resolve()
+                    }
+                })
+            })
+        },
+        toggle() {
+            if (this.show === 'tracks') {
+                this.show = 'albums';
+                this.title = 'Last 24h top albums';
+            } else {
+                this.show = 'tracks';
+                this.title = 'Last 24h top songs';
+            }
+        },
+    },
+    created() {
+        this.fetch().then(() => {
+            this.toggle()
+            setInterval(this.toggle, 1000 * 15 * 1)
+        })
+        setInterval(this.fetch, 1000 * 60 * 30)
+    },
 });

@@ -38,14 +38,19 @@ class TrackController extends Controller {
         $time_start = microtime(true);
 
         $spotifyWebAPI = new SpotifyWebAPI();
+
         $spotifyProfiles = SpotifyProfile::orderBy('nick', 'asc')->get();
+
         $list = [];
 
         foreach ($spotifyProfiles as $a_spotifyProfile) {
             $time_for = microtime(true);
             try {
                 $spotifyWebAPI->setAccessToken($a_spotifyProfile->accessToken);
+
                 $recentTracks = $spotifyWebAPI->getMyRecentTracks();
+                Log::info(json_encode($recentTracks));
+
                 $list[$a_spotifyProfile->nick] = $recentTracks;
                 $this->saveRecentTracks($recentTracks, $a_spotifyProfile);
             } catch (\Exception $e) {
@@ -174,6 +179,26 @@ class TrackController extends Controller {
 
         return $tracks->pluck('track_id')->all();
 
+    }
+
+    /**
+     * Get top tracks from last 24 hours.
+     *
+     * @param  int $limit
+     * @return array
+     */
+    public static function getTracksRankingLastDay($limit)
+    {
+        $tracks = DB::table('tracks')
+            ->select('track_id', DB::raw('count(*) as total'))
+            ->where('played_at', '>=', Carbon::now()->subDay())
+            ->groupBy('track_id')
+            ->orderBy('total', 'desc')
+            ->orderBy('track_id', 'desc')
+            ->take($limit)
+            ->get();
+
+        return $tracks->pluck('track_id')->all();
     }
 
 

@@ -1,0 +1,143 @@
+#app {
+  width: 1920px;
+  height: 1080px;
+  font-family: Arial;
+  color: #FFFFFF;
+}
+
+#app::after {
+  content: "";
+  background: url("/img/background.png");
+  background-repeat: no-repeat;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+#app p {
+  margin: 0%;
+  font-weight: 10;
+}
+
+#app h2 {
+  font-size: 60px;
+  position: absolute;
+  font-weight: 100;
+  left: 80px;
+  top: 80px;
+}
+
+#app .col-results {
+  max-height: 800px;
+  margin-top: 200px;
+}
+
+#app .img-container img {
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+#app .principal {
+  margin-left: 192px;
+}
+
+#app .principal .item .image-container {
+  width: 576px;
+  height: 576px;
+  background-color: black;
+  line-height: 576px;
+}
+
+#app .principal .item .info-container {
+  width: 576px;
+}
+
+#app .principal .item .artist {
+  color: #FFFFFF;
+  font-size: 48px;
+  margin-top: 38px;
+  padding: 0;
+}
+
+#app .principal .item .name {
+  color: #FFFFFF;
+  font-size: 40px;
+  margin-top: 30px;
+}
+
+#app .secondary {
+  background-color: black;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-right: 192px;
+  margin-left: auto;
+  width: 883px;
+  height: 576px;
+}
+
+#app .secondary .item {
+  margin-top: 77px;
+  margin-left: 77px;
+}
+
+#app .secondary .item .image-container {
+  width: 326px;
+  height: 326px;
+  line-height: 326px;
+}
+
+#app .secondary .item .info-container {
+  width: 326px;
+  text-overflow: ellipsis;
+}
+
+#app .secondary .item .artist {
+  color: #FFFFFF;
+  font-size: 30px;
+  margin-top: 30px;
+  padding: 0;
+}
+
+#app .secondary .item .name {
+  color: #FFFFFF;
+  font-size: 30px;
+  margin-top: 16px;
+  padding: 0;
+}
+
+#app .item {
+  font-weight: 100;
+}
+
+#app .item .artist {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-weight: 100;
+}
+
+#app .item .name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-weight: 100;
+}
+
+@media only screen and (min-height: 1200px) {
+  #app {
+    height: 1200px;
+  }
+}
+
