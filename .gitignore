@@ -103,4 +103,5 @@ Temporary Items
 
 #Vagrant
 .vagrant/
-Vagrantfile
+Vagrantfilestorage/
+storage/*
