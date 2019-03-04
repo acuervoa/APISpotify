@@ -28,7 +28,7 @@ class GenreController extends Controller
 
     public static function rankingGenres()
     {
-        return self::getGroupedGenres(Ranking::MEDIUM);
+        return self::getGroupedGenres(Ranking::SHORT);
 
     }
 

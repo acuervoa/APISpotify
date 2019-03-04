@@ -3,43 +3,44 @@
         <h1>Last tracks</h1>
     </div>
 </div>
-<div class="row">
+
+@if(sizeof($lastTracks) > 0)
+    <div class="row">
 
 
+        <div class="col-lg-12">
+            <table class="tracks">
 
+                <thead>
+                <th>#</th>
 
-    <div class="col-lg-12">
-        <table class="tracks">
+                <th>SONG</th>
+                <th>WHO</th>
+                <th>WHEN</th>
+                </thead>
 
-            <thead>
-            <th>#</th>
+                <tbody>
+                @foreach($lastTracks as $indexKey => $a_track)
+                    @if( $indexKey < 20)
+                        <tr>
+                            <td>{{ $indexKey + 1 }}</td>
+                            <td>
+                                {{ $a_track->name }}
+                            </td>
+                            <td>
+                                {{$a_track->tracked_by}}
+                            </td>
+                            <td>
+                                {{ \Carbon\Carbon::parse($a_track->played_at)->format('d F Y H:i') }}
+                            </td>
+                        </tr>
+                    @endif
 
-            <th>SONG</th>
-            <th>WHO</th>
-            <th>WHEN</th>
-            </thead>
+                @endforeach
+                </tbody>
 
-            <tbody>
-            @foreach($lastTracks as $indexKey => $a_track)
-                @if( $indexKey < 20)
-                    <tr>
-                        <td>{{ $indexKey + 1 }}</td>
-                        <td>
-                            {{ $a_track->name }}
-                        </td>
-                        <td>
-                             {{$a_track->tracked_by}}
-                        </td>
-                        <td>
-                            {{ \Carbon\Carbon::parse($a_track->played_at)->format('d F Y H:i') }}
-                        </td>
-                    </tr>
-                @endif
-
-            @endforeach
-            </tbody>
-
-        </table>
+            </table>
+        </div>
     </div>
-</div>
 
+@endif

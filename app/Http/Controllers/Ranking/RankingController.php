@@ -11,29 +11,39 @@ use App\Http\Controllers\Track\TrackController;
 use App\Ranking;
 use App\SpotifyProfile;
 use App\Track;
+use DebugBar\DebugBar;
 
 class RankingController extends Controller {
 
 
     public function showStatistics() {
 
-        $track_id = TrackController::getTracksRanking(Ranking::SHORT);
-        $tracksInfo = Track::getTracksCompleteData($track_id);
+        $tracksInfo = [];
+        $albumsInfo = [];
+        $artistsInfo = [];
 
-        $albums_id = AlbumController::getAlbumsRanking(Ranking::MEDIUM);
-        $albumsInfo = AlbumController::getAlbumsCompleteData($albums_id);
+
+        $track_id = TrackController::getTracksRanking(Ranking::SHORT);
+        if(sizeof($track_id) > 0) $tracksInfo = Track::getTracksCompleteData($track_id);
+
+        $albums_id = AlbumController::getAlbumsRanking(Ranking::SHORT);
+        if(sizeof($albums_id)>0) $albumsInfo = AlbumController::getAlbumsCompleteData($albums_id);
+
 
         $artists_id = ArtistController::getArtistRanking(Ranking::SHORT);
-        $artistsInfo = ArtistController::getArtistsCompleteData($artists_id);
+        if(sizeof($artists_id) > 0) $artistsInfo = ArtistController::getArtistsCompleteData($artists_id);
+
 
         $genresInfo = GenreController::rankingGenres();
 
-        $lastTracks = TrackController::getLastTracks(Ranking::MEDIUM);
+
+        $lastTracks = TrackController::getLastTracks(Ranking::SHORT);
+
 
         return view('statistics.layout', [
-            'tracks' => $tracksInfo->tracks,
-            'albums' => $albumsInfo->albums,
-            'artists' => $artistsInfo->artists,
+            'tracks' => (!empty($tracksInfo)) ? $tracksInfo->tracks : [],
+            'albums' => (!empty($albumsInfo)) ? $albumsInfo->albums : [],
+            'artists' => (!empty($artistsInfo)) ? $artistsInfo->artists : [],
             'genres' => $genresInfo,
             'numberUsers' => $this->getNumberOfUsers(),
             'numberOfTracks' => $this->getDistinctNumberOfTracks(),
@@ -53,7 +63,7 @@ class RankingController extends Controller {
     }
 
     public function getDistinctNumberOfArtists() {
-        return Artist::distinct()->get(['artist_id'])->count();
+         return Artist::distinct()->get(['artist_id'])->count();
     }
 
     public function getNumberOfUsers() {
