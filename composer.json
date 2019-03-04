@@ -17,11 +17,8 @@
         "rap2hpoutre/laravel-log-viewer": "^1.1"
     },
     "require-dev": {
-<<<<<<< HEAD
-        "barryvdh/laravel-debugbar": "~2.4",
-=======
+
         "barryvdh/laravel-debugbar": "^3.2",
->>>>>>> upgrade
         "filp/whoops": "~2.0",
         "friendsofphp/php-cs-fixer": "^2.11",
         "fzaninotto/faker": "~1.4",
