@@ -94,20 +94,7 @@ class SpotifySessionController extends Controller
         if (!empty($this->spotifyRefreshToken)) {
             $fields['expirationToken'] = $this->spotifyTokenExpirationTime;
         }
-<<<<<<< HEAD
-
-        $newProfile = SpotifyProfile::updateOrCreate(['email' => $request->email], $fields);
-
-        if (!$newProfile->profile_id) {
-            $newProfile->profile_id = Uuid::uuid1()->toString();
-            $newProfile->save();
-        }
-=======
         SpotifyProfile::updateOrCreate(['email' => $request->email], $fields);
-
-        Log::info('The profile for ' . $request->id . ' get ' . (microtime(true) - $time_start));
->>>>>>> upgrade
-
         Log::info($request->email . ' Actualizó su profile \n' . json_encode($fields));
 
     }
@@ -162,15 +149,10 @@ class SpotifySessionController extends Controller
         foreach ($spotifyProfiles as $a_profile) {
             try {
                 if (!$this->refreshToken($a_profile->refreshToken)) {
-<<<<<<< HEAD
-                    //$a_profile->delete(['id' => (string)$a_profile->id ]);
-                    Log::info('El profile de ' . $a_profile->name . '(' . $a_profile->email . ') debe ser eliminado');
-=======
-                    $a_profile->delete(['id' => (string)$a_profile->id ]);
+                   // $a_profile->delete(['id' => (string)$a_profile->id ]);
                     Log::info('El profile de ' . $a_profile->nick . ' ha sido eliminado');
                 }else{
                     Log::info('El profile de ' . $a_profile->nick . ' ha sido actualizado');
->>>>>>> upgrade
                 }
             } catch (\Exception $e) {
                 Log::error($e->getMessage());

@@ -31,4 +31,4 @@ Route::group(['prefix' => 'posterdigital'], function () {
 });
 
 
-Route::get('/refactorDB', 'RefactorDB\RefactorDBController@refactorGenresWithArtistIdNull');
+Route::get('/refactorDB', 'RefactorDB\RefactorDBController');

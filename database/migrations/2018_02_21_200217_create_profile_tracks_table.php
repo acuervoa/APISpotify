@@ -19,6 +19,8 @@ class CreateProfileTracksTable extends Migration
             $table->dateTimeTz('played_at');
             $table->timestamps();
 
+            $table->index('profile_id');
+            $table->index('track_id');
 
         });
     }

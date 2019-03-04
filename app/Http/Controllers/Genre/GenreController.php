@@ -35,6 +35,8 @@ class GenreController extends Controller
 
     public static function getGenresRanking($limit)
     {
+        return[];
+        return[];
         return self::getTopGenres($limit);
     }
 

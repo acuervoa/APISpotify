@@ -2,17 +2,10 @@
 
 namespace App\Http\Controllers\Track;
 
-use App\Album;
-use App\Artist;
-use App\Genre;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Spotify\SpotifySessionController;
 use App\SpotifyProfile;
 use App\Track;
 use Carbon\Carbon;
-
-use DebugBar\DebugBar;
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use SpotifyWebAPI\SpotifyWebAPI;

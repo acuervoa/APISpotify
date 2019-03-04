@@ -2,7 +2,7 @@
 
 use Faker\Generator as Faker;
 
-$factory->define(App\Track::class, function (Faker $faker) {
+$factory->define(\App\Track::class, function (Faker $faker) {
     return [
         'track_id' => $faker->uuid,
         'name' => $faker->name,

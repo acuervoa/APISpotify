@@ -41,7 +41,7 @@ class ArtistController extends Controller
 
 
     public static function getArtistRanking($limit) {
-
+return[];
         $artists = self::getTopReproductionsArtist($limit);
         $response = [];
 

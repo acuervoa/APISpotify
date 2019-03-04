@@ -8,40 +8,30 @@ use App\Http\Controllers\Album\AlbumController;
 use App\Http\Controllers\Artist\ArtistController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Genre\GenreController;
-use App\Http\Controllers\Track\TrackController;
 use App\Ranking;
 use App\SpotifyProfile;
 use App\Track;
-
-use DebugBar\DebugBar;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 
 class RankingController extends Controller {
 
     public function showStatistics() {
 
-        $tracksInfo = [];
-        $albumsInfo = [];
-        $artistsInfo = [];
 
+        $tracksInfo = self::getTracksRanking(Ranking::SHORT);
+        Log:info($tracksInfo);
+        $albumsInfo = AlbumController::getAlbumsRanking(Ranking::SHORT);
+        Log::info($albumsInfo);
+        $artistsInfo = ArtistController::getArtistRanking(Ranking::SHORT);
+        Log::info($artistsInfo);
+        $genresInfo = GenreController::getGenresRanking(Ranking::SHORT);
+        Log::info($genresInfo);
+     //   $lastTracks = TrackController::getLastTracks(Ranking::SHORT);
+$lastTracks = [];
 
-        $track_id = TrackController::getTracksRanking(Ranking::SHORT);
-        if(sizeof($track_id) > 0) $tracksInfo = Track::getTracksCompleteData($track_id);
-
-        $albums_id = AlbumController::getAlbumsRanking(Ranking::SHORT);
-        if(sizeof($albums_id)>0) $albumsInfo = AlbumController::getAlbumsCompleteData($albums_id);
-
-
-        $artists_id = ArtistController::getArtistRanking(Ranking::SHORT);
-        if(sizeof($artists_id) > 0) $artistsInfo = ArtistController::getArtistsCompleteData($artists_id);
-
-
-        $genresInfo = GenreController::rankingGenres();
-
-
-        $lastTracks = TrackController::getLastTracks(Ranking::SHORT);
-
-
+exit();
         return view('statistics.layout', [
             'tracks' => (!empty($tracksInfo)) ? $tracksInfo->tracks : [],
             'albums' => (!empty($albumsInfo)) ? $albumsInfo->albums : [],
@@ -81,6 +71,8 @@ class RankingController extends Controller {
 
     public static function getTracksRanking($limit)
     {
+
+
         $tracks = DB::table('profile_tracks')
                     ->select('track_id', DB::raw('count(*) as total'))
                     ->groupBy('track_id')
