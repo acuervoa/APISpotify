@@ -28,8 +28,43 @@ class Track extends Model
            ->withPivot('played_at');
     }
 
-    public function artists() {
-        return $this->belongsToMany(Artist::class, 'artist_tracks', 'track_id', 'artist_id');
+
+    public static function getTracksCompleteData($track_ids){
+        $clientToken = SpotifySessionController::clientCredentials();
+
+        $spotifyWebAPI = new SpotifyWebAPI();
+        $spotifyWebAPI->setAccessToken($clientToken);
+
+        if (sizeof($track_ids) > 0) {
+            $tracksInfo = $spotifyWebAPI->getTracks($track_ids);
+
+            foreach ($tracksInfo->tracks as &$a_track) {
+                $reproductions = self::getReproductions($a_track);
+                $a_track->reproductions = $reproductions->total;
+
+                $profiles = self::getProfileReproductions($reproductions);
+                $a_track->profiles = $profiles;
+
+                $ponderatedReproductions = 0;
+                foreach ($profiles as $a_profile) {
+                    $ponderatedReproductions += $a_profile->ponderatedReproductions;
+                }
+
+                $a_track->ponderatedReproductions = (int)$ponderatedReproductions;
+            }
+
+            usort($tracksInfo->tracks, function ($a, $b) {
+                if ($a->ponderatedReproductions === $b->ponderatedReproductions) {
+                    return ($a->reproductions <= $b->reproductions) ? -1 : 1;
+                }
+                return ($a->ponderatedReproductions > $b->ponderatedReproductions) ? -1 : 1;
+            });
+        return $tracksInfo;
+        }
+
+        return [];
+
+
     }
 
     public function album(){

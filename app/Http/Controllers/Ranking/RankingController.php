@@ -12,30 +12,46 @@ use App\Http\Controllers\Track\TrackController;
 use App\Ranking;
 use App\SpotifyProfile;
 use App\Track;
-use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpKernel\Profiler\Profile;
+
+use DebugBar\DebugBar;
+
 
 class RankingController extends Controller {
 
     public function showStatistics() {
 
-        $tracksInfo = TrackController::getTracksInfo(self::getTracksRanking(Ranking::SHORT));
-        $albumsInfo = AlbumController::getAlbumsRanking(Ranking::SHORT);
-        $artistsInfo = ArtistController::getArtistRanking(Ranking::SHORT);
-        $genresInfo = GenreController::getGenresRanking(Ranking::SHORT);
-//
-//        $lastTracks = TrackController::getLastTracks(Ranking::MEDIUM);
+        $tracksInfo = [];
+        $albumsInfo = [];
+        $artistsInfo = [];
+
+
+        $track_id = TrackController::getTracksRanking(Ranking::SHORT);
+        if(sizeof($track_id) > 0) $tracksInfo = Track::getTracksCompleteData($track_id);
+
+        $albums_id = AlbumController::getAlbumsRanking(Ranking::SHORT);
+        if(sizeof($albums_id)>0) $albumsInfo = AlbumController::getAlbumsCompleteData($albums_id);
+
+
+        $artists_id = ArtistController::getArtistRanking(Ranking::SHORT);
+        if(sizeof($artists_id) > 0) $artistsInfo = ArtistController::getArtistsCompleteData($artists_id);
+
+
+        $genresInfo = GenreController::rankingGenres();
+
+
+        $lastTracks = TrackController::getLastTracks(Ranking::SHORT);
+
 
         return view('statistics.layout', [
-            'tracks' => $tracksInfo,
-            'albums' => $albumsInfo,
-            'artists' => $artistsInfo,
+            'tracks' => (!empty($tracksInfo)) ? $tracksInfo->tracks : [],
+            'albums' => (!empty($albumsInfo)) ? $albumsInfo->albums : [],
+            'artists' => (!empty($artistsInfo)) ? $artistsInfo->artists : [],
             'genres' => $genresInfo,
             'numberUsers' => $this->getNumberOfUsers(),
             'numberOfTracks' => $this->getDistinctNumberOfTracks(),
             'numberOfAlbums' => $this->getDistinctNumberOfAlbums(),
             'numberOfArtists' => $this->getDistinctNumberOfArtists(),
-//            'lastTracks' => $lastTracks
+            'lastTracks' => $lastTracks
         ]);
 
     }
@@ -49,7 +65,7 @@ class RankingController extends Controller {
     }
 
     public function getDistinctNumberOfArtists() {
-        return Artist::distinct()->count();
+         return Artist::distinct()->get(['artist_id'])->count();
     }
 
     public function getNumberOfUsers() {

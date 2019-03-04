@@ -11,6 +11,8 @@ use App\SpotifyProfile;
 use App\Track;
 use Carbon\Carbon;
 
+use DebugBar\DebugBar;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use SpotifyWebAPI\SpotifyWebAPI;
@@ -33,14 +35,23 @@ class TrackController extends Controller
     public function getRecentTracks(): array
     {
         $spotifyWebAPI = new SpotifyWebAPI();
+
         $spotifyProfiles = SpotifyProfile::orderBy('nick', 'asc')->get();
+
         $list = [];
 
         foreach ($spotifyProfiles as $a_spotifyProfile) {
             try {
                 $spotifyWebAPI->setAccessToken($a_spotifyProfile->accessToken);
+
                 $recentTracks = $spotifyWebAPI->getMyRecentTracks();
-                $list[$a_spotifyProfile->profile_id] = $recentTracks;
+
+
+                Log::info('Recent tracks for ' . $a_spotifyProfile->nick);
+
+                $list[$a_spotifyProfile->nick] = $recentTracks;
+                $this->saveRecentTracks($recentTracks, $a_spotifyProfile);
+
             } catch (\Exception $e) {
                 Log::error('I can\'t recovery data from ' . $a_spotifyProfile->nick . ' -- ' . $e->getMessage());
             }
@@ -124,9 +135,10 @@ class TrackController extends Controller
         return $tracks->pluck('track_id')->all();
     }
 
-    public static function getTracksInfo($track_ids) {
-        return self::sortTrackByReproductions(self::fillTracksInfo($track_ids));
-    }
+
+
+
+
 
     public static function getTrackReproductions(Track $a_track)
     {

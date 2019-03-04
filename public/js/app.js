@@ -1005,7 +1005,7 @@ Vue.component('result', {
             type: Number
         }
     },
-    template: '<div class="item">\n        <div :class="{ row: index != 0 }">\n            <div\n                :class="{ \'col-md-6\': index != 0 }"\n                class="image-container">\n                <img class="image img-fluid rounded" :src="item.image"/>\n            </div>\n            <div\n                :class="{ \'col-md-6\': index != 0 }"\n                class="info-container">\n                <p class="artist"> {{ item.artist }} </p>\n                <p class="name"> {{ item.name }} </p>\n            </div>\n        </div>\n    </div>'
+    template: '<div class="item">\n            <div class="image-container">\n                <img class="image img-fluid rounded" :src="item.image"/>\n            </div>\n            <div class="info-container">\n                <p class="artist"> {{ item.artist }} </p>\n                <p class="name"> {{ item.name }} </p>\n            </div>\n    </div>'
 });
 
 var app = new Vue({
@@ -1054,14 +1054,21 @@ var app = new Vue({
         }
     },
     created: function created() {
+<<<<<<< HEAD
         var self = this;
+=======
+        var _this = this;
+>>>>>>> upgrade
 
         this.fetch().then(function () {
             _this.toggle();
             setInterval(_this.toggle, 1000 * 15 * 1);
         });
         setInterval(this.fetch, 1000 * 60 * 30);
+<<<<<<< HEAD
 
+=======
+>>>>>>> upgrade
     }
 });
 

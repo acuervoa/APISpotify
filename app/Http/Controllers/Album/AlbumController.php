@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Album;
 
+<<<<<<< HEAD
 use App\Album;
 use App\Artist;
+=======
+>>>>>>> upgrade
 use Carbon\Carbon;
 
 use App\Http\Controllers\Spotify\SpotifySessionController;
@@ -41,6 +44,32 @@ class AlbumController extends Controller
         return $results->pluck('total', 'album_id')->all();
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Get top albums from last 24 hours.
+     *
+     * @param  int $limit
+     * @return array
+     */
+    public static function getAlbumsRankingLastDay($limit)
+    {
+        $albums = DB::table('tracks')
+            ->select('album_id', DB::raw('count(*) as total'))
+            ->where('played_at', '>=', Carbon::now()->subDay())
+            ->groupBy('album_id')
+            ->orderBy('total', 'desc')
+            ->orderBy('album_id', 'desc')
+            ->take($limit)
+            ->get();
+
+        return $albums->pluck('album_id')->all();
+    }
+
+    public static function getAlbumsInfo($album_ids) {
+         return self::getAlbumsCompleteData($album_ids);
+    }
+>>>>>>> upgrade
 
     public static function getAlbumsRanking($limit): array
     {

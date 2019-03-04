@@ -5,6 +5,7 @@
     <div id="app">
         <h2> @{{ title }} </h2>
         <div class="container-fluid" v-if="results.length">
+<<<<<<< HEAD
             <div class="col-results col-md-12">
                 <div class="row">
                     <div class="principal col-md-5 offset-md-1">
@@ -21,6 +22,26 @@
                             :key="index">
                         </result>
                     </div>
+=======
+            <div class="col-results">
+                <div class="row">
+                    <div class="principal">
+                        <result
+                            :item="first(results)">
+                        </result>
+                    </div>
+                    <div class="secondary">
+                        <div class="row">
+                            <result
+                                v-for="(result, index) in results"
+                                v-if="index > 0"
+                                :item="result"
+                                :index="index"
+                                :key="index">
+                            </result>
+                        </div>
+                    </div>
+>>>>>>> upgrade
                 </div>
             </div>
         </div>

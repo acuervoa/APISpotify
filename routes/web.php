@@ -18,6 +18,9 @@ Route::get('/recentTracks', 'Track\TrackController@showRecentTracks');
 
 Route::get('/refreshTokens', 'Spotify\SpotifySessionController@refreshTokens');
 
+Route::get('/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
+
 /**
  * Poster Digital routes.
  */
