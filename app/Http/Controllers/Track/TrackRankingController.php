@@ -9,11 +9,7 @@ use Illuminate\Support\Facades\DB;
 class TrackRankingController extends Controller
 {
 
-    public static function getTracksCompleteData($tracks_ranking_ids)
-    {
-        return self::sortTrackByReproductions(TrackController::fillTracksInfo($tracks_ranking_ids));
 
-    }
 
     /**
      * @param $tracks

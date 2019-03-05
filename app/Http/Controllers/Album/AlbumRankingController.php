@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 class AlbumRankingController extends Controller
 {
+
+
     /**
      * @param $limit
      *
@@ -20,19 +22,17 @@ class AlbumRankingController extends Controller
             ->join('tracks', 'profile_tracks.track_id', '=', 'tracks.track_id')
             ->select('profile_tracks.track_id', 'tracks.album_id');
 
-        debug('tracksByAlbum', $tracksByAlbum->toSql());
 
-        $other = DB::table(DB::raw("(" . $tracksByAlbum->toSql() .") as tracksByAlbum" ))
+
+        $results = DB::table(DB::raw("(" . $tracksByAlbum->toSql() .") as tracksByAlbum" ))
             ->mergeBindings($tracksByAlbum)
             ->select('album_id', DB::raw('count(*) as total'))
             ->distinct()
             ->groupBy('album_id')
             ->orderBy('total', 'desc')
-            ->limit($limit);
+            ->limit($limit)
+            ->get();
 
-        debug('other', $other->toSql());
-
-        $results = $other->get();
 
         return $results->pluck('album_id')->all();
     }
@@ -40,8 +40,7 @@ class AlbumRankingController extends Controller
 
     public static function getAlbumsRanking($limit): array
     {
-
-        return AlbumController::fillAlbumsInfo(self::getTopReproductionsAlbums($limit));
+        return self::getTopReproductionsAlbums($limit);
     }
 
     /**

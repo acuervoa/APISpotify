@@ -5,14 +5,17 @@
 </div>
 
 @if (sizeof($albums) > 0)
+
     <div class="row">
         <div class="col-md-1">
             <h1 class="top1">#1</h1>
         </div>
         <div class="col-md-2">
-            <img src="{{ $albums[0]->images[1]->url }}"
-                 alt="{{ $albums[0]->name }}"
-                 class="img-fluid rounded">
+            @if (!is_null($albums[0]->image_url_640x640))
+                <img src="{{ $albums[0]->image_url_640x640}}"
+                     alt="{{ $albums[0]->name }}"
+                     class="img-fluid rounded">
+            @endif
         </div>
 
 
@@ -44,7 +47,9 @@
                         <tr>
                             <td>{{ $indexKey + 1 }}</td>
                             <td>
-                                <img class="img-fluid rounded" src="{{ $a_album->images[2]->url }}">
+                                @if(!is_null($a_album->image_url_64x64))
+                                    <img class="img-fluid rounded" src="{{ $a_album->image_url_64x64 }}">
+                                @endif
                                 {{ $a_album->name }}
                             </td>
                             <td>{{ $a_album->artists[0]->name  }}</td>

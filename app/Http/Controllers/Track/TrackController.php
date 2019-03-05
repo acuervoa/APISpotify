@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\DB;
 class TrackController extends Controller
 {
 
+    public static function getTracksCompleteData($tracks_ranking_ids)
+    {
+        return TrackRankingController::sortTrackByReproductions(TrackController::fillTracksInfo($tracks_ranking_ids));
+
+    }
+
 
     /**
      * @param $element

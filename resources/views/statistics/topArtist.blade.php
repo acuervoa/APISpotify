@@ -11,9 +11,11 @@
             <h1 class="top1">#1</h1>
         </div>
         <div class="col-md-2">
-            <img src="{{ $artists[0]->images[1]->url }}"
-                 alt="{{ $artists[0]->name }}"
-                 class="img-fluid rounded">
+            @if(!is_null($artists[0]->image_url_640x640))
+                <img src="{{ $artists[0]->image_url_640x640 }}"
+                     alt="{{ $artists[0]->name }}"
+                     class="img-fluid rounded">
+            @endif
         </div>
 
 
@@ -37,7 +39,9 @@
                         <tr>
                             <td>{{ $indexKey + 1 }}</td>
                             <td>
-                                <img class="img-fluid rounded imgArtist" src="{{ $a_artist->images[1]->url }}">
+                                @if(!is_null($a_artist->image_url_320x320))
+                                    <img class="img-fluid rounded imgArtist" src="{{ $a_artist->image_url_320x320 }}">
+                                @endif
                                 {{ $a_artist->name }}
                             </td>
                             <td>Reproduced {{ $a_artist->reproductions }} times</td>

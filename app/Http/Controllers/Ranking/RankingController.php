@@ -5,15 +5,15 @@ namespace App\Http\Controllers\Ranking;
 use App\Album;
 use App\Artist;
 use App\Http\Controllers\Album\AlbumController;
+use App\Http\Controllers\Album\AlbumRankingController;
 use App\Http\Controllers\Artist\ArtistController;
+use App\Http\Controllers\Artist\ArtistRankingController;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Genre\GenreController;
 use App\Http\Controllers\Track\TrackController;
+use App\Http\Controllers\Track\TrackRankingController;
 use App\Ranking;
 use App\SpotifyProfile;
 use App\Track;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 
 class RankingController extends Controller {
@@ -21,13 +21,10 @@ class RankingController extends Controller {
     public function showStatistics() {
 
 
-        $tracksInfo = TrackController::getTracksCompleteData(TrackController::getTracksRanking(Ranking::SHORT));
+        $tracksInfo = TrackController::getTracksCompleteData(TrackRankingController::getTracksRanking(Ranking::SHORT));
+        $albumsInfo = AlbumController::getAlbumsCompleteData(AlbumRankingController::getAlbumsRanking(Ranking::SHORT));
+        $artistsInfo = ArtistController::getArtistsCompleteData(ArtistRankingController::getArtistRanking(Ranking::SHORT));
 
-        $albumsInfo = AlbumController::getAlbumsCompleteData(AlbumController::getAlbumsRanking(Ranking::SHORT));
-
-//        Log::info(var_dump($albumsInfo));
-//        $artistsInfo = ArtistController::getArtistRanking(Ranking::SHORT);
-//        Log::info(var_dump($artistsInfo));
 //        $genresInfo = GenreController::getGenresRanking(Ranking::SHORT);
 //        Log::info($genresInfo);
 //        $lastTracks = TrackController::getLastTracks(Ranking::SHORT);
@@ -37,7 +34,7 @@ class RankingController extends Controller {
         return view('statistics.layout', [
             'tracks' => (!empty($tracksInfo)) ? $tracksInfo : [],
             'albums' => (!empty($albumsInfo)) ? $albumsInfo : [],
-//            'artists' => (!empty($artistsInfo)) ? $artistsInfo->artists : [],
+            'artists' => (!empty($artistsInfo)) ? $artistsInfo : [],
 //            'genres' => $genresInfo,
             'numberUsers' => $this->getNumberOfUsers(),
             'numberOfTracks' => $this->getDistinctNumberOfTracks(),
