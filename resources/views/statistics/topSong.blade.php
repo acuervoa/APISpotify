@@ -25,9 +25,11 @@
             <h1 class="top1">#1</h1>
         </div>
         <div class="col-md-2">
-            <img src="{{ $tracks[0]->album->images[1]->url }}"
-                 alt="{{ $tracks[0]->album->name }}"
-                 class="img-fluid rounded">
+            @if (!is_null($tracks[0]->album->image_url_640x640))
+                <img src="{{ $tracks[0]->album->image_url_640x640 }}"
+                     alt="{{ $tracks[0]->album->name }}"
+                     class="img-fluid rounded">
+            @endif
         </div>
 
         <div class="col-md-4">
@@ -35,8 +37,7 @@
             <h4>{{ $tracks[0]->album->name }}</h4>
 
             <h1 class="song">{{ $tracks[0]->name }}</h1>
-            <p>{{ $tracks[0]->ponderatedReproductions }} ponderated times reproduced <br>
-                {{ $tracks[0]->reproductions }} times reproduced</p>
+            <p>{{ $tracks[0]->reproductions }} times reproduced</p>
             <div class="byAuthor">
                 By <a href="#">{{ $tracks[0]->artists[0]->name }}</a>
                 &middot;
@@ -53,6 +54,7 @@
 
 
         </div>
+
         <div class="col-lg-5">
             <table class="tracks">
 
@@ -67,16 +69,18 @@
 
                 <tbody>
                 @foreach($tracks as $indexKey => $a_track)
+
                     @if($indexKey > 0 && $indexKey < 5)
                         <tr>
                             <td>{{ $indexKey + 1 }}</td>
                             <td>
-                            <!--img class="img-fluid rounded" src="{{ $a_track->album->images[2]->url }}"-->
+                                @if (!is_null($a_track->album->image_url_64x64))
+                                    <img class="img-fluid rounded" src="{{ $a_track->album->image_url_64x64 }}">
+                                @endif
                                 {{ $a_track->name }}
                             </td>
                             <td>{{ $a_track->artists[0]->name  }}</td>
-                            <td> Reproduced {{ $a_track->reproductions }} (pond. {{ $a_track->ponderatedReproductions }}
-                                ) Times
+                            <td> Reproduced {{ $a_track->reproductions }} Times
                             </td>
                             <td>
                                 <audio id="audio-{{$indexKey + 1}}">
@@ -85,8 +89,8 @@
                                 <a class="button green"
                                    onclick="document.getElementById('audio-{{$indexKey +1}}').play()">
                                     <i class="fa fa-play" aria-hidden="true"></i>
-                                    {{--<span id="btn-pause-manage-{{ $indexKey +1 }}" style="display:none"><i
-                                                class="fa fa-pause" aria-hidden="true"></i></span>--}}
+                                    <span id="btn-pause-manage-{{ $indexKey +1 }}" style="display:none"><i
+                                            class="fa fa-pause" aria-hidden="true"></i></span>
                                 </a>
 
                             </td>

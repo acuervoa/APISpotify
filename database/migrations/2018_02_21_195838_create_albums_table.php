@@ -21,6 +21,8 @@ class CreateAlbumsTable extends Migration
             $table->string('image_url_64x64')->nullable();
             $table->string('link_to')->nullable();
             $table->timestamps();
+
+            $table->primary('album_id');
         });
     }
 

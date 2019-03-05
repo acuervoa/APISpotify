@@ -17,6 +17,9 @@ class CreateAlbumGenresTable extends Migration
             $table->string('album_id');
             $table->string('genre_id');
             $table->timestamps();
+
+            $table->index('album_id');
+            $table->index('genre_id');
         });
     }
 

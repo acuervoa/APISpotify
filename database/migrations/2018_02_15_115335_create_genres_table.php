@@ -17,6 +17,8 @@ class CreateGenresTable extends Migration
             $table->increments('genre_id')->unique();
             $table->string('name');
             $table->timestamps();
+
+            $table->index('name');
         });
     }
 

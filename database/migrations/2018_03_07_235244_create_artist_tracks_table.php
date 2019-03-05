@@ -17,6 +17,9 @@ class CreateArtistTracksTable extends Migration
             $table->string('artist_id');
             $table->string('track_id');
             $table->timestamps();
+
+            $table->index('artist_id');
+            $table->index('track_id');
         });
     }
 

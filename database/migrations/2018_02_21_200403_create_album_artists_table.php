@@ -17,6 +17,9 @@ class CreateAlbumArtistsTable extends Migration
             $table->string('album_id');
             $table->string('artist_id');
             $table->timestamps();
+
+            $table->index('album_id');
+            $table->index('artist_id');
         });
     }
 

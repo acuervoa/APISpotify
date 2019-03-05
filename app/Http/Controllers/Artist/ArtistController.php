@@ -41,7 +41,7 @@ class ArtistController extends Controller
 
 
     public static function getArtistRanking($limit) {
-return[];
+
         $artists = self::getTopReproductionsArtist($limit);
         $response = [];
 
@@ -49,8 +49,10 @@ return[];
 
             $artist = Artist::find($artist_id);
 
-            if (empty($artist->name)  || empty($artist->image_url_320x320)) {
+            if (empty($artist->link_to)) {
                 $infoArtist = Artist::getSpotifyData($artist_id);
+
+                dd($infoArtist);
 
                 $artist = Artist::updateOrCreate(['artist_id' => $artist_id],
                     [
@@ -67,6 +69,43 @@ return[];
             $response[] = $artist;
         }
 
+
+        return $response;
+    }
+
+    public static function fillArtistData(array $artists)
+    {
+        $response = [];
+
+        foreach ($artists as $a_artist) {
+
+            $artist = Artist::find($a_artist->id);
+
+            if (empty($artist->link_to)) {
+
+                $infoArtist = Artist::getSpotifyData($artist->artist_id);
+
+
+                $images=[];
+                if(sizeof($infoArtist->images) > 0){
+                    $images = [
+                        'image_url_640x640' => array_key_exists(0, $infoArtist->images[0]) ?? $infoArtist->images[0]->url,
+                        'image_url_300x300' => array_key_exists(1, $infoArtist->images[1]) ?? $infoArtist->images[1]->url,
+                        'image_url_64x64' => array_key_exists(2, $infoArtist->images[2]) ?? $infoArtist->images[2]->url,
+                    ];
+                }
+
+
+                $artist = Artist::updateOrCreate(['artist_id' => $artist->artist_id], [
+                    'name' => $infoArtist->name,
+                     $images,
+                    'link_to' => $infoArtist->href
+                ]);
+
+            }
+
+            $response[] = $artist;
+        }
 
         return $response;
     }

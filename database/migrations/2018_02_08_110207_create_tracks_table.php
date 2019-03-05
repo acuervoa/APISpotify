@@ -21,6 +21,9 @@ class CreateTracksTable extends Migration
             $table->string('link_to')->nullable();
             $table->integer('duration_ms')->nullable();
             $table->timestamps();
+
+            $table->primary('track_id');
+            $table->index('album_id');
         });
     }
 

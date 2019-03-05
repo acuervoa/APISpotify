@@ -21,6 +21,8 @@ class CreateArtistsTable extends Migration
             $table->string('image_url_160x160')->nullable();
             $table->string('link_to')->nullable();
             $table->timestamps();
+
+            $table->primary('artist_id');
         });
     }
 

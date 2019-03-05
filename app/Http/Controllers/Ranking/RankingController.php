@@ -8,6 +8,7 @@ use App\Http\Controllers\Album\AlbumController;
 use App\Http\Controllers\Artist\ArtistController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Genre\GenreController;
+use App\Http\Controllers\Track\TrackController;
 use App\Ranking;
 use App\SpotifyProfile;
 use App\Track;
@@ -20,28 +21,29 @@ class RankingController extends Controller {
     public function showStatistics() {
 
 
-        $tracksInfo = self::getTracksRanking(Ranking::SHORT);
-        Log:info($tracksInfo);
-        $albumsInfo = AlbumController::getAlbumsRanking(Ranking::SHORT);
-        Log::info($albumsInfo);
-        $artistsInfo = ArtistController::getArtistRanking(Ranking::SHORT);
-        Log::info($artistsInfo);
-        $genresInfo = GenreController::getGenresRanking(Ranking::SHORT);
-        Log::info($genresInfo);
-     //   $lastTracks = TrackController::getLastTracks(Ranking::SHORT);
-$lastTracks = [];
+        $tracksInfo = TrackController::getTracksCompleteData(TrackController::getTracksRanking(Ranking::SHORT));
 
-exit();
+        $albumsInfo = AlbumController::getAlbumsCompleteData(AlbumController::getAlbumsRanking(Ranking::SHORT));
+
+//        Log::info(var_dump($albumsInfo));
+//        $artistsInfo = ArtistController::getArtistRanking(Ranking::SHORT);
+//        Log::info(var_dump($artistsInfo));
+//        $genresInfo = GenreController::getGenresRanking(Ranking::SHORT);
+//        Log::info($genresInfo);
+//        $lastTracks = TrackController::getLastTracks(Ranking::SHORT);
+//        Log::info(var_dump($lastTracks));
+
+
         return view('statistics.layout', [
-            'tracks' => (!empty($tracksInfo)) ? $tracksInfo->tracks : [],
-            'albums' => (!empty($albumsInfo)) ? $albumsInfo->albums : [],
-            'artists' => (!empty($artistsInfo)) ? $artistsInfo->artists : [],
-            'genres' => $genresInfo,
+            'tracks' => (!empty($tracksInfo)) ? $tracksInfo : [],
+            'albums' => (!empty($albumsInfo)) ? $albumsInfo : [],
+//            'artists' => (!empty($artistsInfo)) ? $artistsInfo->artists : [],
+//            'genres' => $genresInfo,
             'numberUsers' => $this->getNumberOfUsers(),
             'numberOfTracks' => $this->getDistinctNumberOfTracks(),
             'numberOfAlbums' => $this->getDistinctNumberOfAlbums(),
             'numberOfArtists' => $this->getDistinctNumberOfArtists(),
-            'lastTracks' => $lastTracks
+//            'lastTracks' => $lastTracks
         ]);
 
     }
@@ -55,7 +57,7 @@ exit();
     }
 
     public function getDistinctNumberOfArtists() {
-         return Artist::distinct()->get(['artist_id'])->count();
+         return Artist::distinct()->count();
     }
 
     public function getNumberOfUsers() {
@@ -63,25 +65,9 @@ exit();
     }
 
 
-    public function rankingTracks()
-    {
-        $tracksInfo = Track::getTracksInfo(self::getTracksRanking(Ranking::LARGE));
-        return view('tracks.ranking', compact('tracksInfo'));
-    }
-
-    public static function getTracksRanking($limit)
-    {
 
 
-        $tracks = DB::table('profile_tracks')
-                    ->select('track_id', DB::raw('count(*) as total'))
-                    ->groupBy('track_id')
-                    ->orderBy('total', 'desc')
-                    ->take($limit)
-                    ->get();
 
-        return $tracks->pluck('track_id')->all();
-    }
 
 
     /**
