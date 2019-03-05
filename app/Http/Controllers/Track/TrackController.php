@@ -19,7 +19,7 @@ class TrackController extends Controller
      *
      * @return mixed
      */
-    private function saveTrackInfo($element)
+    public static function saveTrackInfo($element)
     {
         return Track::firstOrCreate([
             'track_id' => $element->track->id,
@@ -70,9 +70,9 @@ class TrackController extends Controller
                     ]);
 
 
-                AlbumController::fillAlbumsData([$trackInfo->album->id]);
+                AlbumController::fillAlbumsInfo([$trackInfo->album->id]);
 
-                $artists = ArtistController::fillArtistData($trackInfo->artists);
+                $artists = ArtistController::fillArtistsInfo($trackInfo->artists);
 
                 foreach ($artists as $artist) {
 

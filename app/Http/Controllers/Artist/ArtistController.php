@@ -73,7 +73,7 @@ class ArtistController extends Controller
         return $response;
     }
 
-    public static function fillArtistData(array $artists)
+    public static function fillArtistsInfo(array $artists)
     {
         $response = [];
 

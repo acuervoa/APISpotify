@@ -3,7 +3,7 @@
 namespace App\Console;
 
 use App\Http\Controllers\Spotify\SpotifySessionController;
-use App\Http\Controllers\Track\TrackController;
+use App\Http\Controllers\Track\TrackRecentController;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\Log;
@@ -37,7 +37,7 @@ class Kernel extends ConsoleKernel
             Log::info('Tokens refreshed');
 
             // Now add some handlers
-            $trackController = new TrackController();
+            $trackController = new TrackRecentController();
             $trackController->recentTracks();
 
             Log::info('New tracks adquisition');

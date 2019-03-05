@@ -11,6 +11,8 @@ use SpotifyWebAPI\SpotifyWebAPI;
 
 class TrackRecentController extends Controller
 {
+
+
     public function recentTracks()
     {
         return $this->showRecentTracks();
@@ -40,7 +42,7 @@ class TrackRecentController extends Controller
                 Log::info('Recent tracks for ' . $a_spotifyProfile->nick);
 
                 $list[$a_spotifyProfile->nick] = $recentTracks;
-                $this->saveRecentTracks($recentTracks, $a_spotifyProfile);
+            /*@TODO    $this->saveRecentTrackInfo($recentTracks, $a_spotifyProfile); */
 
             } catch (\Exception $e) {
                 Log::error('I can\'t recovery data from ' . $a_spotifyProfile->nick . ' -- ' . $e->getMessage());
@@ -77,7 +79,7 @@ class TrackRecentController extends Controller
 
                 $played_at = (new Carbon($a_element['played_at']))->toDateTimeString();
 
-                $track = $this->saveTrackInfo($a_element->track);
+                $track = TrackController::saveTrackInfo($a_element->track);
                 $track->profiles()->withPivot($played_at)->attach($profile_id);
             }
         }
