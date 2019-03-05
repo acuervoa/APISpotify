@@ -16,6 +16,7 @@ class ArtistController extends Controller
 
         foreach ($artists as $a_artist) {
             $artist = Artist::find($a_artist);
+
             if (empty($artist->link_to)) {
 
                 $infoArtist = Artist::getSpotifyData($a_artist);
@@ -23,18 +24,22 @@ class ArtistController extends Controller
 
                 if (sizeof($infoArtist->images) > 0) {
                     $images = [
-                        'image_url_640x640' => array_key_exists(0, $infoArtist->images[0]) ?? $infoArtist->images[0]->url,
-                        'image_url_320x320' => array_key_exists(1, $infoArtist->images[1]) ?? $infoArtist->images[1]->url,
-                        'image_url_64x64' => array_key_exists(2, $infoArtist->images[2]) ?? $infoArtist->images[2]->url,
+                        'image_url_640x640' => array_key_exists(0, $infoArtist->images) ? $infoArtist->images[0]->url : null,
+                        'image_url_320x320' => array_key_exists(1, $infoArtist->images) ? $infoArtist->images[1]->url : null,
+                        'image_url_160x160' => array_key_exists(2, $infoArtist->images) ? $infoArtist->images[2]->url : null,
                     ];
                 }
 
 
-                $artist = Artist::updateOrCreate(['artist_id' => $artist->artist_id], [
-                    'name' => $infoArtist->name,
-                    $images,
-                    'link_to' => $infoArtist->href
+
+                $artist = Artist::updateOrCreate(['artist_id' => $artist->artist_id],[
+                   'name' => $infoArtist->name,
+                   'image_url_640x640' => $images['image_url_640x640'],
+                   'image_url_320x320' => $images['image_url_320x320'],
+                   'image_url_160x160' => $images['image_url_160x160'],
+                   'link_to' => $infoArtist->href
                 ]);
+
 
             }
 

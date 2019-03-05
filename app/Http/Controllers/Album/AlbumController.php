@@ -30,9 +30,9 @@ class AlbumController extends Controller
                 $infoAlbum = Album::getSpotifyData($album_id);
 
                 $images = [
-                    'image_url_640x640' => array_key_exists(0, $infoAlbum->images) ?? $infoAlbum->images[0]->url,
-                    'image_url_300x300' => array_key_exists(1, $infoAlbum->images) ?? $infoAlbum->images[1]->url,
-                    'image_url_64x64' => array_key_exists(2, $infoAlbum->images) ?? $infoAlbum->images[2]->url
+                    'image_url_640x640' => array_key_exists(0, $infoAlbum->images) ? $infoAlbum->images[0]->url : null,
+                    'image_url_300x300' => array_key_exists(1, $infoAlbum->images) ? $infoAlbum->images[1]->url : null,
+                    'image_url_64x64' => array_key_exists(2, $infoAlbum->images) ? $infoAlbum->images[2]->url : null
                 ];
 
                 $album = Album::updateOrCreate(['album_id' => $album_id], [

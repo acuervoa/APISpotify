@@ -11,7 +11,7 @@ class Artist extends Model
         'artist_id',
         'name',
         'image_url_640x640',
-        'image_url_320x6320',
+        'image_url_320x320',
         'image_url_160x160',
         'link_to'
     ];
