@@ -9,6 +9,7 @@ use App\Http\Controllers\Album\AlbumRankingController;
 use App\Http\Controllers\Artist\ArtistController;
 use App\Http\Controllers\Artist\ArtistRankingController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Genre\GenreController;
 use App\Http\Controllers\Track\TrackController;
 use App\Http\Controllers\Track\TrackRankingController;
 use App\Ranking;
@@ -25,7 +26,7 @@ class RankingController extends Controller {
         $albumsInfo = AlbumController::getAlbumsCompleteData(AlbumRankingController::getAlbumsRanking(Ranking::SHORT));
         $artistsInfo = ArtistController::getArtistsCompleteData(ArtistRankingController::getArtistRanking(Ranking::SHORT));
 
-//        $genresInfo = GenreController::getGenresRanking(Ranking::SHORT);
+        $genresInfo = GenreController::getGenresRanking(Ranking::SHORT);
 //        Log::info($genresInfo);
 //        $lastTracks = TrackController::getLastTracks(Ranking::SHORT);
 //        Log::info(var_dump($lastTracks));
@@ -35,7 +36,7 @@ class RankingController extends Controller {
             'tracks' => (!empty($tracksInfo)) ? $tracksInfo : [],
             'albums' => (!empty($albumsInfo)) ? $albumsInfo : [],
             'artists' => (!empty($artistsInfo)) ? $artistsInfo : [],
-//            'genres' => $genresInfo,
+            'genres' => (!empty($genresInfo)) ? $genresInfo : [],
             'numberUsers' => $this->getNumberOfUsers(),
             'numberOfTracks' => $this->getDistinctNumberOfTracks(),
             'numberOfAlbums' => $this->getDistinctNumberOfAlbums(),

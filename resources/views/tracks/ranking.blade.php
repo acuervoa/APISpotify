@@ -1,9 +1,9 @@
 @extends('layouts.layout')
 
 @section('body')
-
+    {{debug($tracksInfo)}}
     <div class="topgroup">
-     <h1 class="titlebox">Top 20</h1>
+        <h1 class="titlebox">All time - Top 20 Songs</h1>
     </div>
     <table class="table">
         <thead>
@@ -20,48 +20,42 @@
         </thead>
         <tbody>
 
-        @foreach($tracksInfo->tracks as $indexKey => $a_trackInfo)
-            {{--{{ dd($a_trackInfo  ) }}--}}
-            <tr>
-                <td scope="row">{{ $indexKey }}</td>
+        @foreach($tracksInfo as $indexKey => $a_trackInfo)
 
-                {{--<td>{{ $a_trackInfo->id }}</td>--}}
+            <tr>
+                <td scope="row">{{ $indexKey + 1}}</td>
+
                 <td>
-                    @if(($indexKey === 0 ) && $a_trackInfo->album->images[1])
-                        <img src="{{ $a_trackInfo->album->images[1]->url }}" class="rounded media-middle" alt="{{ $a_trackInfo->album->name }}">
-                    @elseif($a_trackInfo->album->images[2] && $indexKey !== 0)
-                        <img src="{{ $a_trackInfo->album->images[2]->url }}" class="rounded media-middle" alt="{{ $a_trackInfo->album->name }}">
+                    @if(!is_null($a_trackInfo->album->image_url_64x64))
+                        <img src="{{ $a_trackInfo->album->image_url_64x64 }}" class="rounded media-middle"
+                             alt="{{ $a_trackInfo->album->name }}">
                     @endif
                 </td>
-                <td ><span>{{ $a_trackInfo->name }}</span></td>
+                <td><span>{{ $a_trackInfo->name }}</span></td>
                 <td>{{ $a_trackInfo->album->name }}</td>
-                <td>{{ $a_trackInfo->artists[0]->name }}</td>
                 <td>
-                    <div>{{$a_trackInfo->ponderatedReproductions }} ponderated reproductions (sqrt n)</div>
+                    @foreach($a_trackInfo->artists as $artist)
+                        {{ $artist->name }}@if(!$loop->last), @endif
+                    @endforeach
+                </td>
+                <td>
                     <div class="">{{ $a_trackInfo->reproductions }} reproductions</div>
-                    <div>
-                        @foreach($a_trackInfo->profiles as $profile)
-                            <div>
-                                {{ $profile->tracked_by }} play this {{ $profile->times }} times
-                                &middot;
-                                {{ $profile->ponderatedReproductions }} ponderated times
-                            </div>
-                            {{--<ul>--}}
-                            {{--@foreach($profile->played_at as $played_at)--}}
-                                {{--<li>{{ $played_at->played_at }}</li>--}}
-                            {{--@endforeach--}}
-                            {{--</ul>--}}
-                        @endforeach
-                    </div>
-
                 </td>
                 <td>
-                    <audio controls>
-                        <source src="{{ $a_trackInfo->preview_url }}">
-                        Tu navegador no soporta audio
-                    </audio>
+                    @if(!empty($a_trackInfo->preview_url))
+                        <audio id="audio-{{$indexKey + 1}}">
+                            <source src="{{ $a_trackInfo->preview_url }}">
+                        </audio>
+                        <a class="button green"
+                           onclick="document.getElementById('audio-{{$indexKey +1}}').play()">
+                            <i class="fa fa-play" aria-hidden="true"></i>
+                        </a>
+                        <a class="button green"
+                           onclick="document.getElementById('audio-{{$indexKey +1}}').stop()">
+                            <i class="fa fa-pause" aria-hidden="true"></i>
+                        </a>
+                    @endif
                 </td>
-
             </tr>
         @endforeach
 

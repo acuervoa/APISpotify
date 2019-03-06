@@ -78,11 +78,15 @@ class TrackController extends Controller
 
                 AlbumController::fillAlbumsInfo([$trackInfo->album->id]);
 
-                $artists = ArtistController::fillArtistsInfo($trackInfo->artists);
+                $artists_ids=[];
+                foreach($trackInfo->artists as $artist){
+                    $artists_ids[] = $artist->id;
+                }
+
+                $artists = ArtistController::fillArtistsInfo($artists_ids);
 
                 foreach ($artists as $artist) {
-
-                    $track->artists()->save($artist);
+                    $track->artists()->attach($artist);
                 }
 
             }

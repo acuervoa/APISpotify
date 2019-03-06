@@ -37,7 +37,9 @@ class AlbumController extends Controller
 
                 $album = Album::updateOrCreate(['album_id' => $album_id], [
                     'name' => $infoAlbum->name,
-                    $images,
+                    'image_url_640x640' => $images['image_url_640x640'],
+                    'image_url_300x300' => $images['image_url_300x300'],
+                    'image_url_64x64' => $images['image_url_64x64'],
                     'link_to' => $infoAlbum->href
                 ]);
 

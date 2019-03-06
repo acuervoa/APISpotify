@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Track;
 
 use App\Http\Controllers\Controller;
+use App\Ranking;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -43,6 +44,9 @@ class TrackRankingController extends Controller
         return $tracks->pluck('track_id')->all();
     }
 
+    public function rankingTracks(){
+        return view('tracks.ranking', ['tracksInfo' => TrackController::getTracksCompleteData(self::getTracksRanking(Ranking::LARGE))]);
+    }
 
     /**
      * Get top tracks from last 24 hours.
