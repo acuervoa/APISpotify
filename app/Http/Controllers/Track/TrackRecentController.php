@@ -17,13 +17,16 @@ class TrackRecentController extends Controller {
 
     public function recentTracks()
     {
-        return $this->getRecentTracksFromSpotify();
+        $list = $this->getRecentTracksFromSpotify();
+
+        return view( 'tracks.users', compact( 'list' ) );
     }
 
     public function showRecentTracks()
     {
         $list = $this->getRecentTracksAllUsers( Ranking::SHORT );
-        return view( 'tracks.users', compact('list'));
+
+        return view( 'tracks.users', compact( 'list' ) );
     }
 
 
@@ -64,7 +67,7 @@ class TrackRecentController extends Controller {
 
         foreach ($spotifyProfiles as $a_spotifyProfile) {
             try {
-                debug($a_spotifyProfile->nick . ' -> ' . $a_spotifyProfile->accessToken);
+
                 $spotifyWebAPI->setAccessToken( $a_spotifyProfile->accessToken );
                 $recentTracks = $spotifyWebAPI->getMyRecentTracks();
 
@@ -73,14 +76,13 @@ class TrackRecentController extends Controller {
                 $list[$a_spotifyProfile->nick] = $recentTracks;
 
 
-                /*@TODO    $this->saveRecentTrackInfo($recentTracks, $a_spotifyProfile); */
-
             } catch (\Exception $e) {
                 Log::error( 'I can\'t recovery data from ' . $a_spotifyProfile->nick . ' -- ' . $e->getMessage() );
             }
         }
 
-        //$this->saveRecentTracksInfo($list);
+        $this->saveRecentTracksInfo( $list );
+
         return $list;
     }
 
@@ -104,15 +106,24 @@ class TrackRecentController extends Controller {
 
     private function saveRecentTracksInfo(array $recentTracksInfo)
     {
-        foreach ($recentTracksInfo as $profile_id => $elements) {
 
-            foreach ($elements as $a_element) {
+        foreach ($recentTracksInfo as $profile_id => $elementsForProfile) {
+            foreach ($elementsForProfile as $elements) {
+                $a_element = $elements[0];
+                try {
+                    $played = $elements->played_at;
+                    $track  = TrackController::saveTrackInfo( $a_element );
+                    $track->profiles()->withPivot( $played )->attach( $profile_id );
 
-                $played_at = ( new Carbon( $a_element['played_at'] ) )->toDateTimeString();
+                } catch (\Exception $e) {
+                    // debug($a_element);
+                    //Log::warning( 'No hemos podido asignar la fecha de reproduccion de '. $a_element->track->id );
+                }
 
-                $track = TrackController::saveTrackInfo( $a_element->track );
-                $track->profiles()->withPivot( $played_at )->attach( $profile_id );
             }
+            
         }
+
+
     }
 }

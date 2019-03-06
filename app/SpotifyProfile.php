@@ -45,15 +45,13 @@ class SpotifyProfile extends Model
     public function getAccessProfile(){
         $spotifyWebAPI = new SpotifyWebAPI();
 
-        debug('expirationToken', (int)$this->expirationToken);
-        debug('Carbon now', Carbon::now()->timestamp);
         if((int)$this->expirationToken <= Carbon::now()->timestamp){
             $spotifySession = new SpotifySessionController();
             if($spotifySession->refreshToken($this->refreshToken)) {
                 $this->accessToken = $spotifySession->spotifyAccessToken;
                 $this->expirationToken = $spotifySession->spotifyTokenExpirationTime;
                 $this->save();
-                debug('Token refreshed');
+
             }
         }
 
