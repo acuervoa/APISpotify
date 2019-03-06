@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('body')
-    {{debug($tracksInfo)}}
+
     <div class="topgroup">
         <h1 class="titlebox">All time - Top 20 Songs</h1>
     </div>

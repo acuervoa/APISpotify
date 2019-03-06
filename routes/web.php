@@ -13,10 +13,13 @@
 
 Route::get('/', 'Ranking\RankingController@showStatistics');
 Route::get('/rankingTracks', 'Track\TrackRankingController@rankingTracks');
+Route::get('/recentTracks', 'Track\TrackRecentController@showRecentTracks');
+
+
+Route::get('/recentTracksSpotify', 'Track\TrackRecentController@recentTracks');
 
 
 
-Route::get('/recentTracks', 'Track\TrackController@showRecentTracks');
 Route::get('/refreshTokens', 'Spotify\SpotifySessionController@refreshTokens');
 Route::get('/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 

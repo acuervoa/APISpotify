@@ -7,7 +7,6 @@ use App\Http\Controllers\Error\ErrorController;
 use App\SpotifyProfile;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
-use Ramsey\Uuid\Uuid;
 use SpotifyWebAPI\Session;
 use SpotifyWebAPI\SpotifyWebAPI;
 
