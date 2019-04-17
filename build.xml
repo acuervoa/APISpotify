@@ -2,7 +2,7 @@
 
 <project name="YourProject" default="build" basedir=".">
     <property name="build-dir" value="${basedir}/build" />
-    <property name="src-dir" value="${basedir}/src" />
+    <property name="src-dir" value="${basedir}/app" />
 
     <target name="build"
         depends="build-common,phploc,phpdox,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpcb" />
