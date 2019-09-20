@@ -19,11 +19,13 @@ class Artist extends Model
     protected $primaryKey = 'artist_id';
     public $incrementing = false;
 
-    public function albums() {
+    public function albums()
+    {
         return $this->belongsToMany(Album::class, 'album_artists', 'artist_id');
     }
 
-    public function tracks() {
+    public function tracks()
+    {
         return $this->belongsToMany(Track::class, 'artist_tracks', 'artist_id', 'track_id');
     }
 

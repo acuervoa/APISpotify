@@ -18,7 +18,6 @@ class RefactorDBController extends Controller
         $this->refactorAlbumArtists();
         $this->refactorGenres();
         $this->refactorAlbumGenres();
-
     }
 
     private function refactorTracks()
@@ -27,7 +26,6 @@ class RefactorDBController extends Controller
                                   SELECT DISTINCT `track_id`, `album_id`, `name`
                                     FROM `tracks_old`
                                     GROUP BY `track_id`');
-
     }
 
     private function refactorAlbums()
@@ -50,7 +48,8 @@ class RefactorDBController extends Controller
                                       ON `spotify_profiles`.`nick` = `tracks_old`.`tracked_by`');
     }
 
-    private function refactorArtists(){
+    private function refactorArtists()
+    {
 
         $artists = DB::raw('INSERT INTO `artists` (`artist_id`, `name`) 
 	                          SELECT `artists_old`.`artist_id`, `artists_old`.`name` 
@@ -58,34 +57,35 @@ class RefactorDBController extends Controller
 	                            GROUP BY `artists_old`.`artist_id`');
     }
 
-    private function refactorArtistsTracks(){
+    private function refactorArtistsTracks()
+    {
         $artistTracks = DB::raw('INSERT INTO artist_tracks(artist_id, track_id)
                                   SELECT artist_id, track_id FROM artists_old
                                     GROUP BY track_id 
                                     ORDER BY artist_id, track_id');
     }
 
-    private function refactorAlbumArtists() {
+    private function refactorAlbumArtists()
+    {
         $albumArtists = DB::raw('INSERT INTO album_artists (artist_id, album_id)
                                     SELECT DISTINCT artist_id, album_id 
                                       FROM artists_old
                                       ORDER BY artist_id');
     }
 
-    private function refactorGenres(){
+    private function refactorGenres()
+    {
         $genres = DB::raw('INSERT INTO genres(name)
                             SELECT DISTINCT(name) 
                             FROM genres_old');
     }
 
-    private function refactorAlbumGenres() {
+    private function refactorAlbumGenres()
+    {
         $genres = DB::raw('INSERT INTO album_genres(album_id, genre_id)
                             SELECT DISTINCT(album_id), genres.genre_id
                              FROM genres_old
                              JOIN genres ON genres.name = genres_old.name
                              ORDER BY album_id');
-
-
     }
 }
-

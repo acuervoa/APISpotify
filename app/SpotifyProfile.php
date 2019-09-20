@@ -38,20 +38,21 @@ class SpotifyProfile extends Model
     protected $primaryKey='profile_id';
     public $incrementing=false;
 
-    public function tracks(){
-        return $this->belongsToMany(Track::class, 'profile_tracks',  'profile_id', 'track_id');
+    public function tracks()
+    {
+        return $this->belongsToMany(Track::class, 'profile_tracks', 'profile_id', 'track_id');
     }
 
-    public function getAccessProfile(){
+    public function getAccessProfile()
+    {
         $spotifyWebAPI = new SpotifyWebAPI();
 
-        if((int)$this->expirationToken <= Carbon::now()->timestamp){
+        if ((int)$this->expirationToken <= Carbon::now()->timestamp) {
             $spotifySession = new SpotifySessionController();
-            if($spotifySession->refreshToken($this->refreshToken)) {
+            if ($spotifySession->refreshToken($this->refreshToken)) {
                 $this->accessToken = $spotifySession->spotifyAccessToken;
                 $this->expirationToken = $spotifySession->spotifyTokenExpirationTime;
                 $this->save();
-
             }
         }
 
@@ -59,5 +60,4 @@ class SpotifyProfile extends Model
 
         return $spotifyWebAPI;
     }
-
 }

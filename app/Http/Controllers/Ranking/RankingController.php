@@ -15,11 +15,13 @@ use App\Http\Controllers\Track\TrackRankingController;
 use App\Ranking;
 use App\SpotifyProfile;
 use App\Track;
+use Illuminate\Http\Response;
 
+class RankingController extends Controller
+{
 
-class RankingController extends Controller {
-
-    public function showStatistics() {
+    public function showStatistics()
+    {
 
 
         $tracksInfo = TrackController::getTracksCompleteData(TrackRankingController::getTracksRanking(Ranking::SHORT));
@@ -33,49 +35,45 @@ class RankingController extends Controller {
 
 
         return view('statistics.layout', [
-            'tracks' => (!empty($tracksInfo)) ? $tracksInfo : [],
-            'albums' => (!empty($albumsInfo)) ? $albumsInfo : [],
-            'artists' => (!empty($artistsInfo)) ? $artistsInfo : [],
-            'genres' => (!empty($genresInfo)) ? $genresInfo : [],
+            'tracks' => !empty($tracksInfo) ? $tracksInfo : [],
+            'albums' => !empty($albumsInfo) ? $albumsInfo : [],
+            'artists' => !empty($artistsInfo) ? $artistsInfo : [],
+            'genres' => !empty($genresInfo) ? $genresInfo : [],
             'numberUsers' => $this->getNumberOfUsers(),
             'numberOfTracks' => $this->getDistinctNumberOfTracks(),
             'numberOfAlbums' => $this->getDistinctNumberOfAlbums(),
             'numberOfArtists' => $this->getDistinctNumberOfArtists(),
 //            'lastTracks' => $lastTracks
         ]);
-
     }
 
-    public function getDistinctNumberOfTracks() {
+    public function getDistinctNumberOfTracks()
+    {
         return Track::distinct()->count();
     }
 
-    public function getDistinctNumberOfAlbums() {
+    public function getDistinctNumberOfAlbums()
+    {
         return Album::distinct()->count();
     }
 
-    public function getDistinctNumberOfArtists() {
+    public function getDistinctNumberOfArtists()
+    {
          return Artist::distinct()->count();
     }
 
-    public function getNumberOfUsers() {
+    public function getNumberOfUsers()
+    {
         return SpotifyProfile::distinct()->count();
     }
-
-
-
-
-
-
 
     /**
      * Show top tracks and albums endpoint for posterdigital display.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function showPosterDigitalTops()
+    public function showPosterDigitalTops(): \Illuminate\Http\Response
     {
         return view('posterdigital.tops');
     }
-
 }

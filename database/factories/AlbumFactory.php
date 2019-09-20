@@ -1,14 +1,16 @@
 <?php
 
+/* @var $factory \Illuminate\Database\Eloquent\Factory */
+
 use Faker\Generator as Faker;
 
 $factory->define(App\Album::class, function (Faker $faker) {
     return [
-        'album_id' => $faker->uuid,
+        'album_id' => $faker->word,
         'name' => $faker->name,
-        'image_url_640x640' => $faker->imageUrl(600,600),
-        'image_url_300x300' => $faker->imageUrl(300,300),
-        'image_url_64x64' => $faker->imageUrl(64,64),
-        'link_to' => $faker->url,
+        'image_url_640x640' => $faker->word,
+        'image_url_300x300' => $faker->word,
+        'image_url_64x64' => $faker->word,
+        'link_to' => $faker->word,
     ];
 });

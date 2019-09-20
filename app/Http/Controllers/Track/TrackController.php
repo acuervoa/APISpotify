@@ -8,14 +8,12 @@ use App\Http\Controllers\Controller;
 use App\Track;
 use Illuminate\Support\Facades\DB;
 
-
 class TrackController extends Controller
 {
 
     public static function getTracksCompleteData($tracks_ranking_ids)
     {
         return TrackRankingController::sortTrackByReproductions(TrackController::fillTracksInfo($tracks_ranking_ids));
-
     }
 
 
@@ -38,7 +36,6 @@ class TrackController extends Controller
             'link_to' => $element->track->href,
             'duration_ms' => $element->track->duration_ms
         ]);
-
     }
 
 
@@ -65,21 +62,22 @@ class TrackController extends Controller
             $track = Track::find($track_id);
 
             if (empty($track->link_to)) {
-
                 $trackInfo = Track::getSpotifyData($track_id);
 
-                $track = Track::updateOrCreate(['track_id' => $track_id],
+                $track = Track::updateOrCreate(
+                    ['track_id' => $track_id],
                     [
                         'preview_url' => $trackInfo->preview_url,
                         'link_to' => $trackInfo->href,
                         'duration_ms' => $trackInfo->duration_ms,
-                    ]);
+                    ]
+                );
 
 
                 AlbumController::fillAlbumsInfo([$trackInfo->album->id]);
 
                 $artists_ids=[];
-                foreach($trackInfo->artists as $artist){
+                foreach ($trackInfo->artists as $artist) {
                     $artists_ids[] = $artist->id;
                 }
 
@@ -88,7 +86,6 @@ class TrackController extends Controller
                 foreach ($artists as $artist) {
                     $track->artists()->attach($artist);
                 }
-
             }
 
             $tracks[] = $track->load('album', 'artists');
@@ -97,6 +94,4 @@ class TrackController extends Controller
 
         return $tracks;
     }
-
-
 }

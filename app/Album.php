@@ -22,15 +22,18 @@ class Album extends Model
     public $incrementing=false;
 
 
-    public function tracks(){
+    public function tracks()
+    {
         return $this->hasMany(Track::class, 'album_id', 'album_id');
     }
 
-    public function artists(){
+    public function artists()
+    {
         return $this->belongsToMany(Artist::class, 'album_artists', 'album_id', 'artist_id');
     }
 
-    public function genres() {
+    public function genres()
+    {
         return $this->belongsToMany(Genre::class, 'album_genres', 'album_id', 'genre_id');
     }
 
@@ -41,7 +44,8 @@ class Album extends Model
         return $spotifyWebAPI->getAlbum($album_id);
     }
 
-    public static function getSpotifyMultipleData(array $albums_id) {
+    public static function getSpotifyMultipleData(array $albums_id)
+    {
 
         $spotifyWebAPI = SpotifySessionController::getClientAuthorization();
 

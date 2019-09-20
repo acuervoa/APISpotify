@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Genre;
 
-
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
@@ -13,7 +12,7 @@ class GenreController extends Controller
      *
      * @return mixed
      */
-    private static function getTopGenres($limit)
+    private static function getTopGenres(int $limit)
     {
 
         $topGenres = DB::table('album_genres')
@@ -22,21 +21,16 @@ class GenreController extends Controller
             ->orderBy('total', 'desc')
             ->take($limit);
 
-        $genres = DB::table(DB::raw("(" . $topGenres->toSql() . ") as topGenres"))
+        return DB::table(DB::raw('(' . $topGenres->toSql() . ') as topGenres'))
             ->mergeBindings($topGenres)
             ->join('genres', 'genres.genre_id', '=', 'topGenres.genre_id')
             ->select('genres.genre_id', 'genres.name', 'topGenres.total')
             ->get();
-
-
-        return $genres;
     }
 
 
-    public static function getGenresRanking($limit)
+    public static function getGenresRanking(int $limit)
     {
          return self::getTopGenres($limit);
     }
-
-
 }

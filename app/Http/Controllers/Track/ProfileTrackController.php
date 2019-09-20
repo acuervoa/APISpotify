@@ -20,16 +20,17 @@ class ProfileTrackController extends Controller
             ->groupBy('profile_id')
             ->get();
 
-        foreach($profiles as $a_profile){
+        foreach ($profiles as $a_profile) {
             $a_profile->played_at = self::getWhenPlayedAtTracked($reproductions->track_id, $a_profile->profile_id);
             $a_profile->realReproductions = $a_profile->times;
-            $a_profile->ponderatedReproductions = round(sqrt($a_profile->times ) );
+            $a_profile->ponderatedReproductions = round(sqrt($a_profile->times));
         }
 
         return $profiles;
     }
 
-    public static function getWhenPlayedAtTracked($track_id, $tracked_by){
+    public static function getWhenPlayedAtTracked($track_id, $tracked_by)
+    {
 
         return DB::table('profile_tracks')
             ->select('played_at')

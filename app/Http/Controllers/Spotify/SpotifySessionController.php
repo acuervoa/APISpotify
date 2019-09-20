@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Spotify;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Error\ErrorController;
 use App\SpotifyProfile;
-use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\Log;
 use SpotifyWebAPI\Session;
 use SpotifyWebAPI\SpotifyWebAPI;
@@ -42,7 +42,7 @@ class SpotifySessionController extends Controller
         ];
         try {
             return redirect($this->sessionSpotify->getAuthorizeUrl($options));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return ErrorController::errorHandler();
         }
     }
@@ -88,34 +88,33 @@ class SpotifySessionController extends Controller
 
         if (!empty($this->spotifyRefreshToken)) {
             $fields['refreshToken'] = $this->spotifyRefreshToken;
-            Log::info('Refresh token for ' . $request->nick . ' are setted');
+            Log::info('Refresh token for ' . $request->id . ' are setted');
         }
         if (!empty($this->spotifyRefreshToken)) {
             $fields['expirationToken'] = $this->spotifyTokenExpirationTime;
         }
         SpotifyProfile::updateOrCreate(['email' => $request->email], $fields);
         Log::info($request->email . ' update profile \n' . json_encode($fields));
-
     }
 
-    public function refreshToken($refreshToken)
+    public function refreshToken($refreshToken): bool
     {
-        $allOk = TRUE;
+        $allOk = true;
         try {
             if ($this->sessionSpotify->refreshAccessToken($refreshToken)) {
                 $this->spotifyAccessToken = $this->sessionSpotify->getAccessToken();
                 $this->spotifyTokenExpirationTime = $this->sessionSpotify->getTokenExpiration();
                 $this->saveSpotifyProfile();
             }
-        } catch (\Exception $e) {
-            Log::error('The token - ' . $refreshToken . ' is revoked.' . $e->getMessage() );
-            $allOk = FALSE;
+        } catch (Exception $e) {
+            Log::error('The token - ' . $refreshToken . ' is revoked.' . $e->getMessage());
+            $allOk = false;
         }
 
         return $allOk;
     }
 
-    public static function clientCredentials()
+    public static function clientCredentials(): string
     {
         $session = new Session(
             env('SPOTIFY_CLIENT_ID'),
@@ -149,10 +148,10 @@ class SpotifySessionController extends Controller
                 if (!$this->refreshToken($a_profile->refreshToken)) {
                    // $a_profile->delete(['id' => (string)$a_profile->id ]);
                     Log::info('El profile de ' . $a_profile->nick . ' debe de ser eliminado');
-                }else{
+                } else {
                     Log::info('El profile de ' . $a_profile->nick . ' ha sido actualizado');
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Log::error('No se pudo hacer un refresh Token. ' . $e->getMessage());
             }
         }
@@ -160,5 +159,4 @@ class SpotifySessionController extends Controller
 
         return redirect('/recentTracks');
     }
-
 }

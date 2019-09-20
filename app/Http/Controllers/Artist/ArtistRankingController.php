@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers\Artist;
 
-use App\Artist;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
 class ArtistRankingController extends Controller
 {
-    public static function getArtistRanking($limit)
+    public static function getArtistRanking(int $limit)
     {
         return  self::getTopReproductionsArtist($limit);
-
     }
 
 
@@ -20,14 +18,15 @@ class ArtistRankingController extends Controller
      *
      * @return mixed
      */
-    private static function getTopReproductionsArtist($limit) {
+    private static function getTopReproductionsArtist(int $limit)
+    {
 
         $artistByTracks = DB::table('artist_tracks')
-            ->leftJoin('profile_tracks', 'profile_tracks.track_id', '=', 'artist_tracks.track_id' )
+            ->leftJoin('profile_tracks', 'profile_tracks.track_id', '=', 'artist_tracks.track_id')
             ->join('artists', 'artists.artist_id', '=', 'artist_tracks.artist_id')
             ->select('profile_tracks.track_id', 'artists.artist_id');
 
-        $results = DB::table(DB::raw("(" . $artistByTracks->toSql() . ") as artistByTracks"))
+        $results = DB::table(DB::raw('(' . $artistByTracks->toSql() . ') as artistByTracks'))
             ->mergeBindings($artistByTracks)
             ->select('artist_id', DB::raw('count(*) as total'))
             ->groupBy('artist_id')
@@ -37,18 +36,16 @@ class ArtistRankingController extends Controller
 
 
         return $results->pluck('artist_id')->all();
-
     }
 
 
-    public static function sortArtistsByReproductions(array $artists)
+    public static function sortArtistsByReproductions(array $artists): array
     {
         foreach ($artists as $a_artist) {
-
             $reproductions = ArtistController::getArtistReproductions($a_artist);
             $a_artist->reproductions = $reproductions->total;
 
-            usort($artists, function ($a, $b) {
+            usort($artists, static function ($a, $b) {
                 return ($a->reproductions <= $b->reproductions) ? 1 : -1;
             });
         }

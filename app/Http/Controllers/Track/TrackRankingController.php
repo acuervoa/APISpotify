@@ -19,7 +19,6 @@ class TrackRankingController extends Controller
     public static function sortTrackByReproductions(array $tracks)
     {
         foreach ($tracks as $a_track) {
-
             $reproductions = TrackController::getTrackReproductions($a_track);
             $a_track->reproductions = $reproductions->total;
 
@@ -44,8 +43,12 @@ class TrackRankingController extends Controller
         return $tracks->pluck('track_id')->all();
     }
 
-    public function rankingTracks(){
-        return view('tracks.ranking', ['tracksInfo' => TrackController::getTracksCompleteData(self::getTracksRanking(Ranking::LARGE))]);
+    public function rankingTracks()
+    {
+        return view(
+            'tracks.ranking',
+            ['tracksInfo' => TrackController::getTracksCompleteData(self::getTracksRanking(Ranking::LARGE))]
+        );
     }
 
     /**
@@ -67,6 +70,4 @@ class TrackRankingController extends Controller
 
         return $tracks->pluck('track_id')->all();
     }
-
-
 }

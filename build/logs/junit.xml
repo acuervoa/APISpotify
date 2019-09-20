@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="/Users/andres.cuervo.adame/Sites/APISpotify/tests" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.809939">
+    <testsuite name="Tests\Unit\ExampleTest" file="/Users/andres.cuervo.adame/Sites/APISpotify/tests/Unit/ExampleTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.809939">
+      <testcase name="testBasicTest" class="Tests\Unit\ExampleTest" classname="Tests.Unit.ExampleTest" file="/Users/andres.cuervo.adame/Sites/APISpotify/tests/Unit/ExampleTest.php" line="26" assertions="1" time="0.809939"/>
+    </testsuite>
+  </testsuite>
+</testsuites>

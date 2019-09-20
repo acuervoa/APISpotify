@@ -24,7 +24,7 @@ class AlbumRankingController extends Controller
 
 
 
-        $results = DB::table(DB::raw("(" . $tracksByAlbum->toSql() .") as tracksByAlbum" ))
+        $results = DB::table(DB::raw("(" . $tracksByAlbum->toSql() .") as tracksByAlbum"))
             ->mergeBindings($tracksByAlbum)
             ->select('album_id', DB::raw('count(*) as total'))
             ->distinct()
@@ -54,13 +54,13 @@ class AlbumRankingController extends Controller
 
         $results =  $results = DB::table('albums')
             ->select('albums.*', 'results.total')
-            ->join(DB::raw(' 
+            ->join(
+                DB::raw(' 
                     (
                         select album_id, count(*) as total from tracks where track_id 
                         in (select track_id from profile_tracks where played_at >=\''. Carbon::now()->subDay() . '\' )
                         group by album_id
                         order by total desc) as results'),
-
                 function ($join) {
                     $join->on('albums.album_id', '=', 'results.album_id');
                 }
@@ -75,7 +75,6 @@ class AlbumRankingController extends Controller
     public static function sortAlbumsByReproductions(array $albums)
     {
         foreach ($albums as $a_album) {
-
             $reproductions = AlbumController::getAlbumReproductions($a_album);
             $a_album->reproductions = $reproductions->total;
 
@@ -85,5 +84,4 @@ class AlbumRankingController extends Controller
         }
         return $albums;
     }
-
 }

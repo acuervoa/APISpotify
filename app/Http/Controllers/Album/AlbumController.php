@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Album;
 
-
 use App\Album;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-
 
 class AlbumController extends Controller
 {
@@ -22,11 +20,9 @@ class AlbumController extends Controller
         $response = [];
 
         foreach ($albums as $album_id) {
-
             $album = Album::find($album_id);
 
             if (empty($album->link_to)) {
-
                 $infoAlbum = Album::getSpotifyData($album_id);
 
                 $images = [
@@ -42,7 +38,6 @@ class AlbumController extends Controller
                     'image_url_64x64' => $images['image_url_64x64'],
                     'link_to' => $infoAlbum->href
                 ]);
-
             }
 
 
@@ -56,7 +51,6 @@ class AlbumController extends Controller
     public static function getAlbumsCompleteData(array $albums_ranking_ids)
     {
         return AlbumRankingController::sortAlbumsByReproductions(self::fillAlbumsInfo($albums_ranking_ids));
-
     }
 
     public static function getAlbumReproductions(Album $a_album)
@@ -68,20 +62,12 @@ class AlbumController extends Controller
 
 
 
-        return DB::table(DB::raw("(" . $tracksByAlbum->toSql() .") as tracksByAlbum" ))
+        return DB::table(DB::raw("(" . $tracksByAlbum->toSql() .") as tracksByAlbum"))
             ->mergeBindings($tracksByAlbum)
             ->select('album_id', DB::raw('count(*) as total'))
             ->distinct()
             ->groupBy('album_id')
             ->orderBy('total', 'desc')
             ->first();
-
-
     }
-
-
-
-
-
-
 }
