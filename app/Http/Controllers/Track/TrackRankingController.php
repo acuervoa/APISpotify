@@ -37,8 +37,7 @@ class TrackRankingController extends Controller
             ->select('track_id', DB::raw('count(*) as total'))
             ->groupBy('track_id')
             ->orderBy('total', 'desc')
-            ->take($limit)
-            ->get();
+            ->take($limit);
 
         return $tracks->pluck('track_id')->all();
     }
@@ -61,7 +60,7 @@ class TrackRankingController extends Controller
     {
         $tracks = DB::table('profile_tracks')
             ->select('track_id', DB::raw('count(*) as total'))
-            ->where('played_at', '>=', Carbon::now()->subDay())
+            ->where('played_at', '>=', Carbon::now()->subDays(2))
             ->groupBy('track_id')
             ->orderBy('total', 'desc')
             ->orderBy('track_id', 'desc')

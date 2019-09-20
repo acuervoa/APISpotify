@@ -58,7 +58,7 @@ class AlbumRankingController extends Controller
                 DB::raw(' 
                     (
                         select album_id, count(*) as total from tracks where track_id 
-                        in (select track_id from profile_tracks where played_at >=\''. Carbon::now()->subDay() . '\' )
+                        in (select track_id from profile_tracks where played_at >=\''. Carbon::now()->subDays(2) . '\' )
                         group by album_id
                         order by total desc) as results'),
                 function ($join) {

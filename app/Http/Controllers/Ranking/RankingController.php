@@ -23,7 +23,6 @@ class RankingController extends Controller
     public function showStatistics()
     {
 
-
         $tracksInfo = TrackController::getTracksCompleteData(TrackRankingController::getTracksRanking(Ranking::SHORT));
         $albumsInfo = AlbumController::getAlbumsCompleteData(AlbumRankingController::getAlbumsRanking(Ranking::SHORT));
         $artistsInfo = ArtistController::getArtistsCompleteData(ArtistRankingController::getArtistRanking(Ranking::SHORT));
