@@ -72,7 +72,7 @@ class RankingController extends Controller
      *
      * @return Response
      */
-    public function showPosterDigitalTops(): \Illuminate\Http\Response
+    public function showPosterDigitalTops()
     {
         return view('posterdigital.tops');
     }

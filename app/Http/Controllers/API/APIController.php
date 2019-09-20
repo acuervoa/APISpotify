@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Album\AlbumRankingController;
+use App\Http\Controllers\Track\TrackRankingController;
 use App\Track;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Album\AlbumController;
@@ -18,12 +20,12 @@ class APIController extends Controller
     public function getTops($max = 3)
     {
         // get tops
-        $topTrackList = TrackController::getTracksRankingLastDay($max);
-        $topAlbums = AlbumController::getAlbumsRankingLastDay($max);
+        $topTrackList = TrackRankingController::getTracksRankingLastDay($max);
+        $topAlbums = AlbumRankingController::getAlbumsRankingLastDay($max);
 
         // get detailed info
-        $topTrackList = Track::getTracksCompleteData($topTrackList)->tracks;
-        $topAlbums = AlbumController::getAlbumsCompleteData($topAlbums)->albums;
+        $topTrackList = TrackController::getTracksCompleteData($topTrackList);
+        $topAlbums = AlbumController::getAlbumsCompleteData($topAlbums);
 
         return response()->json([
             'albums' => array_map([$this, 'minimizeAlbumData'], $topAlbums),
@@ -39,7 +41,8 @@ class APIController extends Controller
      */
     protected function minimizeAlbumData($element)
     {
-        $image = $element->images[0]->url;
+
+        $image = $element->image_url_640x640;
         $name = $element->name;
         $artists = [];
         foreach ($element->artists as $a) {
@@ -61,7 +64,8 @@ class APIController extends Controller
      */
     protected function minimizeTrackData($element)
     {
-        $image = $element->album->images[0]->url;
+
+        $image = $element->album->image_url_640x640;
         $name = $element->name;
         $artists = [];
         foreach ($element->artists as $a) {

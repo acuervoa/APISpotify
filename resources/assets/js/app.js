@@ -71,30 +71,14 @@ const app = new Vue({
                     type: 'get',
                     url: '/api/tops/3',
                     success: function (response) {
-<<<<<<< HEAD
-                        self.tracks = response.tracks;
-                        self.albums = response.albums;
-                        resolve()
-                    }
-                })
-        })
-        },
-        toggle() {
-            if (this.show === 'tracks') {
-                this.show = 'albums';
-                this.title = 'Last 24h top albums';
-            } else {
-                this.show = 'tracks';
-                this.title = 'Last 24h top songs';
-            }
-=======
+
                         self.tracks = response.tracks
                         self.albums = response.albums
                         resolve()
                     }
                 })
             })
->>>>>>> upgrade
+
         },
         toggle() {
             if (this.show === 'tracks') {
@@ -112,9 +96,6 @@ const app = new Vue({
             setInterval(this.toggle, 1000 * 15 * 1)
         })
         setInterval(this.fetch, 1000 * 60 * 30)
-<<<<<<< HEAD
 
-=======
->>>>>>> upgrade
     },
 });

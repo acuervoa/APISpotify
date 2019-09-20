@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/refactorDB', 'RefactorDB\RefactorDBController');
 Route::get('/', 'Ranking\RankingController@showStatistics');
 Route::get('/rankingTracks', 'Track\TrackRankingController@rankingTracks');
 Route::get('/recentTracks', 'Track\TrackRecentController@showRecentTracks');
